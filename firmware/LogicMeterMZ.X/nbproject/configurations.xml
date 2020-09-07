@@ -1,0 +1,977 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="65">
+  <logicalFolder name="root" displayName="root" projectFiles="true">
+    <logicalFolder name="f1" displayName="Application" projectFiles="true">
+      <logicalFolder name="f1" displayName="Framework" projectFiles="true">
+        <itemPath>../src/Display.cpp</itemPath>
+        <itemPath>../src/Display.h</itemPath>
+        <itemPath>../src/FastImageDraw.c</itemPath>
+        <itemPath>../src/HWScroller.cpp</itemPath>
+        <itemPath>../src/HWScroller.h</itemPath>
+        <itemPath>../src/Help.h</itemPath>
+        <itemPath>../src/LogicMeter.cpp</itemPath>
+        <itemPath>../src/LogicMeter.h</itemPath>
+        <itemPath>../src/Menu.h</itemPath>
+        <itemPath>../src/Settings.cpp</itemPath>
+        <itemPath>../src/Settings.h</itemPath>
+        <itemPath>../src/Utility.cpp</itemPath>
+        <itemPath>../src/Utility.h</itemPath>
+        <itemPath>../src/drv_gfx_disp_intf.c</itemPath>
+        <itemPath>../src/fixed.h</itemPath>
+        <itemPath>../src/printf.c</itemPath>
+        <itemPath>../src/printf.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f2" displayName="Panes" projectFiles="true">
+        <itemPath>../src/GPSPane.cpp</itemPath>
+        <itemPath>../src/GPSPane.h</itemPath>
+        <itemPath>../src/LEDTestPane.cpp</itemPath>
+        <itemPath>../src/LEDTestPane.h</itemPath>
+        <itemPath>../src/Pane.cpp</itemPath>
+        <itemPath>../src/Pane.h</itemPath>
+        <itemPath>../src/SquareWavePane.cpp</itemPath>
+        <itemPath>../src/SquareWavePane.h</itemPath>
+        <itemPath>../src/TerminalPane.cpp</itemPath>
+        <itemPath>../src/TerminalPane.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f3" displayName="Peripherals" projectFiles="true">
+        <itemPath>../src/InputCapture.cpp</itemPath>
+        <itemPath>../src/InputCapture.h</itemPath>
+        <itemPath>../src/PPS.cpp</itemPath>
+        <itemPath>../src/PPS.h</itemPath>
+        <itemPath>../src/SPI.cpp</itemPath>
+        <itemPath>../src/SPI.h</itemPath>
+        <itemPath>../src/UART.cpp</itemPath>
+        <itemPath>../src/UART.h</itemPath>
+        <itemPath>../src/GPIO.h</itemPath>
+        <itemPath>../src/CVRef.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f4" displayName="Tools" projectFiles="true">
+        <itemPath>../src/Tool.cpp</itemPath>
+        <itemPath>../src/Tool.h</itemPath>
+        <itemPath>../src/ToolGPS.cpp</itemPath>
+        <itemPath>../src/ToolGPS.h</itemPath>
+        <itemPath>../src/ToolLED.cpp</itemPath>
+        <itemPath>../src/ToolLED.h</itemPath>
+        <itemPath>../src/ToolPWM.cpp</itemPath>
+        <itemPath>../src/ToolPWM.h</itemPath>
+        <itemPath>../src/ToolSPI.cpp</itemPath>
+        <itemPath>../src/ToolSPI.h</itemPath>
+        <itemPath>../src/ToolServo.cpp</itemPath>
+        <itemPath>../src/ToolServo.h</itemPath>
+        <itemPath>../src/ToolUART.cpp</itemPath>
+        <itemPath>../src/ToolUART.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f5" displayName="Widgets" projectFiles="true">
+        <itemPath>../src/DateTimeSpinWidget.cpp</itemPath>
+        <itemPath>../src/DateTimeSpinWidget.h</itemPath>
+        <itemPath>../src/DutyCycleSpinWidget.cpp</itemPath>
+        <itemPath>../src/DutyCycleSpinWidget.h</itemPath>
+        <itemPath>../src/FrequencyPeriodSpinWidget.cpp</itemPath>
+        <itemPath>../src/FrequencyPeriodSpinWidget.h</itemPath>
+        <itemPath>../src/GPSCoordSpinWidget.cpp</itemPath>
+        <itemPath>../src/GPSCoordSpinWidget.h</itemPath>
+        <itemPath>../src/LinesPainter.cpp</itemPath>
+        <itemPath>../src/LinesPainter.h</itemPath>
+        <itemPath>../src/RichLabelWidget.cpp</itemPath>
+        <itemPath>../src/RichLabelWidget.h</itemPath>
+        <itemPath>../src/RichTextPainter.cpp</itemPath>
+        <itemPath>../src/RichTextPainter.h</itemPath>
+        <itemPath>../src/SpinWidget.h</itemPath>
+        <itemPath>../src/SurfacePainter.cpp</itemPath>
+        <itemPath>../src/SurfacePainter.h</itemPath>
+        <itemPath>../src/SurfaceWrapper.cpp</itemPath>
+        <itemPath>../src/SurfaceWrapper.h</itemPath>
+      </logicalFolder>
+    </logicalFolder>
+    <logicalFolder name="HeaderFiles"
+                   displayName="Header Files"
+                   projectFiles="true">
+      <logicalFolder name="f1" displayName="config" projectFiles="true">
+        <logicalFolder name="f1" displayName="default" projectFiles="true">
+          <logicalFolder name="f5" displayName="driver" projectFiles="true">
+            <logicalFolder name="f1" displayName="usb" projectFiles="true">
+              <logicalFolder name="f1" displayName="usbhs" projectFiles="true">
+                <logicalFolder name="f1" displayName="src" projectFiles="true">
+                  <logicalFolder name="f1" displayName="templates" projectFiles="true">
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_registers.h</itemPath>
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_ClockResetControl_Default.h</itemPath>
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_ClockResetControl_Unsupported.h</itemPath>
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_EndpointFIFO_Default.h</itemPath>
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_EndpointFIFO_Unsupported.h</itemPath>
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_EndpointOperations_Default.h</itemPath>
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_EndpointOperations_Unsupported.h</itemPath>
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_EP0Status_Default.h</itemPath>
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_EP0Status_Unsupported.h</itemPath>
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_HighSpeedSupport_Default.h</itemPath>
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_HighSpeedSupport_Unsupported.h</itemPath>
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_Interrupts_Default.h</itemPath>
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_Interrupts_Unsupported.h</itemPath>
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_ModuleControl_Default.h</itemPath>
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_ModuleControl_Unsupported.h</itemPath>
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_RxEPStatus_Default.h</itemPath>
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_RxEPStatus_Unsupported.h</itemPath>
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_SoftReset_Default.h</itemPath>
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_SoftReset_Unsupported.h</itemPath>
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_TxEPStatus_Default.h</itemPath>
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_TxEPStatus_Unsupported.h</itemPath>
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_USBIDControl_Default.h</itemPath>
+                    <itemPath>../src/config/default/driver/usb/usbhs/src/templates/usbhs_USBIDControl_Unsupported.h</itemPath>
+                  </logicalFolder>
+                  <itemPath>../src/config/default/driver/usb/usbhs/src/drv_usbhs_variant_mapping.h</itemPath>
+                  <itemPath>../src/config/default/driver/usb/usbhs/src/drv_usbhs_local.h</itemPath>
+                  <itemPath>../src/config/default/driver/usb/usbhs/src/plib_usbhs.h</itemPath>
+                  <itemPath>../src/config/default/driver/usb/usbhs/src/plib_usbhs_header.h</itemPath>
+                  <itemPath>../src/config/default/driver/usb/usbhs/src/usbhs_registers.h</itemPath>
+                </logicalFolder>
+                <itemPath>../src/config/default/driver/usb/usbhs/drv_usbhs.h</itemPath>
+              </logicalFolder>
+              <itemPath>../src/config/default/driver/usb/drv_usb.h</itemPath>
+              <itemPath>../src/config/default/driver/usb/drv_usb_external_dependencies.h</itemPath>
+            </logicalFolder>
+            <itemPath>../src/config/default/driver/driver.h</itemPath>
+            <itemPath>../src/config/default/driver/driver_common.h</itemPath>
+          </logicalFolder>
+          <logicalFolder name="f1" displayName="gfx" projectFiles="true">
+            <logicalFolder name="f2" displayName="driver" projectFiles="true">
+              <logicalFolder name="f1" displayName="ili9488" projectFiles="true">
+                <itemPath>../src/config/default/gfx/driver/controller/ili9488/drv_gfx_ili9488.h</itemPath>
+                <itemPath>../src/config/default/gfx/driver/controller/ili9488/drv_gfx_ili9488_common.h</itemPath>
+                <itemPath>../src/config/default/gfx/driver/controller/ili9488/drv_gfx_ili9488_cmd_defs.h</itemPath>
+              </logicalFolder>
+            </logicalFolder>
+            <logicalFolder name="f1" displayName="hal" projectFiles="true">
+              <itemPath>../src/config/default/gfx/hal/gfx.h</itemPath>
+              <itemPath>../src/config/default/gfx/hal/inc/gfx_color.h</itemPath>
+              <itemPath>../src/config/default/gfx/hal/inc/gfx_common.h</itemPath>
+              <itemPath>../src/config/default/gfx/hal/inc/gfx_context.h</itemPath>
+              <itemPath>../src/config/default/gfx/hal/inc/gfx_default_impl.h</itemPath>
+              <itemPath>../src/config/default/gfx/hal/inc/gfx_display.h</itemPath>
+              <itemPath>../src/config/default/gfx/hal/inc/gfx_driver_interface.h</itemPath>
+              <itemPath>../src/config/default/gfx/hal/inc/gfx_hal.h</itemPath>
+              <itemPath>../src/config/default/gfx/hal/inc/gfx_interface.h</itemPath>
+              <itemPath>../src/config/default/gfx/hal/inc/gfx_layer.h</itemPath>
+              <itemPath>../src/config/default/gfx/hal/inc/gfx_pixel_buffer.h</itemPath>
+              <itemPath>../src/config/default/gfx/hal/inc/gfx_processor_interface.h</itemPath>
+              <itemPath>../src/config/default/gfx/hal/inc/gfx_rect.h</itemPath>
+              <itemPath>../src/config/default/gfx/hal/inc/gfx_util.h</itemPath>
+              <itemPath>../src/config/default/gfx/hal/inc/gfx_draw.h</itemPath>
+              <itemPath>../src/config/default/gfx/hal/inc/gfx_draw_arc.h</itemPath>
+              <itemPath>../src/config/default/gfx/hal/inc/gfx_draw_blit.h</itemPath>
+              <itemPath>../src/config/default/gfx/hal/inc/gfx_draw_circle.h</itemPath>
+              <itemPath>../src/config/default/gfx/hal/inc/gfx_draw_ellipse.h</itemPath>
+              <itemPath>../src/config/default/gfx/hal/inc/gfx_draw_line.h</itemPath>
+              <itemPath>../src/config/default/gfx/hal/inc/gfx_draw_pixel.h</itemPath>
+              <itemPath>../src/config/default/gfx/hal/inc/gfx_draw_rect.h</itemPath>
+              <itemPath>../src/config/default/gfx/hal/inc/gfx_draw_stretchblit.h</itemPath>
+              <itemPath>../src/config/default/gfx/hal/inc/gfx_math.h</itemPath>
+              <itemPath>../src/config/default/gfx/hal/gfx_config.h</itemPath>
+            </logicalFolder>
+            <logicalFolder name="f5" displayName="libaria" projectFiles="true">
+              <itemPath>../src/config/default/gfx/libaria/libaria_harmony.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/libaria_config.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/libaria_init.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/libaria.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_array.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_common.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_context.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_draw.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_editwidget.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_event.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_global.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_input.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_layer.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_math.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_list.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_rectarray.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_scheme.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_screen.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_string.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_utils.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_widget.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_widget_skin_classic_common.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_widget_arc.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_widget_bar_graph.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_widget_button.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_widget_checkbox.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_widget_circle.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_widget_circular_gauge.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_widget_circular_slider.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_widget_drawsurface.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_widget_gradient.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_widget_groupbox.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_widget_image.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_widget_imageplus.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_widget_imagesequence.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_widget_keypad.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_widget_label.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_widget_line.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_widget_line_graph.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_widget_list.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_widget_listwheel.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_widget_pie_chart.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_widget_progressbar.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_widget_radial_menu.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_widget_radiobutton.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_radiobutton_group.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_widget_rectangle.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_widget_scrollbar.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_widget_slider.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_widget_textfield.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_widget_touchtest.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/inc/libaria_widget_window.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/libaria_events.h</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/libaria_macros.h</itemPath>
+            </logicalFolder>
+            <logicalFolder name="f4" displayName="third_party" projectFiles="true">
+              <logicalFolder name="f1" displayName="lodepng" projectFiles="true">
+                <itemPath>../src/config/default/gfx/third_party/lodepng/lodepng.h</itemPath>
+              </logicalFolder>
+            </logicalFolder>
+            <logicalFolder name="f3" displayName="utils" projectFiles="true">
+              <logicalFolder name="f1" displayName="inc" projectFiles="true">
+                <itemPath>../src/config/default/gfx/utils/inc/gfxu_binary.h</itemPath>
+                <itemPath>../src/config/default/gfx/utils/inc/gfxu_font.h</itemPath>
+                <itemPath>../src/config/default/gfx/utils/inc/gfxu_global.h</itemPath>
+                <itemPath>../src/config/default/gfx/utils/inc/gfxu_image.h</itemPath>
+                <itemPath>../src/config/default/gfx/utils/inc/gfxu_image_utils.h</itemPath>
+                <itemPath>../src/config/default/gfx/utils/inc/gfxu_palette.h</itemPath>
+                <itemPath>../src/config/default/gfx/utils/inc/gfxu_string.h</itemPath>
+                <itemPath>../src/config/default/gfx/utils/inc/gfxu_string_utils.h</itemPath>
+                <itemPath>../src/config/default/gfx/utils/inc/gfxu_image_jpg_common.h</itemPath>
+              </logicalFolder>
+              <itemPath>../src/config/default/gfx/utils/gfx_utils.h</itemPath>
+              <itemPath>../src/config/default/gfx/utils/gfxu_config.h</itemPath>
+            </logicalFolder>
+            <itemPath>../src/config/default/gfx/gfx_assets.h</itemPath>
+          </logicalFolder>
+          <logicalFolder name="f2" displayName="peripheral" projectFiles="true">
+            <logicalFolder name="f9" displayName="adchs" projectFiles="true">
+              <itemPath>../src/config/default/peripheral/adchs/plib_adchs.h</itemPath>
+              <itemPath>../src/config/default/peripheral/adchs/plib_adchs_common.h</itemPath>
+            </logicalFolder>
+            <logicalFolder name="f2" displayName="clk" projectFiles="true">
+              <itemPath>../src/config/default/peripheral/clk/plib_clk.h</itemPath>
+            </logicalFolder>
+            <logicalFolder name="f7" displayName="coretimer" projectFiles="true">
+              <itemPath>../src/config/default/peripheral/coretimer/plib_coretimer.h</itemPath>
+            </logicalFolder>
+            <logicalFolder name="f4" displayName="evic" projectFiles="true">
+              <itemPath>../src/config/default/peripheral/evic/plib_evic.h</itemPath>
+            </logicalFolder>
+            <logicalFolder name="f3" displayName="gpio" projectFiles="true">
+              <itemPath>../src/config/default/peripheral/gpio/plib_gpio.h</itemPath>
+            </logicalFolder>
+            <logicalFolder name="f1" displayName="icap" projectFiles="true">
+              <itemPath>../src/config/default/peripheral/icap/plib_icap_common.h</itemPath>
+              <itemPath>../src/config/default/peripheral/icap/plib_icap4.h</itemPath>
+            </logicalFolder>
+            <logicalFolder name="f6" displayName="nvm" projectFiles="true">
+              <itemPath>../src/config/default/peripheral/nvm/plib_nvm.h</itemPath>
+            </logicalFolder>
+            <logicalFolder name="f5" displayName="ocmp" projectFiles="true">
+              <itemPath>../src/config/default/peripheral/ocmp/plib_ocmp_common.h</itemPath>
+              <itemPath>../src/config/default/peripheral/ocmp/plib_ocmp2.h</itemPath>
+              <itemPath>../src/config/default/peripheral/ocmp/plib_ocmp3.h</itemPath>
+            </logicalFolder>
+            <logicalFolder name="f10" displayName="tmr" projectFiles="true">
+              <itemPath>../src/config/default/peripheral/tmr/plib_tmr_common.h</itemPath>
+              <itemPath>../src/config/default/peripheral/tmr/plib_tmr4.h</itemPath>
+              <itemPath>../src/config/default/peripheral/tmr/plib_tmr2.h</itemPath>
+            </logicalFolder>
+            <logicalFolder name="f11" displayName="tmr1" projectFiles="true">
+              <itemPath>../src/config/default/peripheral/tmr1/plib_tmr1_common.h</itemPath>
+              <itemPath>../src/config/default/peripheral/tmr1/plib_tmr1.h</itemPath>
+            </logicalFolder>
+            <logicalFolder name="f8" displayName="uart" projectFiles="true">
+              <itemPath>../src/config/default/peripheral/uart/plib_uart_common.h</itemPath>
+              <itemPath>../src/config/default/peripheral/uart/plib_uart3.h</itemPath>
+            </logicalFolder>
+          </logicalFolder>
+          <logicalFolder name="f4" displayName="system" projectFiles="true">
+            <logicalFolder name="f3" displayName="debug" projectFiles="true">
+              <itemPath>../src/config/default/system/debug/sys_debug.h</itemPath>
+            </logicalFolder>
+            <logicalFolder name="f2" displayName="int" projectFiles="true">
+              <itemPath>../src/config/default/system/int/sys_int.h</itemPath>
+              <itemPath>../src/config/default/system/int/sys_int_mapping.h</itemPath>
+            </logicalFolder>
+            <logicalFolder name="f1" displayName="time" projectFiles="true">
+              <itemPath>../src/config/default/system/time/sys_time.h</itemPath>
+              <itemPath>../src/config/default/system/time/sys_time_definitions.h</itemPath>
+              <itemPath>../src/config/default/system/time/src/sys_time_local.h</itemPath>
+            </logicalFolder>
+            <itemPath>../src/config/default/system/system.h</itemPath>
+            <itemPath>../src/config/default/system/system_common.h</itemPath>
+            <itemPath>../src/config/default/system/system_module.h</itemPath>
+          </logicalFolder>
+          <logicalFolder name="f3" displayName="usb" projectFiles="true">
+            <logicalFolder name="f1" displayName="src" projectFiles="true">
+              <itemPath>../src/config/default/usb/src/usb_device_local.h</itemPath>
+              <itemPath>../src/config/default/usb/src/usb_device_mapping.h</itemPath>
+              <itemPath>../src/config/default/usb/src/usb_device_function_driver.h</itemPath>
+              <itemPath>../src/config/default/usb/src/usb_external_dependencies.h</itemPath>
+              <itemPath>../src/config/default/usb/src/usb_device_cdc_local.h</itemPath>
+            </logicalFolder>
+            <itemPath>../src/config/default/usb/usb_device.h</itemPath>
+            <itemPath>../src/config/default/usb/usb_common.h</itemPath>
+            <itemPath>../src/config/default/usb/usb_chapter_9.h</itemPath>
+            <itemPath>../src/config/default/usb/usb_host_client_driver.h</itemPath>
+            <itemPath>../src/config/default/usb/usb_host_hub_interface.h</itemPath>
+            <itemPath>../src/config/default/usb/usb_host.h</itemPath>
+            <itemPath>../src/config/default/usb/usb_hub.h</itemPath>
+            <itemPath>../src/config/default/usb/usb_device_cdc.h</itemPath>
+            <itemPath>../src/config/default/usb/usb_cdc.h</itemPath>
+          </logicalFolder>
+          <itemPath>../src/config/default/toolchain_specifics.h</itemPath>
+          <itemPath>../src/config/default/definitions.h</itemPath>
+          <itemPath>../src/config/default/user.h</itemPath>
+          <itemPath>../src/config/default/configuration.h</itemPath>
+        </logicalFolder>
+      </logicalFolder>
+      <logicalFolder name="f3" displayName="osal" projectFiles="true">
+        <itemPath>../src/config/default/osal/osal.h</itemPath>
+        <itemPath>../src/config/default/osal/osal_definitions.h</itemPath>
+        <itemPath>../src/config/default/osal/osal_impl_basic.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f2" displayName="packs" projectFiles="true">
+        <logicalFolder name="f1"
+                       displayName="PIC32MZ2048EFH064_DFP"
+                       projectFiles="true">
+          <itemPath>../src/packs/PIC32MZ2048EFH064_DFP/device.h</itemPath>
+        </logicalFolder>
+      </logicalFolder>
+      <itemPath>../src/app.h</itemPath>
+      <itemPath>../src/usbcdc.h</itemPath>
+    </logicalFolder>
+    <logicalFolder name="LinkerScript"
+                   displayName="Linker Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="SourceFiles"
+                   displayName="Source Files"
+                   projectFiles="true">
+      <logicalFolder name="f1" displayName="config" projectFiles="true">
+        <logicalFolder name="f1" displayName="default" projectFiles="true">
+          <logicalFolder name="f6" displayName="driver" projectFiles="true">
+            <logicalFolder name="f1" displayName="usb" projectFiles="true">
+              <logicalFolder name="f1" displayName="usbhs" projectFiles="true">
+                <logicalFolder name="f1" displayName="src" projectFiles="true">
+                  <itemPath>../src/config/default/driver/usb/usbhs/src/drv_usbhs.c</itemPath>
+                  <itemPath>../src/config/default/driver/usb/usbhs/src/drv_usbhs_device.c</itemPath>
+                </logicalFolder>
+              </logicalFolder>
+            </logicalFolder>
+          </logicalFolder>
+          <logicalFolder name="f1" displayName="gfx" projectFiles="true">
+            <logicalFolder name="f2" displayName="driver" projectFiles="true">
+              <logicalFolder name="f1" displayName="ili9488" projectFiles="true">
+                <itemPath>../src/config/default/gfx/driver/controller/ili9488/drv_gfx_ili9488.c</itemPath>
+                <itemPath>../src/config/default/gfx/driver/controller/ili9488/drv_gfx_ili9488_intf.c</itemPath>
+              </logicalFolder>
+            </logicalFolder>
+            <logicalFolder name="f1" displayName="hal" projectFiles="true">
+              <itemPath>../src/config/default/gfx/hal/src/gfx.c</itemPath>
+              <itemPath>../src/config/default/gfx/hal/src/gfx_color.c</itemPath>
+              <itemPath>../src/config/default/gfx/hal/src/gfx_context.c</itemPath>
+              <itemPath>../src/config/default/gfx/hal/src/gfx_default_impl.c</itemPath>
+              <itemPath>../src/config/default/gfx/hal/src/gfx_display.c</itemPath>
+              <itemPath>../src/config/default/gfx/hal/src/gfx_display_def.c</itemPath>
+              <itemPath>../src/config/default/gfx/hal/src/gfx_driver_interface.c</itemPath>
+              <itemPath>../src/config/default/gfx/hal/src/gfx_driver_def.c</itemPath>
+              <itemPath>../src/config/default/gfx/hal/src/gfx_processor_def.c</itemPath>
+              <itemPath>../src/config/default/gfx/hal/src/gfx_get.c</itemPath>
+              <itemPath>../src/config/default/gfx/hal/src/gfx_interface.c</itemPath>
+              <itemPath>../src/config/default/gfx/hal/src/gfx_layer.c</itemPath>
+              <itemPath>../src/config/default/gfx/hal/src/gfx_pixel_buffer.c</itemPath>
+              <itemPath>../src/config/default/gfx/hal/src/gfx_processor_interface.c</itemPath>
+              <itemPath>../src/config/default/gfx/hal/src/gfx_rect.c</itemPath>
+              <itemPath>../src/config/default/gfx/hal/src/gfx_util.c</itemPath>
+              <itemPath>../src/config/default/gfx/hal/src/gfx_set.c</itemPath>
+              <itemPath>../src/config/default/gfx/hal/src/gfx_color_blend.c</itemPath>
+              <itemPath>../src/config/default/gfx/hal/src/gfx_color_convert.c</itemPath>
+              <itemPath>../src/config/default/gfx/hal/src/gfx_color_lerp.c</itemPath>
+              <itemPath>../src/config/default/gfx/hal/src/gfx_color_value.c</itemPath>
+              <itemPath>../src/config/default/gfx/hal/src/gfx_draw_arc.c</itemPath>
+              <itemPath>../src/config/default/gfx/hal/src/gfx_draw_blit.c</itemPath>
+              <itemPath>../src/config/default/gfx/hal/src/gfx_draw_circle.c</itemPath>
+              <itemPath>../src/config/default/gfx/hal/src/gfx_draw_ellipse.c</itemPath>
+              <itemPath>../src/config/default/gfx/hal/src/gfx_draw_line.c</itemPath>
+              <itemPath>../src/config/default/gfx/hal/src/gfx_draw_pixel.c</itemPath>
+              <itemPath>../src/config/default/gfx/hal/src/gfx_draw_rect.c</itemPath>
+              <itemPath>../src/config/default/gfx/hal/src/gfx_draw_stretchblit.c</itemPath>
+              <itemPath>../src/config/default/gfx/hal/src/gfx_math.c</itemPath>
+            </logicalFolder>
+            <logicalFolder name="f5" displayName="libaria" projectFiles="true">
+              <itemPath>../src/config/default/gfx/libaria/libaria_harmony.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/libaria_init.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_array.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_context.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_context_paint.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_draw.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_editwidget.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_event.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_input.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_layer.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_list.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_rectarray.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_scheme.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_screen.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_string.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_utils.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_skin_classic.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_skin_classic_common.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_arc.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_arc_skin_classic.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_bar_graph.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_bar_graph_skin_classic.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_button.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_button_skin_classic.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_checkbox.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_checkbox_skin_classic.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_circle.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_circle_skin_classic.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_circular_gauge.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_circular_gauge_skin_classic.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_circular_slider.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_circular_slider_skin_classic.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_drawsurface.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_drawsurface_skin_classic.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_gradient.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_gradient_skin_classic.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_groupbox.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_groupbox_skin_classic.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_image.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_image_skin_classic.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_imageplus.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_imageplus_skin_classic.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_imagesequence.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_imagesequence_skin_classic.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_keypad.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_keypad_skin_classic.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_label.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_label_skin_classic.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_line.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_line_skin_classic.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_line_graph.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_line_graph_skin_classic.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_list.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_list_skin_classic.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_listwheel.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_listwheel_skin_classic.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_pie_chart.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_pie_chart_skin_classic.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_progressbar.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_progressbar_skin_classic.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_radial_menu.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_radial_menu_skin_classic.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_radiobutton.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_radiobutton_skin_classic.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_radiobutton_group.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_rectangle.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_rectangle_skin_classic.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_scrollbar.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_scrollbar_skin_classic.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_slider.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_slider_skin_classic.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_textfield.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_textfield_skin_classic.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_touchtest.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_touchtest_skin_classic.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_window.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/src/libaria_widget_window_skin_classic.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/libaria_events.c</itemPath>
+              <itemPath>../src/config/default/gfx/libaria/libaria_macros.c</itemPath>
+            </logicalFolder>
+            <logicalFolder name="f4" displayName="third_party" projectFiles="true">
+              <logicalFolder name="f1" displayName="lodepng" projectFiles="true">
+                <itemPath>../src/config/default/gfx/third_party/src/lodepng/lodepng.c</itemPath>
+              </logicalFolder>
+              <itemPath>../src/config/default/gfx/third_party/decoder/src/jidctint.c</itemPath>
+            </logicalFolder>
+            <logicalFolder name="f3" displayName="utils" projectFiles="true">
+              <logicalFolder name="f1" displayName="src" projectFiles="true">
+                <itemPath>../src/config/default/gfx/utils/src/gfxu_image_jpg_common.c</itemPath>
+                <itemPath>../src/config/default/gfx/utils/src/gfxu_image_jpg_internal.c</itemPath>
+                <itemPath>../src/config/default/gfx/utils/src/gfxu_image_jpg_external.c</itemPath>
+                <itemPath>../src/config/default/gfx/utils/src/gfxu_image_png_external.c</itemPath>
+                <itemPath>../src/config/default/gfx/utils/src/gfxu_image_png_internal.c</itemPath>
+              </logicalFolder>
+              <itemPath>../src/config/default/gfx/utils/src/gfxu_image.c</itemPath>
+              <itemPath>../src/config/default/gfx/utils/src/gfxu_image_raw_external.c</itemPath>
+              <itemPath>../src/config/default/gfx/utils/src/gfxu_image_raw_internal.c</itemPath>
+              <itemPath>../src/config/default/gfx/utils/src/gfxu_image_rle_external.c</itemPath>
+              <itemPath>../src/config/default/gfx/utils/src/gfxu_image_rle_internal.c</itemPath>
+              <itemPath>../src/config/default/gfx/utils/src/gfxu_image_utils.c</itemPath>
+              <itemPath>../src/config/default/gfx/utils/src/gfxu_palette.c</itemPath>
+              <itemPath>../src/config/default/gfx/utils/src/gfxu_string.c</itemPath>
+              <itemPath>../src/config/default/gfx/utils/src/gfxu_string_external.c</itemPath>
+              <itemPath>../src/config/default/gfx/utils/src/gfxu_stringbuffer_external.c</itemPath>
+              <itemPath>../src/config/default/gfx/utils/src/gfxu_string_internal.c</itemPath>
+              <itemPath>../src/config/default/gfx/utils/src/gfxu_string_query.c</itemPath>
+              <itemPath>../src/config/default/gfx/utils/src/gfxu_string_utils.c</itemPath>
+            </logicalFolder>
+            <itemPath>../src/config/default/gfx/gfx_assets.c</itemPath>
+          </logicalFolder>
+          <logicalFolder name="f2" displayName="peripheral" projectFiles="true">
+            <logicalFolder name="f9" displayName="adchs" projectFiles="true">
+              <itemPath>../src/config/default/peripheral/adchs/plib_adchs.c</itemPath>
+            </logicalFolder>
+            <logicalFolder name="f2" displayName="clk" projectFiles="true">
+              <itemPath>../src/config/default/peripheral/clk/plib_clk.c</itemPath>
+            </logicalFolder>
+            <logicalFolder name="f7" displayName="coretimer" projectFiles="true">
+              <itemPath>../src/config/default/peripheral/coretimer/plib_coretimer.c</itemPath>
+            </logicalFolder>
+            <logicalFolder name="f4" displayName="evic" projectFiles="true">
+              <itemPath>../src/config/default/peripheral/evic/plib_evic.c</itemPath>
+            </logicalFolder>
+            <logicalFolder name="f3" displayName="gpio" projectFiles="true">
+              <itemPath>../src/config/default/peripheral/gpio/plib_gpio.c</itemPath>
+            </logicalFolder>
+            <logicalFolder name="f1" displayName="icap" projectFiles="true">
+              <itemPath>../src/config/default/peripheral/icap/plib_icap4.c</itemPath>
+            </logicalFolder>
+            <logicalFolder name="f6" displayName="nvm" projectFiles="true">
+              <itemPath>../src/config/default/peripheral/nvm/plib_nvm.c</itemPath>
+            </logicalFolder>
+            <logicalFolder name="f5" displayName="ocmp" projectFiles="true">
+              <itemPath>../src/config/default/peripheral/ocmp/plib_ocmp2.c</itemPath>
+              <itemPath>../src/config/default/peripheral/ocmp/plib_ocmp3.c</itemPath>
+            </logicalFolder>
+            <logicalFolder name="f10" displayName="tmr" projectFiles="true">
+              <itemPath>../src/config/default/peripheral/tmr/plib_tmr4.c</itemPath>
+              <itemPath>../src/config/default/peripheral/tmr/plib_tmr2.c</itemPath>
+            </logicalFolder>
+            <logicalFolder name="f11" displayName="tmr1" projectFiles="true">
+              <itemPath>../src/config/default/peripheral/tmr1/plib_tmr1.c</itemPath>
+            </logicalFolder>
+            <logicalFolder name="f8" displayName="uart" projectFiles="true">
+              <itemPath>../src/config/default/peripheral/uart/plib_uart3.c</itemPath>
+            </logicalFolder>
+          </logicalFolder>
+          <logicalFolder name="f3" displayName="stdio" projectFiles="true">
+            <itemPath>../src/config/default/stdio/xc32_monitor.c</itemPath>
+          </logicalFolder>
+          <logicalFolder name="f5" displayName="system" projectFiles="true">
+            <logicalFolder name="f2" displayName="int" projectFiles="true">
+              <itemPath>../src/config/default/system/int/src/sys_int.c</itemPath>
+            </logicalFolder>
+            <logicalFolder name="f1" displayName="time" projectFiles="true">
+              <itemPath>../src/config/default/system/time/src/sys_time.c</itemPath>
+            </logicalFolder>
+          </logicalFolder>
+          <logicalFolder name="f4" displayName="usb" projectFiles="true">
+            <logicalFolder name="f1" displayName="src" projectFiles="true">
+              <itemPath>../src/config/default/usb/src/usb_device.c</itemPath>
+              <itemPath>../src/config/default/usb/src/usb_device_cdc.c</itemPath>
+              <itemPath>../src/config/default/usb/src/usb_device_cdc_acm.c</itemPath>
+            </logicalFolder>
+          </logicalFolder>
+          <itemPath>../src/config/default/initialization.c</itemPath>
+          <itemPath>../src/config/default/interrupts.c</itemPath>
+          <itemPath>../src/config/default/exceptions.c</itemPath>
+          <itemPath>../src/config/default/usb_device_init_data.c</itemPath>
+          <itemPath>../src/config/default/tasks.c</itemPath>
+        </logicalFolder>
+      </logicalFolder>
+      <itemPath>../src/main.c</itemPath>
+      <itemPath>../src/app.c</itemPath>
+      <itemPath>../src/usbcdc.c</itemPath>
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false">
+      <itemPath>Makefile</itemPath>
+      <itemPath>../src/config/default/harmony.prj</itemPath>
+      <itemPath>../src/config/default/PIC32MZ.xml</itemPath>
+      <itemPath>../src/config/default/default.xml</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceRootList>
+    <Elem>../src</Elem>
+  </sourceRootList>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="default" type="2">
+      <toolsSet>
+        <developmentServer>localhost</developmentServer>
+        <targetDevice>PIC32MZ2048EFH064</targetDevice>
+        <targetHeader></targetHeader>
+        <targetPluginBoard></targetPluginBoard>
+        <platformTool>ICD3PlatformTool</platformTool>
+        <languageToolchain>XC32</languageToolchain>
+        <languageToolchainVersion>2.40</languageToolchainVersion>
+        <platform>3</platform>
+      </toolsSet>
+      <packs>
+        <pack name="PIC32MZ-EF_DFP" vendor="Microchip" version="1.2.51"/>
+      </packs>
+      <compileType>
+        <linkerTool>
+          <linkerLibItems>
+          </linkerLibItems>
+        </linkerTool>
+        <archiverTool>
+        </archiverTool>
+        <loading>
+          <useAlternateLoadableFile>false</useAlternateLoadableFile>
+          <parseOnProdLoad>false</parseOnProdLoad>
+          <alternateLoadableFile></alternateLoadableFile>
+        </loading>
+        <subordinates>
+        </subordinates>
+      </compileType>
+      <makeCustomizationType>
+        <makeCustomizationPreStepEnabled>false</makeCustomizationPreStepEnabled>
+        <makeCustomizationPreStep></makeCustomizationPreStep>
+        <makeCustomizationPostStepEnabled>false</makeCustomizationPostStepEnabled>
+        <makeCustomizationPostStep></makeCustomizationPostStep>
+        <makeCustomizationPutChecksumInUserID>false</makeCustomizationPutChecksumInUserID>
+        <makeCustomizationEnableLongLines>false</makeCustomizationEnableLongLines>
+        <makeCustomizationNormalizeHexFile>false</makeCustomizationNormalizeHexFile>
+      </makeCustomizationType>
+      <C32>
+        <property key="additional-warnings" value="true"/>
+        <property key="addresss-attribute-use" value="false"/>
+        <property key="enable-app-io" value="false"/>
+        <property key="enable-omit-frame-pointer" value="false"/>
+        <property key="enable-symbols" value="true"/>
+        <property key="enable-unroll-loops" value="false"/>
+        <property key="exclude-floating-point" value="false"/>
+        <property key="extra-include-directories"
+                  value="../src;../src/config/default;../src/packs/PIC32MZ2048EFH064_DFP;"/>
+        <property key="generate-16-bit-code" value="false"/>
+        <property key="generate-micro-compressed-code" value="false"/>
+        <property key="isolate-each-function" value="true"/>
+        <property key="make-warnings-into-errors" value="true"/>
+        <property key="optimization-level" value=""/>
+        <property key="place-data-into-section" value="false"/>
+        <property key="post-instruction-scheduling" value="default"/>
+        <property key="pre-instruction-scheduling" value="default"/>
+        <property key="preprocessor-macros" value=""/>
+        <property key="strict-ansi" value="false"/>
+        <property key="support-ansi" value="false"/>
+        <property key="toplevel-reordering" value=""/>
+        <property key="unaligned-access" value=""/>
+        <property key="use-cci" value="false"/>
+        <property key="use-iar" value="false"/>
+        <property key="use-indirect-calls" value="false"/>
+        <appendMe value="-fno-short-double -std=c99"/>
+      </C32>
+      <C32-AR>
+        <property key="additional-options-chop-files" value="false"/>
+      </C32-AR>
+      <C32-AS>
+        <property key="assembler-symbols" value=""/>
+        <property key="enable-symbols" value="true"/>
+        <property key="exclude-floating-point-library" value="false"/>
+        <property key="expand-macros" value="false"/>
+        <property key="extra-include-directories-for-assembler" value=""/>
+        <property key="extra-include-directories-for-preprocessor" value=""/>
+        <property key="false-conditionals" value="false"/>
+        <property key="generate-16-bit-code" value="false"/>
+        <property key="generate-micro-compressed-code" value="false"/>
+        <property key="keep-locals" value="false"/>
+        <property key="list-assembly" value="false"/>
+        <property key="list-source" value="false"/>
+        <property key="list-symbols" value="false"/>
+        <property key="oXC32asm-list-to-file" value="false"/>
+        <property key="omit-debug-dirs" value="false"/>
+        <property key="omit-forms" value="false"/>
+        <property key="preprocessor-macros" value=""/>
+        <property key="warning-level" value=""/>
+      </C32-AS>
+      <C32-CO>
+        <property key="coverage-enable" value=""/>
+      </C32-CO>
+      <C32-LD>
+        <property key="additional-options-use-response-files" value="false"/>
+        <property key="additional-options-write-sla" value="false"/>
+        <property key="allocate-dinit" value="false"/>
+        <property key="code-dinit" value="false"/>
+        <property key="ebase-addr" value=""/>
+        <property key="enable-check-sections" value="false"/>
+        <property key="exclude-floating-point-library" value="false"/>
+        <property key="exclude-standard-libraries" value="false"/>
+        <property key="extra-lib-directories" value=""/>
+        <property key="fill-flash-options-addr" value=""/>
+        <property key="fill-flash-options-const" value=""/>
+        <property key="fill-flash-options-how" value="0"/>
+        <property key="fill-flash-options-inc-const" value="1"/>
+        <property key="fill-flash-options-increment" value=""/>
+        <property key="fill-flash-options-seq" value=""/>
+        <property key="fill-flash-options-what" value="0"/>
+        <property key="generate-16-bit-code" value="false"/>
+        <property key="generate-cross-reference-file" value="false"/>
+        <property key="generate-micro-compressed-code" value="false"/>
+        <property key="heap-size" value="200000"/>
+        <property key="input-libraries" value=""/>
+        <property key="kseg-length" value=""/>
+        <property key="kseg-origin" value=""/>
+        <property key="linker-symbols" value=""/>
+        <property key="map-file" value="${DISTDIR}/${PROJECTNAME}.${IMAGE_TYPE}.map"/>
+        <property key="no-device-startup-code" value="true"/>
+        <property key="no-startup-files" value="false"/>
+        <property key="oXC32ld-extra-opts" value="-fno-short-double"/>
+        <property key="optimization-level" value=""/>
+        <property key="preprocessor-macros" value=""/>
+        <property key="remove-unused-sections" value="true"/>
+        <property key="report-memory-usage" value="false"/>
+        <property key="serial-length" value=""/>
+        <property key="serial-origin" value=""/>
+        <property key="stack-size" value="50000"/>
+        <property key="symbol-stripping" value=""/>
+        <property key="trace-symbols" value=""/>
+        <property key="warn-section-align" value="false"/>
+        <appendMe value="--wrap GFXU_DrawImageRLEInternal -wrap sprintf"/>
+      </C32-LD>
+      <C32CPP>
+        <property key="additional-warnings" value="false"/>
+        <property key="addresss-attribute-use" value="false"/>
+        <property key="check-new" value="false"/>
+        <property key="eh-specs" value="true"/>
+        <property key="enable-app-io" value="false"/>
+        <property key="enable-omit-frame-pointer" value="false"/>
+        <property key="enable-symbols" value="true"/>
+        <property key="enable-unroll-loops" value="false"/>
+        <property key="exceptions" value="true"/>
+        <property key="exclude-floating-point" value="false"/>
+        <property key="extra-include-directories"
+                  value="../src;../src/config/default;../src/packs/PIC32MZ2048EFH064_DFP"/>
+        <property key="generate-16-bit-code" value="false"/>
+        <property key="generate-micro-compressed-code" value="false"/>
+        <property key="isolate-each-function" value="true"/>
+        <property key="make-warnings-into-errors" value="false"/>
+        <property key="optimization-level" value=""/>
+        <property key="place-data-into-section" value="false"/>
+        <property key="post-instruction-scheduling" value="default"/>
+        <property key="pre-instruction-scheduling" value="default"/>
+        <property key="preprocessor-macros" value=""/>
+        <property key="rtti" value="true"/>
+        <property key="strict-ansi" value="false"/>
+        <property key="toplevel-reordering" value=""/>
+        <property key="unaligned-access" value=""/>
+        <property key="use-cci" value="false"/>
+        <property key="use-iar" value="false"/>
+        <property key="use-indirect-calls" value="false"/>
+        <appendMe value="-G0 -Wno-strict-aliasing -std=c++11 -fno-short-double"/>
+      </C32CPP>
+      <C32Global>
+        <property key="common-include-directories" value=""/>
+        <property key="gp-relative-option" value=""/>
+        <property key="legacy-libc" value="false"/>
+        <property key="mdtcm" value=""/>
+        <property key="mitcm" value=""/>
+        <property key="mstacktcm" value="false"/>
+        <property key="omit-pack-options" value="1"/>
+        <property key="relaxed-math" value="false"/>
+        <property key="save-temps" value="false"/>
+        <property key="wpo-lto" value="false"/>
+      </C32Global>
+      <ICD3PlatformTool>
+        <property key="ADC" value="true"/>
+        <property key="AutoSelectMemRanges" value="auto"/>
+        <property key="CAN1" value="true"/>
+        <property key="CAN2" value="true"/>
+        <property key="CHANGE NOTICE B" value="true"/>
+        <property key="CHANGE NOTICE C" value="true"/>
+        <property key="CHANGE NOTICE D" value="true"/>
+        <property key="CHANGE NOTICE E" value="true"/>
+        <property key="CHANGE NOTICE F" value="true"/>
+        <property key="CHANGE NOTICE G" value="true"/>
+        <property key="COMPARATOR" value="true"/>
+        <property key="DMA" value="true"/>
+        <property key="ETHERNET CONTROLLER" value="true"/>
+        <property key="Freeze All Other Peripherals" value="true"/>
+        <property key="I2C 1" value="true"/>
+        <property key="I2C 3" value="true"/>
+        <property key="I2C 4" value="true"/>
+        <property key="I2C 5" value="true"/>
+        <property key="INPUT CAPTURE 1" value="true"/>
+        <property key="INPUT CAPTURE 2" value="true"/>
+        <property key="INPUT CAPTURE 3" value="true"/>
+        <property key="INPUT CAPTURE 4" value="true"/>
+        <property key="INPUT CAPTURE 5" value="true"/>
+        <property key="INPUT CAPTURE 6" value="true"/>
+        <property key="INPUT CAPTURE 7" value="true"/>
+        <property key="INPUT CAPTURE 8" value="true"/>
+        <property key="INPUT CAPTURE 9" value="true"/>
+        <property key="INTERRUPT CONTROL" value="true"/>
+        <property key="OUTPUT COMPARE 1" value="true"/>
+        <property key="OUTPUT COMPARE 2" value="true"/>
+        <property key="OUTPUT COMPARE 3" value="true"/>
+        <property key="OUTPUT COMPARE 4" value="true"/>
+        <property key="OUTPUT COMPARE 5" value="true"/>
+        <property key="OUTPUT COMPARE 6" value="true"/>
+        <property key="OUTPUT COMPARE 7" value="true"/>
+        <property key="OUTPUT COMPARE 8" value="true"/>
+        <property key="OUTPUT COMPARE 9" value="true"/>
+        <property key="PARALLEL MASTER/SLAVE PORT" value="true"/>
+        <property key="REAL TIME CLOCK" value="true"/>
+        <property key="REFERENCE CLOCK1" value="true"/>
+        <property key="REFERENCE CLOCK2" value="true"/>
+        <property key="REFERENCE CLOCK3" value="true"/>
+        <property key="REFERENCE CLOCK4" value="true"/>
+        <property key="SPI/I2S 1" value="true"/>
+        <property key="SPI/I2S 2" value="true"/>
+        <property key="SPI/I2S 3" value="true"/>
+        <property key="SPI/I2S 4" value="true"/>
+        <property key="SecureSegment.SegmentProgramming" value="FullChipProgramming"/>
+        <property key="TIMER1" value="true"/>
+        <property key="TIMER2" value="true"/>
+        <property key="TIMER3" value="true"/>
+        <property key="TIMER4" value="true"/>
+        <property key="TIMER5" value="true"/>
+        <property key="TIMER6" value="true"/>
+        <property key="TIMER7" value="true"/>
+        <property key="TIMER8" value="true"/>
+        <property key="TIMER9" value="true"/>
+        <property key="ToolFirmwareFilePath"
+                  value="Press to browse for a specific firmware version"/>
+        <property key="ToolFirmwareOption.UseLatestFirmware" value="true"/>
+        <property key="UART1" value="true"/>
+        <property key="UART2" value="true"/>
+        <property key="UART3" value="true"/>
+        <property key="UART4" value="true"/>
+        <property key="UART5" value="true"/>
+        <property key="UART6" value="true"/>
+        <property key="debugoptions.useswbreakpoints" value="false"/>
+        <property key="firmware.download.all" value="false"/>
+        <property key="hwtoolclock.frcindebug" value="false"/>
+        <property key="memories.aux" value="false"/>
+        <property key="memories.bootflash" value="false"/>
+        <property key="memories.configurationmemory" value="true"/>
+        <property key="memories.configurationmemory2" value="true"/>
+        <property key="memories.dataflash" value="true"/>
+        <property key="memories.eeprom" value="true"/>
+        <property key="memories.flashdata" value="true"/>
+        <property key="memories.id" value="true"/>
+        <property key="memories.instruction.ram" value="true"/>
+        <property key="memories.instruction.ram.ranges"
+                  value="${memories.instruction.ram.ranges}"/>
+        <property key="memories.programmemory" value="true"/>
+        <property key="memories.programmemory.ranges" value="1d000000-1d1fffff"/>
+        <property key="poweroptions.powerenable" value="false"/>
+        <property key="programoptions.donoteraseauxmem" value="false"/>
+        <property key="programoptions.eraseb4program" value="true"/>
+        <property key="programoptions.preservedataflash" value="false"/>
+        <property key="programoptions.preservedataflash.ranges" value=""/>
+        <property key="programoptions.preserveeeprom" value="false"/>
+        <property key="programoptions.preserveeeprom.ranges" value=""/>
+        <property key="programoptions.preserveprogram.ranges" value=""/>
+        <property key="programoptions.preserveprogramrange" value="false"/>
+        <property key="programoptions.preserveuserid" value="false"/>
+        <property key="programoptions.programcalmem" value="false"/>
+        <property key="programoptions.programuserotp" value="false"/>
+        <property key="programoptions.testmodeentrymethod" value="VDDFirst"/>
+        <property key="programoptions.usehighvoltageonmclr" value="false"/>
+        <property key="programoptions.uselvpprogramming" value="false"/>
+        <property key="voltagevalue" value="3.5"/>
+      </ICD3PlatformTool>
+      <PICkit3PlatformTool>
+        <property key="ADC" value="true"/>
+        <property key="AutoSelectMemRanges" value="auto"/>
+        <property key="CAN1" value="true"/>
+        <property key="CAN2" value="true"/>
+        <property key="CHANGE NOTICE B" value="true"/>
+        <property key="CHANGE NOTICE C" value="true"/>
+        <property key="CHANGE NOTICE D" value="true"/>
+        <property key="CHANGE NOTICE E" value="true"/>
+        <property key="CHANGE NOTICE F" value="true"/>
+        <property key="CHANGE NOTICE G" value="true"/>
+        <property key="COMPARATOR" value="true"/>
+        <property key="DMA" value="true"/>
+        <property key="ETHERNET CONTROLLER" value="true"/>
+        <property key="Freeze All Other Peripherals" value="true"/>
+        <property key="I2C 1" value="true"/>
+        <property key="I2C 3" value="true"/>
+        <property key="I2C 4" value="true"/>
+        <property key="I2C 5" value="true"/>
+        <property key="INPUT CAPTURE 1" value="true"/>
+        <property key="INPUT CAPTURE 2" value="true"/>
+        <property key="INPUT CAPTURE 3" value="true"/>
+        <property key="INPUT CAPTURE 4" value="true"/>
+        <property key="INPUT CAPTURE 5" value="true"/>
+        <property key="INPUT CAPTURE 6" value="true"/>
+        <property key="INPUT CAPTURE 7" value="true"/>
+        <property key="INPUT CAPTURE 8" value="true"/>
+        <property key="INPUT CAPTURE 9" value="true"/>
+        <property key="INTERRUPT CONTROL" value="true"/>
+        <property key="OUTPUT COMPARE 1" value="true"/>
+        <property key="OUTPUT COMPARE 2" value="true"/>
+        <property key="OUTPUT COMPARE 3" value="true"/>
+        <property key="OUTPUT COMPARE 4" value="true"/>
+        <property key="OUTPUT COMPARE 5" value="true"/>
+        <property key="OUTPUT COMPARE 6" value="true"/>
+        <property key="OUTPUT COMPARE 7" value="true"/>
+        <property key="OUTPUT COMPARE 8" value="true"/>
+        <property key="OUTPUT COMPARE 9" value="true"/>
+        <property key="PARALLEL MASTER/SLAVE PORT" value="true"/>
+        <property key="REAL TIME CLOCK" value="true"/>
+        <property key="REFERENCE CLOCK1" value="true"/>
+        <property key="REFERENCE CLOCK2" value="true"/>
+        <property key="REFERENCE CLOCK3" value="true"/>
+        <property key="REFERENCE CLOCK4" value="true"/>
+        <property key="SPI/I2S 1" value="true"/>
+        <property key="SPI/I2S 2" value="true"/>
+        <property key="SPI/I2S 3" value="true"/>
+        <property key="SPI/I2S 4" value="true"/>
+        <property key="SecureSegment.SegmentProgramming" value="FullChipProgramming"/>
+        <property key="TIMER1" value="true"/>
+        <property key="TIMER2" value="true"/>
+        <property key="TIMER3" value="true"/>
+        <property key="TIMER4" value="true"/>
+        <property key="TIMER5" value="true"/>
+        <property key="TIMER6" value="true"/>
+        <property key="TIMER7" value="true"/>
+        <property key="TIMER8" value="true"/>
+        <property key="TIMER9" value="true"/>
+        <property key="ToolFirmwareFilePath"
+                  value="Press to browse for a specific firmware version"/>
+        <property key="ToolFirmwareOption.UseLatestFirmware" value="true"/>
+        <property key="UART1" value="true"/>
+        <property key="UART2" value="true"/>
+        <property key="UART3" value="true"/>
+        <property key="UART4" value="true"/>
+        <property key="UART5" value="true"/>
+        <property key="UART6" value="true"/>
+        <property key="debugoptions.useswbreakpoints" value="false"/>
+        <property key="hwtoolclock.frcindebug" value="false"/>
+        <property key="memories.aux" value="false"/>
+        <property key="memories.bootflash" value="true"/>
+        <property key="memories.configurationmemory" value="true"/>
+        <property key="memories.configurationmemory2" value="true"/>
+        <property key="memories.dataflash" value="true"/>
+        <property key="memories.eeprom" value="true"/>
+        <property key="memories.flashdata" value="true"/>
+        <property key="memories.id" value="true"/>
+        <property key="memories.instruction.ram" value="true"/>
+        <property key="memories.instruction.ram.ranges"
+                  value="${memories.instruction.ram.ranges}"/>
+        <property key="memories.programmemory" value="true"/>
+        <property key="memories.programmemory.ranges" value="1d000000-1d003fff"/>
+        <property key="poweroptions.powerenable" value="false"/>
+        <property key="programmertogo.imagename" value=""/>
+        <property key="programoptions.donoteraseauxmem" value="false"/>
+        <property key="programoptions.eraseb4program" value="true"/>
+        <property key="programoptions.pgmspeed" value="2"/>
+        <property key="programoptions.preservedataflash" value="false"/>
+        <property key="programoptions.preservedataflash.ranges"
+                  value="${programoptions.preservedataflash.ranges}"/>
+        <property key="programoptions.preserveeeprom" value="false"/>
+        <property key="programoptions.preserveeeprom.ranges" value=""/>
+        <property key="programoptions.preserveprogram.ranges" value=""/>
+        <property key="programoptions.preserveprogramrange" value="false"/>
+        <property key="programoptions.preserveuserid" value="false"/>
+        <property key="programoptions.programcalmem" value="false"/>
+        <property key="programoptions.programuserotp" value="false"/>
+        <property key="programoptions.testmodeentrymethod" value="VPPFirst"/>
+        <property key="programoptions.usehighvoltageonmclr" value="false"/>
+        <property key="programoptions.uselvpprogramming" value="false"/>
+        <property key="voltagevalue" value="3.25"/>
+      </PICkit3PlatformTool>
+    </conf>
+  </confs>
+</configurationDescriptor>

@@ -1,0 +1,29 @@
+firmwarePIC24
+firmwarePSOC
+Parallel LCD Docs
+firmware/LogicMeter.X
+firmware/LogicMeterMK
+firmware/src/config/DevBoard
+firmware/src/config/PIC32MK
+firmware/src/config/StarterKit
+firmware/src/packs/PIC32MK1024MCF064_DFP
+firmware/src/packs/PIC32MZ2048EFH144_DFP
+Hardware/*
+!Hardware/LogicMeter.dch
+!Hardware/LogicMeter.dip
+*.o
+*.d
+*.log
+*.inx
+*.elf
+*.map
+*.mk
+*.01
+*.bash
+firmware/LogicMeterMZ.X/nbproject/Makefile-genesis.properties
+firmware/LogicMeterMZ.X/nbproject/private/private.xml
+Features.txt
+*.stl
+Mechanical/Bud 11668 LM v3 Front Panel Label v5.ai
+Mechanical/Bud 11668 LM v3 Front Panel Label.ai
+Mechanical/Bud 11668 LM v3 Front Panel Template.ai
