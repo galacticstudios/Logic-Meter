@@ -1399,6 +1399,8 @@ LIB_EXPORT laResult laWidget_SetOptimizationFlags(laWidget* wgt, uint32_t flags)
 
 // *****************************************************************************
 /* Function:
+// BA changed "laWidget_GetMargins to laWidget_GetMargin because that's the
+// correct function name. This was a Harmont bug.
     laResult laWidget_GetMargin (laWidget* wgt, laMargin* mg)
 
   Summary:
@@ -1418,6 +1420,8 @@ LIB_EXPORT laResult laWidget_SetOptimizationFlags(laWidget* wgt, uint32_t flags)
   Remarks:
 
 */
+// BA changed "laWidget_GetMargins to laWidget_GetMargin because that's the
+// correct function name. This was a Harmont bug.
 LIB_EXPORT laResult laWidget_GetMargin (laWidget* wgt, laMargin* mg);
 
 // *****************************************************************************

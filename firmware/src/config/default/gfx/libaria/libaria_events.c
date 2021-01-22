@@ -46,48 +46,98 @@
 // SquareWaveFrequency - DrawNotificationEvent
 laBool SquareWaveFrequency_DrawNotificationEvent(laDrawSurfaceWidget* sfc, GFX_Rect* rect)
 {
+    // BA added a return statement so it compiles when warnings are treated as errors
     return LA_TRUE;
 }
 
 // SquareWavePulse - DrawNotificationEvent
 laBool SquareWavePulse_DrawNotificationEvent(laDrawSurfaceWidget* sfc, GFX_Rect* rect)
 {
+    // BA added a return statement so it compiles when warnings are treated as errors
     return LA_TRUE;
 }
 
 // SquareWave - DrawNotificationEvent
 laBool SquareWave_DrawNotificationEvent(laDrawSurfaceWidget* sfc, GFX_Rect* rect)
 {
+    // BA added a return statement so it compiles when warnings are treated as errors
     return LA_TRUE;
 }
 
 // CycleCaliper - DrawNotificationEvent
 laBool CycleCaliper_DrawNotificationEvent(laDrawSurfaceWidget* sfc, GFX_Rect* rect)
 {
+    // BA added a return statement so it compiles when warnings are treated as errors
     return LA_TRUE;
 }
 
 // PulseCaliper - DrawNotificationEvent
 laBool PulseCaliper_DrawNotificationEvent(laDrawSurfaceWidget* sfc, GFX_Rect* rect)
 {
+    // BA added a return statement so it compiles when warnings are treated as errors
     return LA_TRUE;
 }
 
 // GPSLatitude - DrawNotificationEvent
 laBool GPSLatitude_DrawNotificationEvent(laDrawSurfaceWidget* sfc, GFX_Rect* rect)
 {
+    // BA added a return statement so it compiles when warnings are treated as errors
     return LA_TRUE;
 }
 
 // GPSLongitude - DrawNotificationEvent
 laBool GPSLongitude_DrawNotificationEvent(laDrawSurfaceWidget* sfc, GFX_Rect* rect)
 {
+    // BA added a return statement so it compiles when warnings are treated as errors
     return LA_TRUE;
 }
 
 // GPSTime - DrawNotificationEvent
 laBool GPSTime_DrawNotificationEvent(laDrawSurfaceWidget* sfc, GFX_Rect* rect)
 {
+    // BA added a return statement so it compiles when warnings are treated as errors
+    return LA_TRUE;
+}
+
+// IVGraphArea - DrawNotificationEvent
+laBool IVGraphArea_DrawNotificationEvent(laDrawSurfaceWidget* sfc, GFX_Rect* rect)
+{
+    // BA added a return statement so it compiles when warnings are treated as errors
+    return LA_TRUE;
+}
+
+// TerminalDrawSurface - DrawNotificationEvent
+laBool TerminalDrawSurface_DrawNotificationEvent(laDrawSurfaceWidget* sfc, GFX_Rect* rect)
+{
+    // BA added a return statement so it compiles when warnings are treated as errors
+    return LA_TRUE;
+}
+
+// DataOutDrawSurface - DrawNotificationEvent
+laBool DataOutDrawSurface_DrawNotificationEvent(laDrawSurfaceWidget* sfc, GFX_Rect* rect)
+{
+    // BA added a return statement so it compiles when warnings are treated as errors
+    return LA_TRUE;
+}
+
+// Ch1Trace - DrawNotificationEvent
+laBool Ch1Trace_DrawNotificationEvent(laDrawSurfaceWidget* sfc, GFX_Rect* rect)
+{
+    // BA added a return statement so it compiles when warnings are treated as errors
+    return LA_TRUE;
+}
+
+// Ch2Trace - DrawNotificationEvent
+laBool Ch2Trace_DrawNotificationEvent(laDrawSurfaceWidget* sfc, GFX_Rect* rect)
+{
+    // BA added a return statement so it compiles when warnings are treated as errors
+    return LA_TRUE;
+}
+
+// Ch3Trace - DrawNotificationEvent
+laBool Ch3Trace_DrawNotificationEvent(laDrawSurfaceWidget* sfc, GFX_Rect* rect)
+{
+    // BA added a return statement so it compiles when warnings are treated as errors
     return LA_TRUE;
 }
 

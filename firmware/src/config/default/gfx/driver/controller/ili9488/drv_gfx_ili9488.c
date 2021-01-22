@@ -62,13 +62,15 @@
 #define BUFFER_FILL_COLOR  0xffff
 
 #define PIXEL_BUFFER_WIDTH DISPLAY_WIDTH
-#define PIXEL_BUFFER_HEIGHT 1
+#define PIXEL_BUFFER_HEIGHT DISPLAY_HEIGHT
+
 
 #define PIXEL_BUFFER_COLOR_MODE GFX_COLOR_MODE_RGB_565
 
 // Driver name
 const char* DRIVER_NAME = "ILI9488";
 
+uint16_t frameBuffer[PIXEL_BUFFER_WIDTH * PIXEL_BUFFER_HEIGHT];
 
 /** initCmdParm
 
@@ -84,12 +86,15 @@ const char* DRIVER_NAME = "ILI9488";
  */
 ILI9488_CMD_PARAM initCmdParm[] =
 {
-    {ILI9488_CMD_INTERFACE_PIXEL_FORMAT_SET, 1, {ILI9488_COLOR_PIX_FMT_18BPP}},
+    // BA changed the COLOR_PIX_FMT because MHC is setting it wrong
+    {ILI9488_CMD_INTERFACE_PIXEL_FORMAT_SET, 1, {ILI9488_COLOR_PIX_FMT_16BPP}},
     {ILI9488_CMD_SET_IMAGE_FUNCTION, 1, {0x00}},
     {ILI9488_CMD_INTERFACE_MODE_CONTROL, 1, {0x00}},
     {ILI9488_CMD_MEMORY_ACCESS_CONTROL, 1, {(
                                              ILI9488_MADCTL_RGB_BGR_ORDER_CTRL |
                                              ILI9488_MADCTL_ROW_COLUMN_EXCHANGE |
+                                             ILI9488_MADCTL_COL_ADDR_ORDER |
+                                             ILI9488_MADCTL_ROW_ADDR_ORDER |
                                             0)}},
 
     {ILI9488_CMD_SLEEP_OUT, 0, {0x00}},
@@ -153,203 +158,8 @@ static GFX_Result ILI9488_Reset(void)
     return GFX_SUCCESS;
 }
 
-/**
-  Function:
-    static GFX_Color ILI9488_PixelGet(const GFX_PixelBuffer *buf,
-                                      const GFX_Point *pnt)
-
-  Summary:
-    HAL interface function for reading pixel value from the ILI9488 GRAM.
-
-  Description:
-    This function uses the interface-specific call to read pixel value from
-    the ILI9488 GRAM.
-
-  Parameters:
-    buf     - GFX_PixelBuffer pointer where pixel value will be stored
-    pnt     - GFX_Point pointer describing pixel position
-
-  Returns:
-
-    GFX_UNSUPPORTED   Operation is not supported
-    GFX_FAILURE       Operation failed
-    GFX_SUCCESS       Operation successful
-
-
-*/
-static GFX_Color ILI9488_PixelGet(const GFX_PixelBuffer *buf,
-                                  const GFX_Point *pnt)
-{
-    GFX_Context *context = GFX_ActiveContext();
-    GFX_Result returnValue;
-    ILI9488_DRV *drv;
-    uint8_t data[BYTES_PER_PIXEL_BUFFER];
-    GFX_Color pixel;
-
-    if (!context)
-        return GFX_FAILURE;
-
-    drv = (ILI9488_DRV *) context->driver_data;
-
-    returnValue = ILI9488_Intf_ReadPixels(drv,
-                                         pnt->x,
-                                         pnt->y,
-                                         data,
-                                         1);
-
-    if (returnValue == GFX_SUCCESS &&
-        context->colorMode == GFX_COLOR_MODE_RGB_565)
-    {
-        pixel = ((data[0] & 0xf8) << 8);
-        pixel |= ((data[1] & 0xfc) << 3);
-        pixel |= ((data[2] & 0xf8) >> 3);
-    }
-    else
-        return GFX_FAILURE;
-
-    return pixel;
-}
-
-/**
-  Function:
-    static GFX_Result ILI9488_SetPixel(const GFX_PixelBuffer *buf,
-                                       const GFX_Point *pnt,
-                                       GFX_Color color)
-
-  Summary:
-    HAL interface function for writing pixel value to the ILI9488 GRAM.
-
-  Description:
-    This function uses the interface-specific call to write pixel value to the
-    ILI9488 GRAM.
-
-
-  Parameters:
-    buf     - GFX_PixelBuffer pointer
-    pnt     - GFX_Point pointer describing pixel position
-    color   - pixel color value (RGB565)
-
-  Returns:
-    * GFX_SUCCESS       - Operation successful
-    * GFX_FAILURE       - Operation failed
-
-*/
-static GFX_Result ILI9488_SetPixel(const GFX_PixelBuffer *buf,
-                            const GFX_Point *pnt,
-                            GFX_Color color)
-{
-    GFX_Context *context = GFX_ActiveContext();
-    GFX_Result returnValue = GFX_SUCCESS;
-    ILI9488_DRV *drv;
-    uint8_t pixelBuffer[BYTES_PER_PIXEL_BUFFER];
-
-    if (!context)
-        return GFX_FAILURE;
-
-    drv = (ILI9488_DRV *) context->driver_data;
-
-
-    if (context->colorMode == GFX_COLOR_MODE_RGB_565)
-    {
-        pixelBuffer[0] = ((color & 0xf800) >> 8) | 0x7; //R
-        pixelBuffer[1] = ((color & 0x07e0) >> 3 ) | 0x3; //G
-        pixelBuffer[2] = ((color & 0x001f) << 3) | 0x7; //B
-    }
-    else
-    {
-        return GFX_FAILURE;
-    }
-
-    returnValue = ILI9488_Intf_WritePixels(drv,
-                                  pnt->x,
-                                  pnt->y,
-                                  pixelBuffer,
-                                  1);
-
-    return returnValue;
-}
-
-GFX_Result ILI9488_DrawRect_Fill(const GFX_Rect* rect, const GFX_DrawState* state)
-{
-    int32_t row, row_max;
-    GFX_Point pnt1, pnt2;
-    GFX_Context *context = GFX_ActiveContext();
-    ILI9488_DRV *drv;
-    GFX_Point drawPoint;
-    GFX_Rect lrect;
-#if GFX_LAYER_CLIPPING_ENABLED || GFX_BOUNDS_CLIPPING_ENABLED
-    GFX_Rect clipRect;
-#endif
-
-    lrect = *rect;
-    
-#if GFX_LAYER_CLIPPING_ENABLED
-    // clip rect against layer rect
-    GFX_RectClip(&state->targetClipRect,
-                 &lrect,
-                 &clipRect);
-                 
-    lrect = clipRect;        
-#endif
-    
-#if GFX_BOUNDS_CLIPPING_ENABLED
-    if((state->clipEnable == GFX_TRUE) && 
-        GFX_RectIntersects(&state->clipRect, &lrect) == GFX_FALSE)
-        return GFX_FAILURE;
-        
-    // clip rect against global clipping rect
-    if(state->clipEnable == GFX_TRUE)
-    {
-        GFX_RectClip(&state->clipRect,
-                     &lrect,
-                     &clipRect);
-                     
-        lrect = clipRect; 
-    }
-#endif
-
-    // calculate minimums
-    row_max = lrect.height;
-    
-    pnt1.x = lrect.x;
-    pnt2.x = lrect.x + lrect.width - 1;
-    
-    if (!context)
-        return GFX_FAILURE;
-
-    if (context->colorMode == GFX_COLOR_MODE_RGB_565)
-    {    
-        uint8_t color[3];
-        drv = (ILI9488_DRV *) context->driver_data;
-        drv->lineX_Start = pnt1.x;
-        drv->lineX_End = pnt2.x;
-
-        color[0] = ((state->color & 0xf800) >> 8) | 0x7; //R
-        color[1] = ((state->color & 0x07e0) >> 3 ) | 0x3; //G
-        color[2] = ((state->color & 0x001f) << 3) | 0x7; //B                
-                
-        for(drawPoint.x = drv->lineX_Start; drawPoint.x <= drv->lineX_End; drawPoint.x++)
-        {
-            drv->pixelBuffer[drawPoint.x * BYTES_PER_PIXEL_BUFFER] = color[0];
-            drv->pixelBuffer[drawPoint.x * BYTES_PER_PIXEL_BUFFER + 1] = color[1];
-            drv->pixelBuffer[drawPoint.x * BYTES_PER_PIXEL_BUFFER + 2] = color[2];
-        }
-
-        for(row = 0; row < row_max; row++)
-        {
-            drv->currentLine = lrect.y + row;
-
-            ILI9488_Intf_WritePixels(drv,
-                                     drv->lineX_Start,
-                                     drv->currentLine,
-                                     &drv->pixelBuffer[drv->lineX_Start * BYTES_PER_PIXEL_BUFFER],
-                                     (drv->lineX_End - drv->lineX_Start + 1));
-        }
-    }    
-    
-    return GFX_SUCCESS;
-}
-
+// BA removed ILI_9488_DrawRect_Fill because it's handling the colors wrong
+// (3 bytes instead of 2 bytes) and no one's calling it anyway
 /**
   Function:
     GFX_Result driverILI9488InfoGet(GFX_DriverInfo *info)
@@ -450,6 +260,82 @@ static GFX_Result ILI9488_Init(ILI9488_DRV *drv,
     return returnValue;
 }
 
+/**
+  Function:
+    static void layerSwapped(GFX_Layer* layer)
+
+  Summary:
+    Driver-specific implementation of GFX HAL Swapped function.
+
+  Description:
+    This function gets called by the graphics library and pushes the contents
+    of the frame buffer to the ILI9488 GRAM.
+
+  Parameters:
+    layer   - GFX layer
+
+  Returns:
+    * GFX_SUCCESS       - Operation successful
+    * GFX_FAILURE       - Operation failed
+
+*/
+static void layerSwapped(GFX_Layer* layer)
+{
+    GFX_Context *context = GFX_ActiveContext();
+    unsigned int line = 0;
+    GFX_PixelBuffer* buffer;
+    uint8_t * buffer_to_tx;
+    GFX_Point drawPoint;
+    ILI9488_DRV *drv;
+
+    if(context == NULL)
+        return;
+
+    drv = (ILI9488_DRV *) context->driver_data;
+
+    buffer = &context->layer.active->buffers[0].pb;
+
+    // BA changed this routine to write an entire frame of pixels instead
+    // of one line at a time for efficiency's sake
+    //write entire frame
+    drawPoint.x = 0;
+    drawPoint.y = 0;
+
+    buffer_to_tx = GFX_PixelBufferOffsetGet_Unsafe(buffer, &drawPoint);
+
+    ILI9488_Intf_WritePixels(drv,
+                             0,
+                             line,
+                             buffer_to_tx,
+                             PIXEL_BUFFER_WIDTH * PIXEL_BUFFER_HEIGHT);
+    
+/*
+    //write out per line
+    for (line = 0; line < PIXEL_BUFFER_HEIGHT; line += 1)
+    {
+        drawPoint.x = 0;
+        drawPoint.y = line;
+
+        buffer_to_tx = GFX_PixelBufferOffsetGet_Unsafe(buffer, &drawPoint);
+
+        ILI9488_Intf_WritePixels(drv,
+                                 0,
+                                 line,
+                                 buffer_to_tx,
+                                 PIXEL_BUFFER_WIDTH);
+    }
+// BA's end comment
+*/
+}
+
+GFX_Result layerSwapSet(GFX_Bool value)
+{
+    GFX_Context* context = GFX_ActiveContext();
+
+    context->layer.active->swap = value;
+
+    return GFX_SUCCESS;
+}
 
 /**
   Function:
@@ -489,12 +375,18 @@ static GFX_Result ILI9488_Update(void)
                                    initCmdParm,
                                    sizeof(initCmdParm)/sizeof(ILI9488_CMD_PARAM));
 
+// BA commented this out because we control the backlight elsewhere
 //        ILI9488_Backlight_On();
 
         drv->state = RUN;
     }
 
 
+    if (context->layer.active->swap)
+    {
+        layerSwapped(context->layer.active);
+        context->layer.active->swap = GFX_FALSE;
+    }
 
     return returnValue;
 }
@@ -526,6 +418,7 @@ static void ILI9488_Destroy(GFX_Context *context)
     //Close ILI9488 controller
     ILI9488_Intf_Close(drv);
 
+// BA commented this out because we control the backlight elsewhere
 //    ILI9488_Backlight_Off();
 
 
@@ -580,6 +473,7 @@ static GFX_Result ILI9488_Initialize(GFX_Context *context)
         return GFX_FAILURE;
     }
 
+    drv->pixelBuffer = (uint8_t *) frameBuffer;
 
     drv->bytesPerPixelBuffer = BYTES_PER_PIXEL_BUFFER;
 
@@ -996,13 +890,7 @@ GFX_Result driverILI9488ContextInitialize(GFX_Context *context)
     context->hal.layerVisibleSet = &ILI9488_layerVisibleSet;
     context->hal.layerAlphaEnableSet = &ILI9488_layerAlphaEnableSet;
 
-    context->hal.drawPipeline[GFX_PIPELINE_GCU].pixelSet = &ILI9488_SetPixel;
-    context->hal.drawPipeline[GFX_PIPELINE_GCU].pixelGet = &ILI9488_PixelGet;
-    context->hal.drawPipeline[GFX_PIPELINE_GCU].drawRect[GFX_DRAW_FILL][GFX_ANTIALIAS_OFF] = &ILI9488_DrawRect_Fill;
-
-    context->hal.drawPipeline[GFX_PIPELINE_GCUGPU].pixelSet = &ILI9488_SetPixel;
-    context->hal.drawPipeline[GFX_PIPELINE_GCUGPU].pixelGet = &ILI9488_PixelGet;
-    context->hal.drawPipeline[GFX_PIPELINE_GCUGPU].drawRect[GFX_DRAW_FILL][GFX_ANTIALIAS_OFF] = &ILI9488_DrawRect_Fill;
+    context->hal.layerSwapSet = &layerSwapSet;
 
 
     return GFX_SUCCESS;

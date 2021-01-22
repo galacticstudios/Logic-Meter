@@ -244,8 +244,11 @@ static int32_t getScrollBarRowLocation(laListWidget* lst, int idx)
     if(max == 0)
         return 0;
         
-    if(idx == lst->items.size - 1)
-        return max;
+    // Commented out by BA. It's assuming that the last item in the list requires the scroll
+    // bar to be at the bottom. But if there are few enough items in the list that scrolling
+    // is unnecessary, then the scroll bar can be at the top.
+    //if(idx == lst->items.size - 1)
+    //    return max;
     
     for(row = 0; row < lst->items.size; row++)
     {
@@ -1002,6 +1005,26 @@ laResult laListWidget_SetItemEnable(laListWidget* lst,
     return LA_SUCCESS;
 }
 
+// BA added function
+laBool laListWidget_IsItemVisible(laListWidget* lst,
+                                     uint32_t idx)
+{
+    int32_t y;
+    
+    if(lst == NULL || idx >= lst->items.size)
+        return LA_FALSE;
+        
+    y = _laListWidget_GetRowY(lst, idx);
+    if (y < 0)
+        return LA_FALSE;
+    // Get the bottom of the item by getting the top of the next item
+    y = _laListWidget_GetRowY(lst, idx + 1) - 1;
+    if (y > laWidget_GetHeight((laWidget *) lst))
+        return LA_FALSE;
+    
+    return LA_TRUE;
+}
+
 laResult laListWidget_SetItemVisible(laListWidget* lst,
                                      uint32_t idx)
 {
@@ -1009,6 +1032,9 @@ laResult laListWidget_SetItemVisible(laListWidget* lst,
     
     if(lst == NULL || idx >= lst->items.size)
         return LA_FAILURE;
+    
+    // BA added test
+    if (laListWidget_IsItemVisible(lst, idx)) return LA_SUCCESS;
         
     y = getScrollBarRowLocation(lst, idx);
     

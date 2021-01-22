@@ -40,6 +40,7 @@ Tool::~Tool()
     if (_inHelp)
         ExitHelp();
     display.ClearPane();
+    delete _pane;
     
     PrimaryD0_InputEnable();
     PrimaryD11_InputEnable();
@@ -109,6 +110,13 @@ void Tool::OnButtonPressed(int buttonIndex)
     selectedItem.Execute(this);
 }
 
+void Tool::PopMenu()
+{
+    ASSERT(_menuStackPointer != 0);
+    --_menuStackPointer;
+    display.SetMenu(*_menuStack[_menuStackPointer]);
+}
+
 void Tool::EnterHelp()
 {
     static laString *newline;
@@ -128,19 +136,25 @@ void Tool::EnterHelp()
     _inHelp = true;
     
     // Assemble the help text
-    std::string text = std::string("P: ") + _help.Primary() + "\n";
+    std::string text;
+    if (_help.Primary())
+    {
+        text = text + std::string("P: ") + _help.Primary() + "\n";
+    }
+    else
+        text = text + "P: Unused\n";
     if (_help.Aux1())
     {
         text = text + "A: " + _help.Aux1() + "\n";
-        if (_help.Aux2())
-        {
-            text = text + "B: " + _help.Aux2() + "\n";
-        }
-        else
-            text += "B: Unused\n";
     }
     else
-        text += "A & B: Unused\n";
+        text = text + "A: Unused\n";
+    if (_help.Aux2())
+    {
+        text = text + "B: " + _help.Aux2() + "\n";
+    }
+    else
+        text = text + "B: Unused\n";
     text = text + "\n" + _help.Text();
     
     // Wrap the text.

@@ -14,10 +14,19 @@ extern "C"
 
 laString *LEDTestPane::_cursor;
 GFX_Rect LEDTestPane::_cursorRect;
+LEDTestPane *LEDTestPane::_this;
+
+laBool LEDTestPane::SGraphAreaPaint(laDrawSurfaceWidget *sfc, GFX_Rect *bounds)
+{
+    if (_this)
+        return _this->GraphAreaPaint(sfc, bounds);
+    return LA_TRUE;
+}
 
 LEDTestPane::LEDTestPane(int32_t xMax, int32_t yMax) :
     _oldCurrent{0, 0}, _current{0, 0}, _xMax(xMax), _yMax(yMax)
 {
+    _this = this;
     if (!_cursor)
     {
         _cursor = laString_New(NULL);
@@ -30,96 +39,19 @@ LEDTestPane::LEDTestPane(int32_t xMax, int32_t yMax) :
         
         laString_GetRect(_cursor, &_cursorRect);
     }
+    
+    laDrawSurfaceWidget_SetDrawCallback(IVGraphArea, SGraphAreaPaint);
 }
 
 LEDTestPane::~LEDTestPane() 
 {
+    laDrawSurfaceWidget_SetDrawCallback(IVGraphArea, NULL);
+    _this = NULL;
 }
 
 void LEDTestPane::Update()
 {
-    uint16_t paneX, paneY;
-    uint16_t ivpaneX, ivpaneY;
-    uint16_t ivpaneWidth, ivpaneHeight;
-    int32_t oldX = 0, oldY = 0;
-    
-    if (_erase.empty() && _data.empty())
-        return;
-    
-    // Aria doesn't draw everything at once. So make sure it's done
-    // drawing all the widgets before we directly draw stuff that's
-    // not in the widget tree
-    while (laContext_IsDrawing())
-    {
-        laUpdate(0);
-    }
-    
-    // Figure out where we're drawing the points
-    paneX = laWidget_GetX(GetWidget());
-    paneY = laWidget_GetY(GetWidget());
-    ivpaneX = laWidget_GetX(IVPanel);
-    ivpaneY = laWidget_GetY(IVPanel);
-    ivpaneWidth = laWidget_GetWidth(IVPanel);
-    ivpaneHeight = laWidget_GetHeight(IVPanel);
-    
-    GFX_Begin();
-    
-    // Erase the old line
-    GFX_Set(GFXF_DRAW_COLOR, 0xffff);
-    for (auto &pt : _erase)
-    {
-        int32_t x1 = oldX * ivpaneWidth / _xMax;
-        int32_t y1 = ivpaneHeight - oldY * ivpaneHeight / _yMax;
-        int32_t x2 = pt.X * ivpaneWidth / _xMax;
-        int32_t y2 = ivpaneHeight - pt.Y * ivpaneHeight / _yMax;
-        if (x1 >= 0 && y1 >= 0 && x1 < ivpaneWidth && y1 < ivpaneHeight &&
-            x2 >= 0 && y2 >= 0 && x2 < ivpaneWidth && y2 < ivpaneHeight)
-        {
-            GFX_DrawLine(x1 + paneX + ivpaneX, y1 + paneY + ivpaneY, 
-                    x2 + paneX + ivpaneX, y2 + paneY + ivpaneY);
-        }
-        oldX = pt.X;
-        oldY = pt.Y;
-    }
-    
-    // Erase the old cursor
-    laString_Draw(_cursor, 
-        _oldCurrent.X * ivpaneWidth / _xMax - _cursorRect.width / 2 + paneX + ivpaneX,
-        ivpaneHeight - _oldCurrent.Y * ivpaneHeight / _yMax - _cursorRect.height / 2 + paneY + ivpaneY,
-        NULL);
-
-    // Draw the new line
-    oldX = oldY = 0;
-    GFX_Set(GFXF_DRAW_COLOR, 0);
-    for (auto &pt : _data)
-    {
-        if (oldX >= 0 && oldX < _xMax && oldY >= 0 && oldY < _yMax &&
-            pt.X >=0 && pt.X < _xMax && pt.Y >= 0 && pt.Y < _yMax)
-        {
-            int32_t x1 = oldX * ivpaneWidth / _xMax;
-            int32_t y1 = ivpaneHeight - oldY * ivpaneHeight / _yMax;
-            int32_t x2 = pt.X * ivpaneWidth / _xMax;
-            int32_t y2 = ivpaneHeight - pt.Y * ivpaneHeight / _yMax;
-
-            GFX_DrawLine(x1 + paneX + ivpaneX, y1 + paneY + ivpaneY,
-                x2 + paneX + ivpaneX, y2 + paneY + ivpaneY);
-        }
-
-        oldX = pt.X;
-        oldY = pt.Y;
-    }
-    
-    // Show the cursor
-    GFX_Set(GFXF_DRAW_COLOR, RGB(0xff, 0, 0));
-    laString_Draw(_cursor, 
-        _current.X * ivpaneWidth / _xMax - _cursorRect.width / 2 + paneX + ivpaneX,
-        ivpaneHeight - _current.Y * ivpaneHeight / _yMax - _cursorRect.height / 2 + paneY + ivpaneY,
-        NULL);
-    
-    GFX_End();
-    
-    _erase = _data;
-    _oldCurrent = _current;
+    laWidget_Invalidate((laWidget *) IVGraphArea);
 }
 
 void LEDTestPane::SetData(const std::vector<XY> &data)
@@ -144,6 +76,48 @@ void LEDTestPane::SetCurrentLevel(XY &data)
     laString_Destroy(&s);
 
     Update();
+}
+
+laBool LEDTestPane::GraphAreaPaint(laDrawSurfaceWidget *sfc, GFX_Rect *bounds)
+{
+    if (_data.empty())
+        return LA_TRUE;
+    
+    // Figure out where we're drawing the points
+    int32_t graphWidth = laWidget_GetWidth((laWidget *) IVGraphArea);
+    int32_t graphHeight = laWidget_GetHeight((laWidget *) IVGraphArea);
+    GFX_Rect graphRect = laWidget_RectToScreenSpace((laWidget *) IVGraphArea);
+
+    // Draw the line
+    int32_t oldX = 0, oldY = 0;
+    GFX_Set(GFXF_DRAW_COLOR, 0);
+    for (auto &pt : _data)
+    {
+        if (oldX >= 0 && oldX < _xMax && oldY >= 0 && oldY < _yMax &&
+            pt.X >=0 && pt.X < _xMax && pt.Y >= 0 && pt.Y < _yMax)
+        {
+            int32_t x1 = oldX * graphWidth / _xMax;
+            int32_t y1 = graphHeight - oldY * graphHeight / _yMax;
+            int32_t x2 = pt.X * graphWidth / _xMax;
+            int32_t y2 = graphHeight - pt.Y * graphHeight / _yMax;
+
+            GFX_DrawLine(x1 + graphRect.x, y1 + graphRect.y,
+                x2 + graphRect.x, y2 + graphRect.y);
+        }
+
+        oldX = pt.X;
+        oldY = pt.Y;
+    }
+    
+    // Show the cursor
+    GFX_Set(GFXF_DRAW_COLOR, RGB(0xff, 0, 0));
+    laString_Draw(_cursor, 
+        _current.X * graphWidth / _xMax - _cursorRect.width / 2 + graphRect.x,
+        graphHeight - _current.Y * graphHeight / _yMax - _cursorRect.height / 2 + graphRect.y,
+        NULL);
+    
+    _oldCurrent = _current;
+    return LA_TRUE;
 }
 
 laWidget *LEDTestPane::GetWidget() const

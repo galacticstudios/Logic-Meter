@@ -13,7 +13,7 @@ extern "C"
 
 Settings settings;
 
-static volatile bool flashBlock[NVM_FLASH_PAGESIZE / sizeof(bool)] 
+static volatile uint8_t flashBlock[NVM_FLASH_PAGESIZE / sizeof(uint8_t)] 
     __attribute__((aligned(NVM_FLASH_PAGESIZE), space(prog)));
 
 static bool isDirty = false;
@@ -26,7 +26,7 @@ static int GetLatestFlashSettingsIndex()
     const Settings *s = (const Settings *) flashBlock;
     size_t settingsCount = sizeof(flashBlock) / sizeof(Settings);
     size_t i;
-    for (i = 0; i < settingsCount && s[i].valid; ++i)
+    for (i = 0; i < settingsCount && s[i].validity == 1; ++i)
     {
     }
     return int(i) - 1;
@@ -76,4 +76,26 @@ void SettingsModified()
 {
     dirtyTime = SYS_TIME_CounterGet();
     isDirty = true;
+}
+
+void SettingsDump()
+{
+    printf("validity = %d;\r\n\r\n"
+            "screenDimMinutes = %d;\r\n\r\n"
+            "gpsLatitude = %d, gpsLongitude = %d;\r\n"
+            "gpsTime = %u;\r\n"
+            "gpsBaud = %u;\r\n\r\n"
+            "pwmHertz = %lld, pwmDuty = %lld;\r\n\r\n"
+            "servoDuty = %lld;\r\n\r\n"
+            "spiPolarity = %d, spiPhase = %d, spiUseSelect = %d;\r\n\r\n"
+            "uartAutobaud = %d;\r\n"
+            "uartBaud = %u;\r\n",
+            settings.validity, 
+            settings.screenDimMinutes, 
+            settings.gpsLatitude, settings.gpsLongitude, 
+            settings.gpsTime, settings.gpsBaud,
+            settings.pwmHertz, settings.pwmDuty,
+            settings.servoDuty,
+            settings.spiPolarity, settings.spiPhase, settings.spiUseSelect,
+            settings.uartAutobaud, settings.uartBaud);
 }

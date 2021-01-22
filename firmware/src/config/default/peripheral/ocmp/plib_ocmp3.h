@@ -116,12 +116,12 @@ void OCMP3_Enable (void);
 void OCMP3_Disable (void);
 
 
-void OCMP3_CompareValueSet (uint32_t value);
+void OCMP3_CompareValueSet (uint16_t value);
 
-uint32_t OCMP3_CompareValueGet (void);
+uint16_t OCMP3_CompareValueGet (void);
 
-uint32_t OCMP3_CompareSecondaryValueGet (void);
-void OCMP3_CompareSecondaryValueSet (uint32_t value);
+uint16_t OCMP3_CompareSecondaryValueGet (void);
+void OCMP3_CompareSecondaryValueSet (uint16_t value);
 
 
 // DOM-IGNORE-BEGIN

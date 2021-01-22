@@ -45,6 +45,8 @@
 
 #include "gfx/interface/drv_gfx_disp_intf.h"
 
+// BA changed the SPI macros because (1) the SPI peripheral is handling SS
+// and (2) the Harmony code was stupidly inefficient
 #include "peripheral/gpio/plib_gpio.h"
 
 #define ILI9488_SPI_SS_Assert(intf)
@@ -178,93 +180,8 @@ GFX_Result ILI9488_Intf_WriteCmd(struct ILI9488_DRV *drv,
     return returnValue;
 }
 
-/** 
-  Function:
-    GFX_Result ILI9488_Intf_WritePixels(struct ILI9488_DRV *drv,
-                                              uint32_t start_x,
-                                              uint32_t start_y,
-                                              uint8_t *data,
-                                              unsigned int num_pixels)
-
-  Summary:
-    Writes pixel data to ILI9488 GRAM from specified position.
-
-  Description:
-    This function will fist write the start column, page information, then 
-    write the pixel data to the ILI9488 GRAM.
-
-  Parameters:
-    drv             - ILI9488 driver handle
-    start_x         - Start column position
-    start_y         - Start page position
-    data            - Array of 8-bit pixel data (8-bit/pixel RGB)
-    num_pixels      - Number of pixels
- 
-  Returns:
-    * GFX_SUCCESS       - Operation successful
-    * GFX_FAILURE       - Operation failed
-
-  Remarks:
-    In SPI mode, this function performs multiple full-blocking write calls to
-    the SPI port and won't return until the SPI transaction completes.
-
- */
-GFX_Result ILI9488_Intf_WritePixels(struct ILI9488_DRV *drv,
-                                   uint32_t start_x,
-                                   uint32_t start_y,
-                                   uint8_t *data,
-                                   unsigned int num_pixels)
-{
-    GFX_Result returnValue = GFX_FAILURE;
-    uint8_t buf[4];
-    GFX_Disp_Intf intf;
-
-    if (!drv)
-        return GFX_FAILURE;
-
-    intf = (GFX_Disp_Intf) drv->port_priv;
-
-    ILI9488_SPI_SS_Assert(intf);    
-
-    //Set column
-    buf[0] = (start_x >> 8);
-    buf[1] = (start_x & 0xff);
-    buf[2] = (((drv->gfx->display_info->rect.width - 1) & 0xff00) >> 8);
-    buf[3] = ((drv->gfx->display_info->rect.width - 1) & 0xff);
-    returnValue = GFX_Disp_Intf_WriteCommandParm(intf,
-                                            ILI9488_CMD_COLUMN_ADDRESS_SET,
-                                            buf,
-                                            4);
-    if (GFX_SUCCESS != returnValue)
-    {
-        ILI9488_SPI_SS_Deassert(intf);
-        return GFX_FAILURE;
-    }
-
-    //Set page
-    buf[0] = (start_y >> 8);
-    buf[1] = (start_y & 0xff);
-    buf[2] = (((drv->gfx->display_info->rect.height - 1) & 0xff00) >> 8);
-    buf[3] = ((drv->gfx->display_info->rect.height - 1) & 0xff);
-    returnValue = GFX_Disp_Intf_WriteCommandParm(intf,
-                                            ILI9488_CMD_PAGE_ADDRESS_SET,
-                                            buf,
-                                            4);
-    if (GFX_SUCCESS != returnValue)
-    {
-        ILI9488_SPI_SS_Deassert(intf);
-        return GFX_FAILURE;
-    }
-
-    returnValue = GFX_Disp_Intf_WriteCommandParm(intf,
-                                            ILI9488_CMD_MEMORY_WRITE,
-                                            data,
-                                            num_pixels * 3);
-    
-    ILI9488_SPI_SS_Deassert(intf);
-
-    return returnValue;
-}
+// BA moved ILI9488_Intf_WritePixels to drv_gfx_disp_intf.cpp and rewrote
+// it for speed
 
 /** 
   Function:
@@ -361,7 +278,8 @@ GFX_Result ILI9488_Intf_ReadPixels(struct ILI9488_DRV *drv,
     if (GFX_SUCCESS != returnValue)
         return GFX_FAILURE;
 
-    returnValue = GFX_Disp_Intf_Read(intf, value, num_pixels * 3);
+// BA changed the number of bytes per pixel because MHC was generating the code wrong
+    returnValue = GFX_Disp_Intf_Read(intf, value, num_pixels * 2);
     if (GFX_SUCCESS != returnValue)
         return GFX_FAILURE;
 

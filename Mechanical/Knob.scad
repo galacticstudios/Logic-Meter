@@ -1,29 +1,81 @@
-$fn = 180;
+include <LCS145.scad>
+
+renderFlange = 0; // 0 or 1
+
+// Set the shaft to the OFF position. How many degrees clockwise should
+// the handle be rotated so it points to the OFF label?
+shaftToHandle =  360 / 10 * -1.5;
+
+rotarySwitchDiameter = 24;
+rotarySwitchHeight = 3.5; // 11; // Actual height is 11, but we don't want to render most of it in version 7
 
 flangeDiameter = 45;
-flangeHeight = 6.5;
 
-knobHeight = 6;
-knobDiameter = 37;
+knobHeight = rotarySwitchHeight + 2 - flangeHeight;
+knobDiameter = 30;
+
+shaftDiameter = 6.5;
+shaftDiameterMinusFlatted = 4.4;
+shaftHeight = 0.375 * 25.4;
 
 handleThickness = 8;
-handleHeight = 10;
+handleHeight = shaftHeight + 3;
 
 pointerWidth = 3;
 pointerDepth = 1.9;
 
-shaftDiameter = 6.5;
-shaftDiameterMinusFlatted = 4.4;
+detentX = 17;
+detentCount = 10;
+detentBallDiameter = 2 * PI * detentX / detentCount / 2;
+detentChannelDepth = detentBallDiameter / 3;
+detentChannelWidth = detentBallDiameter;
 
-rotarySwitchDiameter = 24;
-rotarySwitchHeight = 11;
+innerBumpRadius = 2 * PI * (detentX - detentChannelWidth / 2) / detentCount / 2 * 0.7;
+outerBumpRadius = 2 * PI * (detentX + detentChannelWidth / 2) / detentCount / 2 * 0.7;
 
 difference()
 {
     union()
     {
         // The flange
-        cylinder(flangeHeight, d = flangeDiameter);
+        if (renderFlange != 0)
+        {
+            union()
+            {
+                difference()
+                {
+                    // The body of the flange
+                    cylinder(flangeHeight, d = flangeDiameter);
+                    
+                    // Subtract the channel for the detents
+                    difference()
+                    {
+                        // The outer ring of the channel
+                        cylinder(detentChannelDepth, r = detentX + detentChannelWidth / 2); 
+                        
+                        // The inner ring of the channel
+                        cylinder(detentChannelDepth, r = detentX - detentChannelWidth / 2); 
+                    } 
+                }
+                
+                // The bumps for the detents
+                for (b = [360 / detentCount / 2 : 360 / detentCount : 360 - (360 / detentCount / 2)])
+                {
+                    translate([detentX * cos(180 - b), detentX * sin(180 - b), flangeHeight / 2])
+                        rotate(a = [0, 0, -b]) rotate(a = [0, -90, 0])
+                        hull()
+                        {
+                            translate([0, 0, -detentChannelWidth / 2 - 1])
+                                scale([1, innerBumpRadius * 2 / flangeHeight, 1])
+                                    cylinder(0.1, d = flangeHeight, center = true);
+                            translate([0, 0, detentChannelWidth / 2 + 1])
+                                scale([1, outerBumpRadius * 2 / flangeHeight, 1])
+                                    cylinder(0.1, d = flangeHeight, center = true);
+
+                        }
+                }
+            }
+        }
         
         translate([0, 0, flangeHeight])
         {
@@ -53,11 +105,11 @@ difference()
     }
     
     // Subtract the hole for the shaft and the body of the rotary switch
-    rotate([0, 0, -90 + 36 / 2]) union()
+    rotate([0, 0, -shaftToHandle]) rotate([0, 0, -90]) union()
     {
         difference()
         {
-            cylinder(flangeHeight + knobHeight + handleHeight - pointerDepth, d = shaftDiameter);
+            cylinder(flangeHeight + knobHeight + shaftHeight + 1.5, d = shaftDiameter);
             translate([shaftDiameterMinusFlatted - shaftDiameter / 2, -4, 0]) {cube([12, 12, flangeHeight + knobHeight + handleHeight]);}
         }
         cylinder(rotarySwitchHeight, d = rotarySwitchDiameter);

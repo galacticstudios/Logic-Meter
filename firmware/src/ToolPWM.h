@@ -8,11 +8,11 @@
 #ifndef TOOLPWM_H
 #define	TOOLPWM_H
 
-#include "Tool.h"
+#include "ToolPWMBase.h"
 #include "fixed.h"
 #include "SquareWavePane.h"
 
-class ToolPWM : public Tool 
+class ToolPWM : public ToolPWMBase
 {
 public:
     static Tool *Factory() {return new ToolPWM;}
@@ -30,12 +30,14 @@ public:
     void Right();
     void Done();
     
+protected:  
+    fixed GetPeriod() const;
+    fixed GetDuty() const {return _duty;}
+    
 private:
     ToolPWM(const ToolPWM& orig);
     
     SquareWavePane *GetPane() const {return (SquareWavePane *) Tool::GetPane();}
-  
-    void UpdatePWM();
     
     fixed _hertz, _duty;
 };

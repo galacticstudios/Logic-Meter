@@ -30,14 +30,14 @@ public:
     // Called when there's time available
     virtual void OnIdle() {}
     
-    void ScrollUp();
-    void ScrollDown();
     void ExitHelp();
 
 protected:
     void SetStatusText(const char *text);
     bool DeactivateRequested() const {return _requestDeactivate;}
     Pane *GetPane() const {return _pane;}
+    
+    void PopMenu();
     
     bool InHelp() const {return _inHelp;}
     

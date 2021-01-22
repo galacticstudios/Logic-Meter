@@ -53,8 +53,13 @@ public:
             rVal = -rhs._val;
             negResult = !negResult;
         }
-        else
+        else if (rhs._val > 0)
             rVal = rhs._val;
+        else
+        {
+            _val = 0;
+            return *this;
+        }
         if (_val < 0)
         {
             lVal = -_val;
@@ -69,7 +74,7 @@ public:
         
         // To avoid an overflow, shift the rhs right as much as we can before we multiply
         T rem = rVal % 10;
-        while (rem == 0)
+        while (rem == 0 && rVal)
         {
             rVal /= 10;
             rem = rVal % 10;

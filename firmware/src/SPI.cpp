@@ -11,49 +11,18 @@ extern "C"
 }
 #include "SPI.h"
 
-#define SPIIMPL(N) \
-\
-CSPI##N *CSPI##N::_spiObj; \
-\
-extern "C" \
-{ \
-\
-void __ISR(_SPI##N##_FAULT_VECTOR, ipl1AUTO) SPI##N##_FAULT_Handler (void) \
-{ \
-    SPI##N##STATCLR = 1 << 12; \
-\
-    if (CSPI##N::_spiObj) \
-    { \
-        /* Clear error interrupt flag */ \
-        CSPI##N::_spiObj->FaultIFSCLR = CSPI##N::IFS_FaultIF_MASK; \
-\
-        /* Clear up the receive interrupt flag so that RX interrupt is not \
-           triggered for error bytes */ \
-        CSPI##N::_spiObj->RXIFSCLR = CSPI##N::IFS_RXIF_MASK; \
-    } \
-} \
-\
-void __ISR(_SPI##N##_RX_VECTOR, ipl1AUTO) SPI##N##_RX_Handler (void) \
-{ \
-    if (CSPI##N::_spiObj) \
-    { \
-        CSPI##N::_spiObj->RXHandler(); \
-        /* Clear SPI RX Interrupt flag after reading data buffer */ \
-        CSPI##N::_spiObj->RXIFSCLR = CSPI##N::IFS_RXIF_MASK; \
-    } \
-} \
-\
-void __ISR(_SPI##N##_TX_VECTOR, ipl1AUTO) SPI##N##_TX_Handler (void) \
-{ \
-    if (CSPI##N::_spiObj) \
-    { \
-        CSPI##N::_spiObj->TXHandler(); \
-        /* Clear SPI TX Interrupt flag */ \
-        CSPI##N::_spiObj->CSPI##N::IFS_TXIF_MASK; \
-    } \
-} \
-\
-}
+#define SPI_INTS(n) \
+Implement_InterruptHandler(_SPI##n##_FAULT_VECTOR, SPIInt[n - 1].fault) \
+Implement_InterruptHandler(_SPI##n##_RX_VECTOR, SPIInt[n - 1].receiveDone) \
+Implement_InterruptHandler(_SPI##n##_TX_VECTOR, SPIInt[n - 1].transferDone) \
 
-SPIIMPL(2)
-SPIIMPL(4)
+SPI_INTS(1)
+SPI_INTS(2)
+SPI_INTS(3)
+SPI_INTS(4)
+#ifdef _SPI5_FAULT_VECTOR
+SPI_INTS(5)
+#endif
+#ifdef _SPI6_FAULT_VECTOR
+SPI_INTS(6)
+#endif

@@ -73,7 +73,7 @@ GFX_Result drawColorImage(GFXU_ImageAsset* img,
     GFX_Context* context = GFX_ActiveContext();
     GFX_Point dest_point;
     GFX_Color color;
-    uint8_t pixelLine[src_width * 3], *pp;
+    uint8_t pixelLine[src_width * 2], *pp;
     uint32_t lastBlock = 0;
     uint32_t lastOffset = 0;
     GFX_ColorMode layerMode;
@@ -116,9 +116,8 @@ GFX_Result drawColorImage(GFXU_ImageAsset* img,
                                       idx,
                                       &lastBlock,
                                       &lastOffset);
-            *pp++ = ((color & 0xf800) >> 8) | 0x7; //R
-            *pp++ = ((color & 0x07e0) >> 3 ) | 0x3; //G
-            *pp++ = ((color & 0x001f) << 3) | 0x7; //B
+            *pp++ = (uint8_t) (color >> 8);
+            *pp++ = (uint8_t) (color);
         }
 
         ILI9488_Intf_WritePixels((ILI9488_DRV *) context->driver_data,

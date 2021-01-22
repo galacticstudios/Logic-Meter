@@ -98,23 +98,8 @@ void CLK_Initialize( void )
         __builtin_mtc0(12, 0,(__builtin_mfc0(12, 0) | 0x0001)); /* enable interrupts */
     }
 
-    /* Peripheral Bus 1 is by default enabled, set its divisor */
-    PB1DIVbits.PBDIV = 0;
-
-    /* Peripheral Bus 2 is by default enabled, set its divisor */
-    PB2DIVbits.PBDIV = 0;
-
-    /* Peripheral Bus 3 is by default enabled, set its divisor */
-    PB3DIVbits.PBDIV = 0;
-
     /* Peripheral Bus 4 is by default enabled, set its divisor */
     PB4DIVbits.PBDIV = 0;
-
-    /* Peripheral Bus 5 is by default enabled, set its divisor */
-    PB5DIVbits.PBDIV = 0;
-
-    /* Peripheral Bus 8 is by default enabled, set its divisor */
-    PB8DIVbits.PBDIV = 0;
 
 
   
@@ -122,9 +107,9 @@ void CLK_Initialize( void )
     /* Peripheral Module Disable Configuration */
     PMD1 = 0x1000;
     PMD2 = 0x3;
-    PMD3 = 0x1f901f7;
-    PMD4 = 0x1f0;
-    PMD5 = 0x301f3f3b;
+    PMD3 = 0x1f301ff;
+    PMD4 = 0x1f1;
+    PMD5 = 0x301f3f3f;
     PMD6 = 0x10830001;
     PMD7 = 0x500000;
 

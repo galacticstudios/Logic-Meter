@@ -79,6 +79,24 @@ laBool GPSLongitude_DrawNotificationEvent(laDrawSurfaceWidget* sfc, GFX_Rect* re
 // Generated Event Handler - Origin: GPSTime, Event: DrawNotificationEvent
 laBool GPSTime_DrawNotificationEvent(laDrawSurfaceWidget* sfc, GFX_Rect* rect);
 
+// Generated Event Handler - Origin: IVGraphArea, Event: DrawNotificationEvent
+laBool IVGraphArea_DrawNotificationEvent(laDrawSurfaceWidget* sfc, GFX_Rect* rect);
+
+// Generated Event Handler - Origin: TerminalDrawSurface, Event: DrawNotificationEvent
+laBool TerminalDrawSurface_DrawNotificationEvent(laDrawSurfaceWidget* sfc, GFX_Rect* rect);
+
+// Generated Event Handler - Origin: DataOutDrawSurface, Event: DrawNotificationEvent
+laBool DataOutDrawSurface_DrawNotificationEvent(laDrawSurfaceWidget* sfc, GFX_Rect* rect);
+
+// Generated Event Handler - Origin: Ch1Trace, Event: DrawNotificationEvent
+laBool Ch1Trace_DrawNotificationEvent(laDrawSurfaceWidget* sfc, GFX_Rect* rect);
+
+// Generated Event Handler - Origin: Ch2Trace, Event: DrawNotificationEvent
+laBool Ch2Trace_DrawNotificationEvent(laDrawSurfaceWidget* sfc, GFX_Rect* rect);
+
+// Generated Event Handler - Origin: Ch3Trace, Event: DrawNotificationEvent
+laBool Ch3Trace_DrawNotificationEvent(laDrawSurfaceWidget* sfc, GFX_Rect* rect);
+
 
 
 //DOM-IGNORE-BEGIN

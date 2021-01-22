@@ -49,7 +49,86 @@
 /**************************************************
  * USB Device Function Driver Init Data
  **************************************************/
-	
+	/***********************************************
+ * Sector buffer needed by for the MSD LUN.
+ ***********************************************/
+uint8_t sectorBuffer[512 * USB_DEVICE_MSD_NUM_SECTOR_BUFFERS] USB_ALIGN;
+
+/***********************************************
+ * CBW and CSW structure needed by for the MSD
+ * function driver instance.
+ ***********************************************/
+USB_MSD_CBW msdCBW0 USB_ALIGN;
+USB_MSD_CSW msdCSW0 USB_ALIGN;
+/***********************************************
+ * Because the PIC32MZ flash row size if 2048
+ * and the media sector size if 512 bytes, we
+ * have to allocate a buffer of size 2048
+ * to backup the row. A pointer to this row
+ * is passed in the media initialization data
+ * structure.
+ ***********************************************/
+uint8_t flashRowBackupBuffer [DRV_MEMORY_DEVICE_PROGRAM_SIZE] USB_ALIGN;
+
+
+/*******************************************
+ * MSD Function Driver initialization
+ *******************************************/
+USB_DEVICE_MSD_MEDIA_INIT_DATA USB_ALIGN  msdMediaInit0[1] =
+{
+    /* LUN 0 */ 
+    {
+        DRV_MEMORY_INDEX_0,
+        512,
+        sectorBuffer,
+        flashRowBackupBuffer,
+        0,
+        {
+            0x00,    // peripheral device is connected, direct access block device
+            0x80,   // removable
+            0x04,    // version = 00=> does not conform to any standard, 4=> SPC-2
+            0x02,    // response is in format specified by SPC-2
+            0x1F,    // additional length
+            0x00,    // sccs etc.
+            0x00,    // bque=1 and cmdque=0,indicates simple queueing 00 is obsolete,
+                     // but as in case of other device, we are just using 00
+            0x00,    // 00 obsolete, 0x80 for basic task queueing
+            {
+                'M','i','c','r','o','c','h','p'
+            },
+            {
+                'M','a','s','s',' ','S','t','o','r','a','g','e',' ',' ',' ',' '
+            },
+            {
+                '0','0','0','1'
+            }
+        },
+        {
+            DRV_MEMORY_IsAttached,
+            DRV_MEMORY_Open,
+            DRV_MEMORY_Close,
+            DRV_MEMORY_GeometryGet,
+            DRV_MEMORY_AsyncRead,
+            DRV_MEMORY_AsyncEraseWrite,
+            DRV_MEMORY_IsWriteProtected,
+            DRV_MEMORY_TransferHandlerSet,
+            NULL
+        }
+    },
+};
+  
+/**************************************************
+ * USB Device Function Driver Init Data
+ **************************************************/
+const USB_DEVICE_MSD_INIT msdInit0 =
+{
+    .numberOfLogicalUnits = 1,
+    .msdCBW = &msdCBW0,
+    .msdCSW = &msdCSW0,
+    .mediaInit = &msdMediaInit0[0]
+};
+
+
 const USB_DEVICE_CDC_INIT cdcInit0 =
 {
 	.queueSizeRead = 1,
@@ -63,9 +142,22 @@ const USB_DEVICE_CDC_INIT cdcInit0 =
  * USB Device Layer Function Driver Registration 
  * Table
  **************************************************/
-const USB_DEVICE_FUNCTION_REGISTRATION_TABLE funcRegistrationTable[1] =
+const USB_DEVICE_FUNCTION_REGISTRATION_TABLE funcRegistrationTable[2] =
 {
-    	/* CDC Function 0 */
+    
+	/* MSD Function 0 */
+    { 
+        .configurationValue = 1,    /* Configuration value */ 
+        .interfaceNumber = 2,       /* First interfaceNumber of this function */ 
+        .speed = USB_SPEED_HIGH|USB_SPEED_FULL,    /* Function Speed */ 
+        .numberOfInterfaces = 1,    /* Number of interfaces */
+        .funcDriverIndex = 0,  /* Index of MSD Function Driver */
+        .driver = (void*)USB_DEVICE_MSD_FUNCTION_DRIVER,    /* USB MSD function data exposed to device layer */
+        .funcDriverInit = (void*)&msdInit0    /* Function driver init data */
+    },
+
+
+	/* CDC Function 0 */
     {
         .configurationValue = 1,                            // Configuration value
         .interfaceNumber = 0,                               // First interfaceNumber of this function
@@ -91,14 +183,12 @@ const USB_DEVICE_DESCRIPTOR deviceDescriptor =
     0x12,                                                   // Size of this descriptor in bytes
     USB_DESCRIPTOR_DEVICE,                                  // DEVICE descriptor type
     0x0200,                                                 // USB Spec Release Number in BCD format
-        USB_CDC_CLASS_CODE,                                     // Class Code
-    USB_CDC_SUBCLASS_CODE,                                  // Subclass code
-    0x00,                                                   // Protocol code
-
-
+    0xEF,                                                   // Class Code
+    0x02,                                                   // Subclass code
+    0x01,                                                   // Protocol code
     USB_DEVICE_EP0_BUFFER_SIZE,                             // Max packet size for EP0, see configuration.h
     0x04D8,                                                 // Vendor ID
-    0x000A,                                                 // Product ID				
+    0xEAF2,                                                 // Product ID				
     0x0100,                                                 // Device release number in BCD format
     0x01,                                                   // Manufacturer string index
     0x02,                                                   // Product string index
@@ -115,11 +205,9 @@ const USB_DEVICE_QUALIFIER deviceQualifierDescriptor1 =
     0x0A,                                                   // Size of this descriptor in bytes
     USB_DESCRIPTOR_DEVICE_QUALIFIER,                        // Device Qualifier Type
     0x0200,                                                 // USB Specification Release number
-	    USB_CDC_CLASS_CODE,                                     // Class Code
-    USB_CDC_SUBCLASS_CODE,                                  // Subclass code
-    0x00,                                                   // Protocol code
-
-
+	0xEF,                                                   // Class Code
+    0x02,                                                   // Subclass code
+    0x01,                                                   // Protocol code
     USB_DEVICE_EP0_BUFFER_SIZE,                             // Maximum packet size for endpoint 0
     0x01,                                                   // Number of possible configurations
     0x00                                                    // Reserved for future use.
@@ -136,13 +224,58 @@ const uint8_t highSpeedConfigurationDescriptor[]=
 
     0x09,                                                   // Size of this descriptor in bytes
     USB_DESCRIPTOR_CONFIGURATION,                           // Descriptor Type
-    USB_DEVICE_16bitTo8bitArrange(67),                      //(67 Bytes)Size of the Configuration descriptor
-    2,                                                      // Number of interfaces in this configuration
+    USB_DEVICE_16bitTo8bitArrange(98),                      //(98 Bytes)Size of the Configuration descriptor
+    3,                                                      // Number of interfaces in this configuration
     0x01,                                               // Index value of this configuration
     0x00,                                               // Configuration string index
     USB_ATTRIBUTE_DEFAULT | USB_ATTRIBUTE_SELF_POWERED, // Attributes
     50,
 	
+
+		/* Descriptor for Function 1 - MSD     */ 
+    
+    /* Interface Descriptor */
+
+    9,                              // Size of this descriptor in bytes
+    USB_DESCRIPTOR_INTERFACE,       // INTERFACE descriptor type
+    2,                              // Interface Number
+    0,                              // Alternate Setting Number
+    2,                              // Number of endpoints in this intf
+    USB_MSD_CLASS_CODE,             // Class code
+    USB_MSD_SUBCLASS_CODE_SCSI_TRANSPARENT_COMMAND_SET, // Subclass code
+    USB_MSD_PROTOCOL,               // Protocol code
+    0,                              // Interface string index
+
+    /* Endpoint Descriptor */
+
+    7,                          // Size of this descriptor in bytes
+    USB_DESCRIPTOR_ENDPOINT,    // Endpoint Descriptor
+    3  | USB_EP_DIRECTION_IN,    // EndpointAddress ( EP1 IN )
+    USB_TRANSFER_TYPE_BULK,     // Attributes type of EP (BULK)
+    0x00,0x02,                  // Max packet size of this EP
+    0x00,                       // Interval (in ms)
+
+
+    7,                          // Size of this descriptor in bytes
+    USB_DESCRIPTOR_ENDPOINT,    // Endpoint Descriptor
+    3  | USB_EP_DIRECTION_OUT,   // EndpointAddress ( EP2 OUT )
+    USB_TRANSFER_TYPE_BULK,     // Attributes type of EP (BULK)
+    0x00,0x02,                  // Max packet size of this EP
+    0x00,                       // Interval (in ms)
+    
+    
+
+
+	/* Descriptor for Function - CDC     */ 
+    /* Interface Association Descriptor: CDC Function*/
+    0x08,   // Size of this descriptor in bytes
+    0x0B,   // Interface association descriptor type
+    0,   // The first associated interface
+    0x02,   // Number of contiguous associated interface
+    0x02,   // bInterfaceClass of the first interface
+    0x02,   // bInterfaceSubclass of the first interface
+    0x01,   // bInterfaceProtocol of the first interface
+    0x00,   // Interface string index
 	/* Interface Descriptor */
 
     0x09,                                           // Size of this descriptor in bytes
@@ -239,13 +372,55 @@ const uint8_t fullSpeedConfigurationDescriptor[]=
 
     0x09,                                                   // Size of this descriptor in bytes
     USB_DESCRIPTOR_CONFIGURATION,                           // Descriptor Type
-    USB_DEVICE_16bitTo8bitArrange(67),                      //(67 Bytes)Size of the Configuration descriptor
-    2,                                                      // Number of interfaces in this configuration
+    USB_DEVICE_16bitTo8bitArrange(98),                      //(98 Bytes)Size of the Configuration descriptor
+    3,                                                      // Number of interfaces in this configuration
     0x01,                                                   // Index value of this configuration
     0x00,                                                   // Configuration string index
     USB_ATTRIBUTE_DEFAULT | USB_ATTRIBUTE_SELF_POWERED, // Attributes
     50,
 	
+	/* Descriptor for Function 1 - MSD     */ 
+    
+    /* Interface Descriptor */
+
+    9,                              // Size of this descriptor in bytes
+    USB_DESCRIPTOR_INTERFACE,       // INTERFACE descriptor type
+    2,                              // Interface Number
+    0,                              // Alternate Setting Number
+    2,                              // Number of endpoints in this intf
+    USB_MSD_CLASS_CODE,             // Class code
+    USB_MSD_SUBCLASS_CODE_SCSI_TRANSPARENT_COMMAND_SET, // Subclass code
+    USB_MSD_PROTOCOL,               // Protocol code
+    0,                              // Interface string index
+
+    /* Endpoint Descriptor */
+
+    7,                          // Size of this descriptor in bytes
+    USB_DESCRIPTOR_ENDPOINT,    // Endpoint Descriptor
+    3  | USB_EP_DIRECTION_IN,    // EndpointAddress ( EP1 IN )
+    USB_TRANSFER_TYPE_BULK,     // Attributes type of EP (BULK)
+    0x40,0x00,                  // Max packet size of this EP
+    0x00,                       // Interval (in ms)
+
+
+    7,                          // Size of this descriptor in bytes
+    USB_DESCRIPTOR_ENDPOINT,    // Endpoint Descriptor
+    3  | USB_EP_DIRECTION_OUT,   // EndpointAddress ( EP2 OUT )
+    USB_TRANSFER_TYPE_BULK,     // Attributes type of EP (BULK)
+    0x40,0x00,                  // Max packet size of this EP
+    0x00,                       // Interval (in ms)
+
+	
+	/* Descriptor for Function - CDC     */ 
+    /* Interface Association Descriptor: CDC Function*/
+    0x08,   // Size of this descriptor in bytes
+    0x0B,   // Interface association descriptor type
+    0,   // The first associated interface
+    0x02,   // Number of contiguous associated interface
+    0x02,   // bInterfaceClass of the first interface
+    0x02,   // bInterfaceSubclass of the first interface
+    0x01,   // bInterfaceProtocol of the first interface
+    0x00,   // Interface string index
 	/* Interface Descriptor */
 
     0x09,                                                   // Size of this descriptor in bytes
@@ -360,13 +535,13 @@ USB_DEVICE_CONFIGURATION_DESCRIPTORS_TABLE fullSpeedConfigDescSet[1] =
     {
         uint8_t bLength;                                    // Size of this descriptor in bytes
         uint8_t bDscType;                                   // STRING descriptor type
-        uint16_t string[25];                                // String
+        uint16_t string[15];                                // String
     }
     sd001 =
     {
         sizeof(sd001),
         USB_DESCRIPTOR_STRING,
-        {'M','i','c','r','o','c','h','i','p',' ','T','e','c','h','n','o','l','o','g','y',' ','I','n','c','.'}
+        {'L','o','a','d','A','c','c','u','m','u','l','a','t','o','r'}
 		
     };
 
@@ -377,13 +552,13 @@ USB_DEVICE_CONFIGURATION_DESCRIPTORS_TABLE fullSpeedConfigDescSet[1] =
     {
         uint8_t bLength;                                    // Size of this descriptor in bytes
         uint8_t bDscType;                                   // STRING descriptor type
-        uint16_t string[22];                                // String
+        uint16_t string[11];                                // String
     }
     sd002 =
     {
         sizeof(sd002),
         USB_DESCRIPTOR_STRING,
-		{'S','i','m','p','l','e',' ','C','D','C',' ','D','e','v','i','c','e',' ','D','e','m','o'}
+		{'L','o','g','i','c',' ','M','e','t','e','r'}
     }; 
 
 /***************************************
@@ -423,7 +598,7 @@ const USB_DEVICE_INIT usbDevInitData =
 {
     /* Number of function drivers registered to this instance of the
        USB device layer */
-    .registeredFuncCount = 1,
+    .registeredFuncCount = 2,
 	
     /* Function driver table registered to this instance of the USB device layer*/
     .registeredFunctions = (USB_DEVICE_FUNCTION_REGISTRATION_TABLE*)funcRegistrationTable,

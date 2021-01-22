@@ -100,6 +100,7 @@ typedef void*        GFX_GlobalPalette;
 #define GFX_GLOBAL_PALETTE_SIZE 256
 
 typedef struct GFX_Context_t GFX_Context;
+// BA removed this because it caused C++ errors
 //typedef enum GFX_ColorMode_t GFX_ColorMode;
 
 typedef void (*GFX_SyncCallback_FnPtr)(void);

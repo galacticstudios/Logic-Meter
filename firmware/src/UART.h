@@ -8,110 +8,165 @@
 #ifndef UART_H
 #define	UART_H
 
+#include "Peripherals.h"
+#include "Interrupts.h"
+#include "Oscillator.h"
 #include "PPS.h"
+#include "PMD.h"
 
-// Use #defines to make "UART3" symbols for the registers that contain UART3 info
-// (e.g. IEC1SET has some UART3-related bits). This allows us to use preprocessor
-// tokenizing (##) to assemble the register names based on the UART number
-
-#if defined(__32MK1024MCF064__)
-
-#define U3RXPPS PPSGroup1Inputs
-
-#define UART3RXIECSET IEC1SET
-#define UART3RXIECCLR IEC1CLR
-#define UART3IEC_RXIE_MASK _IEC1_U3RXIE_MASK
-#define UART3TXIECSET IEC2SET
-#define UART3TXIECCLR IEC2CLR
-#define UART3IEC_TXIE_MASK _IEC2_U3TXIE_MASK
-#define UART3RXIPCbits IPC15bits
-#define UART3EIPCbits IPC15bits
-#define UART3TXIPCbits IPC16bits
-
-#elif defined(__32MZ2048EFH064__)
-
-#define U3RXPPS PPSGroup2Inputs
-
-#define UART3RXIECSET IEC4SET
-#define UART3RXIECCLR IEC4CLR
-#define UART3IEC_RXIE_MASK _IEC4_U3RXIE_MASK
-#define UART3TXIECSET IEC4SET
-#define UART3TXIECCLR IEC4CLR
-#define UART3IEC_TXIE_MASK _IEC4_U3TXIE_MASK
-#define UART3RXIPCbits IPC39bits
-#define UART3EIPCbits IPC39bits
-#define UART3TXIPCbits IPC39bits
-
-#else
-
-#error UART registers not defined for this microcontroller
-
-#endif
-
-#define UARTCLASS(N) \
-class CUART##N \
-{ \
-public: \
-    CUART##N() : \
-        _readCallback(NULL), _readContext(NULL), _writeCallback(NULL), _writeContext(NULL) \
-        {} \
-    ~CUART##N() {} \
-    \
-    void Initialize() {UART##N##_Initialize();} \
-    bool SerialSetup(UART_SERIAL_SETUP *setup, uint32_t srcClkFreq) \
-    { \
-       UART##N##_SerialSetup(setup, srcClkFreq); \
-    } \
-    \
-    void Disable() {U##N##MODECLR = _U3MODE_ON_MASK;} \
-    \
-    void EnableRXInterrupt() {UART##N##RXIECSET = UART##N##IEC_RXIE_MASK;} \
-    void DisableRXInterrupt() {UART##N##RXIECCLR = UART##N##IEC_RXIE_MASK;} \
-    \
-    void EnableTXInterrupt() {UART##N##TXIECSET = UART##N##IEC_TXIE_MASK;} \
-    void DisableTXInterrupt() {UART##N##TXIECCLR = UART##N##IEC_TXIE_MASK;} \
-    \
-    void SetInterruptPriorities() \
-    { \
-        UART##N##RXIPCbits.U##N##RXIP = 1; \
-        UART##N##RXIPCbits.U##N##RXIS = 0; \
-        UART##N##EIPCbits.U##N##EIP = 1; \
-        UART##N##EIPCbits.U##N##EIS = 0; \
-        UART##N##TXIPCbits.U##N##TXIP = 1; \
-        UART##N##TXIPCbits.U##N##TXIS = 0; \
-    } \
-    \
-    void SetRXPPS(U##N##RXPPS pin) {U##N##RXR = pin;} \
-    \
-    bool RXReady() {return U##N##STAbits.URXDA;} \
-    uint32_t RXData() {return U##N##RXREG;} \
-    \
-    void RegisterReadCallback(void (*callback)(void *), void *context) {_readCallback = callback; _readContext = context;} \
-    void UnregisterReadCallback() {_readCallback = NULL;} \
-    \
-    void RXHandler() {if (_readCallback) (*_readCallback)(_readContext);} \
-    \
-    \
-    bool TXReady() {return !U##N##STAbits.UTXBF;} \
-    void TXData(uint8_t data) {U##N##TXREG = data;} \
-    \
-    void RegisterWriteCallback(void (*callback)(void *), void *context) {_writeCallback = callback; _writeContext = context;} \
-    void UnregisterWriteCallback() {_writeCallback = NULL;} \
-    \
-    void TXHandler() {if (_writeCallback) (*_writeCallback)(_writeContext);} \
-    \
-private: \
-    void (*_readCallback)(void *context); \
-    void *_readContext; \
-    void (*_writeCallback)(void *context); \
-    void *_writeContext; \
-    \
-    CUART##N(const CUART##N& orig); \
+struct UARTxRegisters
+{
+    RegisterTCSI<__U1MODEbits_t> UMODE;   
+    RegisterTCSI<__U1STAbits_t> USTA;   
+    RegisterCSI UTXREG;   
+    RegisterCSI URXREG;   
+    RegisterCSI UBRG;   
 };
 
-UARTCLASS(3)
+typedef struct
+{
+    uint32_t baudRate;
+    enum {UART8BitParityNone, UART8BitParityEven, UART8BitParityOdd, UART9BitParityNone} widthParity;
+    // 1 or 2 stop bits
+    int stopBits;
+} UARTSerialSetup;
 
-extern CUART3 UART3;
+
+
+template <int index>
+class UART
+{
+public:
+    UART()
+    {
+        UARTPMD[index - 1].Enable();
+    }
+    ~UART()
+    {
+        DisableFaultInterrupt();
+        DisableRXInterrupt();
+        DisableTXInterrupt();
+        Disable();
+        UARTPMD[index - 1].Disable();
+    }
+    
+    void Initialize() 
+    {
+        _regs.UMODE = 0x0;
+
+        /* Enable UART Receiver and Transmitter */
+        _regs.USTA = (_U1STA_UTXEN_MASK | _U1STA_URXEN_MASK);
+
+        /* BAUD Rate register Setup */
+        _regs.UBRG = 0;
+
+        /* Turn ON UART3 */
+        _regs.UMODE = _U1MODE_ON_MASK;
+    }
+    
+    bool SerialSetup(UARTSerialSetup *setup, uint32_t srcClkFreq)
+    {
+        if (setup != NULL)
+        {
+            uint32_t baud = setup->baudRate;
+            uint32_t brgValHigh = 0;
+            uint32_t brgValLow = 0;
+            uint32_t brgVal = 0;
+
+            if(srcClkFreq == 0)
+            {
+                srcClkFreq = oscillator.PBCLK(2);
+            }
+
+            /* Calculate BRG value */
+            brgValLow = ((srcClkFreq / baud) >> 4) - 1;
+            brgValHigh = ((srcClkFreq / baud) >> 2) - 1;
+
+            /* Check if the baud value can be set with low baud settings */
+            if((brgValHigh >= 0) && (brgValHigh <= UINT16_MAX))
+            {
+                brgVal =  (((srcClkFreq >> 2) + (baud >> 1)) / baud ) - 1;
+                _regs.UMODE.bits.BRGH = 1;
+            }
+            else if ((brgValLow >= 0) && (brgValLow <= UINT16_MAX))
+            {
+                brgVal = ( ((srcClkFreq >> 4) + (baud >> 1)) / baud ) - 1;
+                _regs.UMODE.bits.BRGH = 0;
+            }
+            else
+            {
+                return false;
+            }
+
+            _regs.UMODE.bits.PDSEL = setup->widthParity;
+
+            /* Configure UART mode */
+            _regs.UMODE.bits.STSEL = setup->stopBits - 1;
+
+            /* Configure UART3 Baud Rate */
+            _regs.UBRG = brgVal;
+
+            return true;
+        }
+
+        return false;
+    }
+    
+    void Disable() {_regs.UMODE.clr = _U1MODE_ON_MASK;}
+    
+    void EnableFaultInterrupt() {UARTInt[index - 1].fault.enable = 1;}
+    void DisableFaultInterrupt() {UARTInt[index - 1].fault.enable = 0;}
+
+    void EnableRXInterrupt() 
+    {
+        UARTInt[index - 1].receiveDone.enable = 1;
+    }
+    void DisableRXInterrupt() {UARTInt[index - 1].receiveDone.enable = 0;}
+    
+    void EnableTXInterrupt() 
+    {
+        UARTInt[index - 1].transferDone.enable = 1;
+    } 
+    void DisableTXInterrupt() {UARTInt[index - 1].transferDone.enable = 0;} 
+    
+    // WARNING: Interrupts won't fire if you don't set priorities!
+    void SetInterruptPriorities(int priority = 1, int subpriority = 0) 
+    { 
+        UARTInt[index - 1].receiveDone.priority = priority;
+        UARTInt[index - 1].receiveDone.subpriority = subpriority;
+        UARTInt[index - 1].transferDone.priority = priority;
+        UARTInt[index - 1].transferDone.subpriority = subpriority;
+        UARTInt[index - 1].fault.priority = priority;
+        UARTInt[index - 1].fault.subpriority = subpriority;
+    } 
+    
+    bool RXReady() const {return _regs.USTA.bits.URXDA;} 
+    uint32_t RXData() {return _regs.URXREG;} 
+    
+    void RegisterReadCallback(void (*callback)(void *), void *context) 
+    {
+        SetInterruptHandler(UARTInt[index - 1].receiveDone.irqNumber, callback, context);
+    } 
+    void UnregisterReadCallback() 
+    {
+        ClearInterruptHandler(UARTInt[index - 1].receiveDone.irqNumber);
+    } 
+    
+    bool TXReady() const {return !_regs.USTA.bits.UTXBF;} 
+    void TXData(uint32_t data) {_regs.UTXREG = data;} 
+    
+    void RegisterWriteCallback(void (*callback)(void *), void *context) 
+    {
+        SetInterruptHandler(UARTInt[index - 1].transferDone.irqNumber, callback, context);
+    } 
+    void UnregisterWriteCallback() 
+    {
+        ClearInterruptHandler(UARTInt[index - 1].transferDone.irqNumber);
+    } 
+      
+private:
+    UARTxRegisters &_regs = *(UARTxRegisters *) (&U1MODE + (&U2MODE - &U1MODE) * (index - 1));
+};
 
 #endif	/* UART_H */
 

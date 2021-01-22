@@ -13,6 +13,7 @@
 #include <string>
 #include "Utility.h"
 #include "Tool.h"
+#include "UART.h"
 
 class GPSPane;
 class TerminalPane;
@@ -75,6 +76,8 @@ private:
     NMEA _currentNEMAMessage = GGA;
     uint32_t _timeOffset;
     bool _timeRunning;
+    
+    UART<3> _uart;
     
     CQueue<char, 200> _transmitQueue;
 };

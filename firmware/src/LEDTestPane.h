@@ -54,10 +54,14 @@ protected:
 private:
     LEDTestPane(const LEDTestPane& orig);
     
+    static laBool SGraphAreaPaint(laDrawSurfaceWidget *sfc, GFX_Rect *bounds);
+    laBool GraphAreaPaint(laDrawSurfaceWidget *sfc, GFX_Rect *bounds);
+    
     uint32_t _xMax, _yMax;
-    std::vector<XY> _erase, _data;
+    std::vector<XY> _data;
     XY _current, _oldCurrent;
     
+    static LEDTestPane *_this;
     static laString *_cursor;
     static GFX_Rect _cursorRect;
 };

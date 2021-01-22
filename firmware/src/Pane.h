@@ -17,6 +17,8 @@ typedef laWidget_t laWidget;
 class Pane
 {
 public:
+    virtual ~Pane() {}
+
     void Show(bool show);
     
     virtual void Update() {}

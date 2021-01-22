@@ -36,42 +36,25 @@ static const MenuItem menuItems[5] = {
 
 static const Menu menu(menuItems);
 
+const long long servoDuty = (long long) (1.5 / 20 * 100 * fixed::scale);
+
 ToolServo::ToolServo() :
-    Tool("Servo", new SquareWavePane(50, fixed(settings.servoDuty, true), {0, 1, 0, 1}), menu, help),
+    ToolPWMBase("Servo", new SquareWavePane(50, fixed(settings.servoDuty, true), {0, 1, 0, 1}), menu, help),
     _duty(settings.servoDuty, true)
 {
-    UpdateServo();
+    // This uses a virtual function, so it needs to be called from here,
+    // not the base class c'tor
+    UpdatePWM();
 }
 
 ToolServo::~ToolServo() 
 {
-    TMR2_Stop();
-    OCMP3_Disable();
-    RPF4R = O1OFF;
-    TRISFbits.TRISF4 = 1;
-    delete GetPane();
 }
 
-void ToolServo::UpdateServo()
+fixed ToolServo::GetPeriod() const
 {
-    TMR2_Stop();
-    OCMP3_Disable();
-    TMR2_Initialize();
-    OCMP3_Initialize();
-    
-    // Set the the period
     fixed period = TMR2_FrequencyGet() / 50;
-    TMR2_PeriodSet(int(period) - 1);
-    fixed ratio = _duty / 100;
-    fixed pulse = period * ratio;
-    OCMP3_CompareValueSet(0);
-    OCMP3_CompareSecondaryValueSet(int(pulse));
-    
-    OCMP3_Enable();
-    TMR2_Start();
-    
-    RPF4R = OC3; // OC3 outputs to RPF4
-    TRISFbits.TRISF4 = 0;
+    return period;
 }
 
 void ToolServo::OnPulseWidth()
@@ -85,7 +68,7 @@ void ToolServo::Up()
     _duty = GetPane()->DutyCycle();
     settings.servoDuty = _duty.raw();
     SettingsModified();
-    UpdateServo();
+    UpdatePWM();
 }
 
 void ToolServo::Down()
@@ -94,7 +77,7 @@ void ToolServo::Down()
     _duty = GetPane()->DutyCycle();
     settings.servoDuty = _duty.raw();
     SettingsModified();
-    UpdateServo();
+    UpdatePWM();
 }
 
 void ToolServo::Left()

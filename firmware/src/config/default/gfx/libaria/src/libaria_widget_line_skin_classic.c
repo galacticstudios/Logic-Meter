@@ -112,8 +112,10 @@ static void drawLine(laLineWidget* line)
     
     lineRect.x = p1.x;
     lineRect.y = p1.y;
-    lineRect.width = p2.x - p1.x;
-    lineRect.height = p2.y - p1.y;
+    // BA added "+ 1"s. The original was wrong, e.g. a line that starts at pixel 0 and ends
+    // at pixel 0 is one pixel long, not zero pixels long.
+    lineRect.width = p2.x - p1.x + 1;
+    lineRect.height = p2.y - p1.y + 1;
 
     if ((GFX_RectContainsPoint(&layer->clippedDrawingRect, &p1) == GFX_TRUE) || 
         (GFX_RectContainsPoint(&layer->clippedDrawingRect, &p2) == GFX_TRUE) ||

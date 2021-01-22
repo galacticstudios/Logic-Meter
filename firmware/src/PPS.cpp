@@ -7,5 +7,6 @@
 
 #include "PPS.h"
 
+OutputPinSelection<PPSGroup1Outputs, RPD10R> RPD10RPPS;
 OutputPinSelection<PPSGroup1Outputs, RPF4R> RPF4RPPS;
 

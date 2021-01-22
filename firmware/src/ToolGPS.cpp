@@ -14,13 +14,12 @@ extern "C"
 #include "GPSPane.h"
 #include "Menu.h"
 #include "PPS.h"
-#include "UART.h"
 #include "Display.h"
 #include "TerminalPane.h"
 
 extern "C" int32_t la_strcmp(GFXU_CHAR* str1, const GFXU_CHAR* str2);
 
-static const Help help("GPS UART Data", NULL, NULL, 
+static const Help help(NULL, "GPS UART Data", NULL, 
         "Outputs simulated NMEA sentences.");
 
 static const MenuItem modifyMenuItems[5] = {
@@ -97,23 +96,23 @@ ToolGPS::ToolGPS() :
     _nextMessage(GGA), _lastMessageTime(SYS_TIME_CounterGet()),
     _timeOffset(0), _timeRunning(true)
 {
-    UART3.RegisterWriteCallback(&ToolGPS::SReadyToWrite, this);
-    UART3.SetInterruptPriorities();
-    UART3.Initialize();
-    UART_SERIAL_SETUP uss = {settings.gpsBaud, UART_PARITY_NONE, UART_DATA_8_BIT, UART_STOP_1_BIT};
-    UART3.SerialSetup(&uss, 0);
+    _uart.RegisterWriteCallback(&ToolGPS::SReadyToWrite, this);
+    _uart.SetInterruptPriorities();
+    _uart.Initialize();
+    UARTSerialSetup uss = {settings.gpsBaud, UARTSerialSetup::UART8BitParityNone, 1};
+    _uart.SerialSetup(&uss, 0);
     SetBaudRate(settings.gpsBaud);
-    RPF4RPPS = U3TX;
-    TRISFbits.TRISF4 = 0;
+    RPD10RPPS = PPSGroup1Outputs::U3TX;
+    TRISDbits.TRISD10 = 0;
 }
 
 ToolGPS::~ToolGPS() 
 {
-    UART3.DisableTXInterrupt();
-    UART3.Disable();
-    RPF4RPPS = O1OFF;
-    TRISFbits.TRISF4 = 1;
-    UART3.UnregisterWriteCallback();
+    _uart.DisableTXInterrupt();
+    _uart.Disable();
+    RPD10RPPS = PPSGroup1Outputs::O1OFF;
+    TRISDbits.TRISD10 = 1;
+    _uart.UnregisterWriteCallback();
 }
 
 void ToolGPS::ShowOutput()
@@ -129,11 +128,11 @@ void ToolGPS::ShowMap()
 void ToolGPS::ReadyToWrite()
 {
     char data;
-    UART3.EnableTXInterrupt();
-    while (UART3.TXReady() && _transmitQueue.read(&data, 1))
-        UART3.TXData(data);
+    _uart.EnableTXInterrupt();
+    while (_uart.TXReady() && _transmitQueue.read(&data, 1))
+        _uart.TXData(data);
     if (_transmitQueue.empty())
-        UART3.DisableTXInterrupt();
+        _uart.DisableTXInterrupt();
 }
 
 void ToolGPS::OnIdle()
@@ -237,8 +236,9 @@ void ToolGPS::Done()
 void ToolGPS::SetBaudRate(int baud)
 {
     settings.gpsBaud = baud;
-    UART_SERIAL_SETUP setup = {settings.gpsBaud, UART_PARITY_NONE, UART_DATA_8_BIT, UART_STOP_1_BIT};
-    UART3.SerialSetup(&setup, 0);
+    SettingsModified();
+    UARTSerialSetup setup = {settings.gpsBaud, UARTSerialSetup::UART8BitParityNone, 1};
+    _uart.SerialSetup(&setup, 0);
     
     char buf[10];
     sprintf(buf, "%d", settings.gpsBaud);

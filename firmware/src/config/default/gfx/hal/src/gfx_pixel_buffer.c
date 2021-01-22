@@ -151,7 +151,8 @@ static GFX_Result set1byte(uint8_t* ptr, GFX_Color clr)
 
 static GFX_Result set2byte(uint8_t* ptr, GFX_Color clr)
 {
-    *((uint16_t*)ptr) = (uint16_t)clr;
+	// BA fixed the color word
+    *((uint16_t*)ptr) = (uint16_t) (((uint16_t) clr >> 8) | (clr << 8));
     
     return GFX_SUCCESS;
 }

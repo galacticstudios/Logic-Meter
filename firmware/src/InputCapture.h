@@ -12,35 +12,76 @@ extern "C"
 {
 #include "definitions.h"
 }
+#include "Peripherals.h"
+#include "Interrupts.h"
+#include "PMD.h"
 #include "PPS.h"
 
-#define IC4PPS PPSGroup2Inputs
 
-#define InputCaptureCLASS(N) \
-class CInputCapture##N \
-{ \
-public: \
-    CInputCapture##N() {} \
-    ~CInputCapture##N() {} \
-    \
-    void Initialize() {ICAP##N##_Initialize();} \
-    void Enable() {IC##N##CONSET = _IC##N##CON_ON_MASK;} \
-    void Disable() {IC##N##CONCLR = _IC##N##CON_ON_MASK;} \
-    \
-    void SetPPS(IC##N##PPS pin) {IC##N##R = (uint32_t) pin;} \
-    \
-    bool DataReady() {return (IC##N##CONbits.ICBNE != 0);} \
-    uint32_t ReadData() {return IC##N##BUF;} \
-    bool Error() {return IC##N##CONbits.ICOV;} \
-    \
-private: \
-    CInputCapture##N(const CInputCapture##N &orig); \
+struct ICxRegisters
+{
+    RegisterTCSI<__IC1CONbits_t> ICCON;
+    Register ICBUF;
 };
 
-InputCaptureCLASS(4)
+template <int index>
+class InputCapture
+{
+public:
+    InputCapture()
+    {
+        ICPMD[index - 1].Enable();
+    }
+    ~InputCapture()
+    {
+        Disable();
+        ICPMD[index - 1].Disable();
+    }
+    
+    enum Edge {Disabled, EveryEdge, EveryFalling, EveryRising, 
+        EveryFourthRising, EverySixteenthRising, EveryEdgeAfterSpecified, InterruptOnly};
+    enum TimerSelect {TimerY, TimerX, Timer32Bit};
+    enum FirstEdge {Falling, Rising};
+    
+    void Initialize(Edge edge, TimerSelect timerSelect, FirstEdge firstEdge = Falling)
+    {
+        Disable();
+        _regs.ICCON = int(edge) | (int(timerSelect) << 7) | (int(firstEdge) << 9);
+    }
+    
+    void Enable() {_regs.ICCON.set = _IC1CON_ON_MASK;}
+    void Disable() {_regs.ICCON.clr = _IC1CON_ON_MASK;}
+    
+    bool Error() const {return _regs.ICCON.bits.ICOV;}
+    bool DataReady() const {return _regs.ICCON.bits.ICBNE;}
+    uint32_t ReadData() const {return _regs.ICBUF;}
 
-extern CInputCapture4 InputCapture4;
+    void EnableInterrupt() {InputCaptureInt[index - 1].capture.enable = 1;}
+    void DisableInterrupt() {InputCaptureInt[index - 1].capture.enable = 0;}
+    void ClearInterrupt() {InputCaptureInt[index - 1].capture.flag = 0;}
+    
+    // WARNING: Interrupts won't fire if you don't set priorities!
+    void SetInterruptPriorities(int priority = 1, int subpriority = 0) 
+    { 
+        InputCaptureInt[index - 1].capture.priority = priority;
+        InputCaptureInt[index - 1].capture.subpriority = subpriority;
+    }
+    
+    void RegisterCallback(void (*callback)(void *), void *context) 
+    {
+        SetInterruptHandler(InputCaptureInt[index - 1].capture.irqNumber, callback, context);
+    } 
+    void UnregisterCallback() 
+    {
+        ClearInterruptHandler(InputCaptureInt[index - 1].capture.irqNumber);
+    } 
+    
+    uint8_t InputCaptureIRQ() const {return InputCaptureInt[index - 1].capture.irqNumber;}
+    uint8_t InputCaptureErrorIRQ() const {return InputCaptureInt[index - 1].error.irqNumber;}
 
+private:
+    ICxRegisters &_regs = *(ICxRegisters *) (&IC1CON + (&IC2CON - &IC1CON) * (index - 1));
+};
 
 #endif	/* INPUTCAPTURE_H */
 

@@ -43,6 +43,7 @@
 #ifndef DRV_GFX_ILI9488_COMMON_H    /* Guard against multiple inclusion */
 #define DRV_GFX_ILI9488_COMMON_H
 
+// BA added this to make it compile in C++. (MHC already was generating the end bracket.)
 /* Provide C++ Compatibility */
 #ifdef __cplusplus
 extern "C" {

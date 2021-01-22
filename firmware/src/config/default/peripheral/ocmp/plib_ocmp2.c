@@ -52,16 +52,15 @@
 void OCMP2_Initialize (void)
 {
     /*Setup OC2CON        */
-    /*OCM         = 6        */
+    /*OCM         = 5        */
     /*OCTSEL       = 0        */
-    /*OC32         = 0        */
+    /*OC32         = 1        */
     /*SIDL         = false    */
 
-    OC2CON = 0x6;
+    OC2CON = 0x25;
 
-    CFGCON |= 0x00010000;
-    OC2R = 100;
-    OC2RS = 100;
+    OC2R = 2000;
+    OC2RS = 4000;
 
 }
 
@@ -76,19 +75,24 @@ void OCMP2_Disable (void)
 }
 
 
-
-uint16_t OCMP2_CompareValueGet (void)
+void OCMP2_CompareValueSet (uint32_t value)
 {
-    return (uint16_t)OC2R;
+    OC2R = value;
 }
 
-void OCMP2_CompareSecondaryValueSet (uint16_t value)
+uint32_t OCMP2_CompareValueGet (void)
+{
+    return OC2R;
+}
+
+void OCMP2_CompareSecondaryValueSet (uint32_t value)
 {
     OC2RS = value;
 }
 
-uint16_t OCMP2_CompareSecondaryValueGet (void)
+uint32_t OCMP2_CompareSecondaryValueGet (void)
 {
-    return (uint16_t)OC2RS;
+    return OC2RS;
 }
+
 

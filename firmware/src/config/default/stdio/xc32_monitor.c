@@ -38,7 +38,8 @@
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *******************************************************************************/
 
-
+// BA commented these routines out because they're implemented elsewhere
+/*
 int _mon_getc(int canblock)
 {
    return 0;
@@ -47,3 +48,4 @@ int _mon_getc(int canblock)
 void _mon_putc(char c)
 {
 }
+*/

@@ -58,34 +58,31 @@
 void GPIO_Initialize ( void )
 {
     /* PORTB Initialization */
-    LATB = 0x0; /* Initial Latch Value */
-    TRISBCLR = 0xbc; /* Direction Control */
-    ANSELBCLR = 0xfbff; /* Digital Mode Enable */
+    LATB = 0xc0; /* Initial Latch Value */
+    TRISBCLR = 0x7fc; /* Direction Control */
+    ANSELBCLR = 0xffff; /* Digital Mode Enable */
     CNPUBSET = 0x800; /* Pull-Up Enable */
-    CNPDBSET = 0xb000; /* Pull-Down Enable */
 
     /* PORTC Initialization */
     LATC = 0x0; /* Initial Latch Value */
-    TRISCCLR = 0xb000; /* Direction Control */
-    CNPDCSET = 0x6000; /* Pull-Down Enable */
+    TRISCCLR = 0x1000; /* Direction Control */
+    CNPUCSET = 0xe000; /* Pull-Up Enable */
 
     /* PORTD Initialization */
-    CNPDDSET = 0xc; /* Pull-Down Enable */
 
     /* PORTE Initialization */
-    LATE = 0x0; /* Initial Latch Value */
-    TRISECLR = 0x1; /* Direction Control */
-    ANSELECLR = 0x70; /* Digital Mode Enable */
-    CNPUESET = 0x7e; /* Pull-Up Enable */
+    LATE = 0x40; /* Initial Latch Value */
+    TRISECLR = 0xc0; /* Direction Control */
+    ANSELECLR = 0xf0; /* Digital Mode Enable */
+    CNPUESET = 0x13; /* Pull-Up Enable */
 
     /* PORTF Initialization */
-    LATF = 0x0; /* Initial Latch Value */
-    TRISFCLR = 0x8; /* Direction Control */
+    CNPUFSET = 0x8; /* Pull-Up Enable */
 
     /* PORTG Initialization */
     LATG = 0x0; /* Initial Latch Value */
     TRISGCLR = 0x40; /* Direction Control */
-    ANSELGCLR = 0x340; /* Digital Mode Enable */
+    ANSELGCLR = 0x3c0; /* Digital Mode Enable */
 
 
     /* Unlock system for PPS configuration */
@@ -95,12 +92,11 @@ void GPIO_Initialize ( void )
     CFGCONbits.IOLOCK = 0;
 
     /* PPS Input Remapping */
+    SDI2R = 1;
 
     /* PPS Output Remapping */
-    RPB8R = 7;
-    RPB9R = 7;
-    RPB6R = 11;
-    RPG8R = 6;
+    RPE5R = 6;
+    RPG8R = 11;
     RPG9R = 6;
 
     /* Lock back the system after PPS configuration */

@@ -25,6 +25,7 @@ public:
     void OnIdle();
     
     static void DataReceived(void *context);
+    static void SPIFault(void *context);
     
     void Polarity0();
     void Polarity1();
@@ -32,6 +33,14 @@ public:
     void Phase1();
     void SSB();
     void SS0();
+    void Width8() {Width(8);}
+    void Width16() {Width(16);}
+    void Width32() {Width(32);}
+    
+    void Clear();
+    
+    void ScrollUp();
+    void ScrollDown();
     
 private:
     ToolSPI(const ToolSPI& orig);
@@ -40,11 +49,13 @@ private:
     
     void DisplayStatus();
     
+    void Width(int width);
+    
     friend void SPICallback(uintptr_t);
     void SPICallback();
     
-    CSPI4 _spi;
-    CQueue<uint8_t, 20000> _receiveQueue;
+    SPI<4> _spi;
+    CQueue<uint8_t, 10000> _receiveQueue;
 };
 
 #endif	/* TOOLSPI_H */

@@ -67,6 +67,8 @@ typedef enum
 
     /* Application waits for device configuration*/
     USBCDC_STATE_WAIT_FOR_CONFIGURATION,
+            
+    USBCDC_STATE_RUNNING,
 
     /* Wait for a character receive */
     USBCDC_STATE_SCHEDULE_READ,

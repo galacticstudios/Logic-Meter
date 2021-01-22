@@ -85,6 +85,11 @@ uint16_t TMR4_CounterGet(void);
 
 uint32_t TMR4_FrequencyGet(void);
 
+void TMR4_InterruptEnable(void);
+
+void TMR4_InterruptDisable(void);
+
+void TMR4_CallbackRegister( TMR_CALLBACK callback_fn, uintptr_t context );
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility

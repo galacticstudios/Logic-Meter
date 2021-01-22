@@ -50,6 +50,7 @@ laScheme NormalTextScheme;
 laScheme PanelScheme;
 laScheme TitleBarScheme;
 laScheme WorldMapCursorScheme;
+laScheme ScopeScheme;
 laKeyPadWidget* MenuKeypad;
 laLabelWidget* TitleLabel;
 laLabelWidget* StatusLabel;
@@ -66,8 +67,11 @@ laLabelWidget* WorldMapCursor;
 laDrawSurfaceWidget* GPSLatitude;
 laDrawSurfaceWidget* GPSLongitude;
 laDrawSurfaceWidget* GPSTime;
+laWidget* HelpPanel;
+laLabelWidget* HelpTextWidget;
 laWidget* LEDTestPanel;
 laWidget* IVPanel;
+laDrawSurfaceWidget* IVGraphArea;
 laLabelWidget* mA10;
 laLabelWidget* mA20;
 laLabelWidget* mA30;
@@ -82,8 +86,21 @@ laLabelWidget* VfColonLabel;
 laLabelWidget* VfSetting;
 laLabelWidget* mASetting;
 laWidget* TerminalPanel;
-laWidget* HelpPanel;
-laLabelWidget* HelpTextWidget;
+laDrawSurfaceWidget* TerminalDrawSurface;
+laWidget* UtilityPanel;
+laWidget* DataOutPanel;
+laLabelWidget* DataLabel;
+laLabelWidget* DataStatusLabel;
+laLineWidget* Divider;
+laDrawSurfaceWidget* DataOutDrawSurface;
+laWidget* LogicAnalyzerPanel;
+laDrawSurfaceWidget* Ch1Trace;
+laDrawSurfaceWidget* Ch2Trace;
+laDrawSurfaceWidget* Ch3Trace;
+laLabelWidget* TriggerLabel;
+laWidget* UnimplementedPanel;
+laLabelWidget* UnimplementedLabel;
+laListWidget* ListBox;
 
 
 static void ScreenCreate_default(laScreen* screen);
@@ -219,6 +236,24 @@ int32_t libaria_initialize(void)
     WorldMapCursorScheme.textInactive = 0xD71C;
     WorldMapCursorScheme.textDisabled = 0x8C92;
 
+    laScheme_Initialize(&ScopeScheme, GFX_COLOR_MODE_RGB_565);
+    ScopeScheme.base = 0x0;
+    ScopeScheme.highlight = 0xFFFF;
+    ScopeScheme.highlightLight = 0xFFFF;
+    ScopeScheme.shadow = 0x8410;
+    ScopeScheme.shadowDark = 0x4208;
+    ScopeScheme.foreground = 0xEF7D;
+    ScopeScheme.foregroundInactive = 0xD71C;
+    ScopeScheme.foregroundDisabled = 0x8410;
+    ScopeScheme.background = 0x0;
+    ScopeScheme.backgroundInactive = 0xD71C;
+    ScopeScheme.backgroundDisabled = 0xC67A;
+    ScopeScheme.text = 0xFFFF;
+    ScopeScheme.textHighlight = 0x1F;
+    ScopeScheme.textHighlightText = 0xFFFF;
+    ScopeScheme.textInactive = 0xD71C;
+    ScopeScheme.textDisabled = 0x8C92;
+
     GFX_Set(GFXF_DRAW_PIPELINE_MODE, GFX_PIPELINE_GCUGPU);
     laContext_SetStringTable(&stringTable);
 
@@ -283,6 +318,7 @@ static void ScreenCreate_default(laScreen* screen)
     TitleBarLine = laLineWidget_New();
     laWidget_SetPosition((laWidget*)TitleBarLine, 0, 25);
     laWidget_SetSize((laWidget*)TitleBarLine, 320, 1);
+    laWidget_SetOptimizationFlags((laWidget*)TitleBarLine, LA_WIDGET_OPT_OPAQUE);
     laWidget_SetScheme((laWidget*)TitleBarLine, &defaultScheme);
     laWidget_SetBackgroundType((laWidget*)TitleBarLine, LA_WIDGET_BACKGROUND_NONE);
     laWidget_SetBorderType((laWidget*)TitleBarLine, LA_WIDGET_BORDER_NONE);
@@ -408,6 +444,23 @@ static void ScreenCreate_default(laScreen* screen)
 
     laWidget_AddChild((laWidget*)GPSPanel, (laWidget*)GPSTime);
 
+    HelpPanel = laWidget_New();
+    laWidget_SetPosition((laWidget*)HelpPanel, 0, 26);
+    laWidget_SetSize((laWidget*)HelpPanel, 320, 194);
+    laWidget_SetScheme((laWidget*)HelpPanel, &PanelScheme);
+    laWidget_SetBackgroundType((laWidget*)HelpPanel, LA_WIDGET_BACKGROUND_FILL);
+    laWidget_SetBorderType((laWidget*)HelpPanel, LA_WIDGET_BORDER_NONE);
+    laWidget_AddChild((laWidget*)layer0, HelpPanel);
+
+    HelpTextWidget = laLabelWidget_New();
+    laWidget_SetSize((laWidget*)HelpTextWidget, 320, 194);
+    laWidget_SetScheme((laWidget*)HelpTextWidget, &NormalTextScheme);
+    laWidget_SetBackgroundType((laWidget*)HelpTextWidget, LA_WIDGET_BACKGROUND_FILL);
+    laWidget_SetBorderType((laWidget*)HelpTextWidget, LA_WIDGET_BORDER_NONE);
+    laLabelWidget_SetHAlignment(HelpTextWidget, LA_HALIGN_LEFT);
+    laLabelWidget_SetVAlignment(HelpTextWidget, LA_VALIGN_TOP);
+    laWidget_AddChild((laWidget*)HelpPanel, (laWidget*)HelpTextWidget);
+
     LEDTestPanel = laWidget_New();
     laWidget_SetPosition((laWidget*)LEDTestPanel, 0, 26);
     laWidget_SetSize((laWidget*)LEDTestPanel, 320, 194);
@@ -423,6 +476,17 @@ static void ScreenCreate_default(laScreen* screen)
     laWidget_SetBackgroundType((laWidget*)IVPanel, LA_WIDGET_BACKGROUND_FILL);
     laWidget_SetBorderType((laWidget*)IVPanel, LA_WIDGET_BORDER_LINE);
     laWidget_AddChild((laWidget*)LEDTestPanel, IVPanel);
+
+    IVGraphArea = laDrawSurfaceWidget_New();
+    laWidget_SetPosition((laWidget*)IVGraphArea, 1, 1);
+    laWidget_SetSize((laWidget*)IVGraphArea, 168, 138);
+    laWidget_SetScheme((laWidget*)IVGraphArea, &defaultScheme);
+    laWidget_SetBackgroundType((laWidget*)IVGraphArea, LA_WIDGET_BACKGROUND_NONE);
+    laWidget_SetBorderType((laWidget*)IVGraphArea, LA_WIDGET_BORDER_NONE);
+    laWidget_SetMargins((laWidget*)IVGraphArea, 0, 0, 0, 0);
+    laDrawSurfaceWidget_SetDrawCallback(IVGraphArea, &IVGraphArea_DrawNotificationEvent);
+
+    laWidget_AddChild((laWidget*)IVPanel, (laWidget*)IVGraphArea);
 
     mA10 = laLabelWidget_New();
     laWidget_SetPosition((laWidget*)mA10, 110, 93);
@@ -560,21 +624,142 @@ static void ScreenCreate_default(laScreen* screen)
     laWidget_SetBorderType((laWidget*)TerminalPanel, LA_WIDGET_BORDER_NONE);
     laWidget_AddChild((laWidget*)layer0, TerminalPanel);
 
-    HelpPanel = laWidget_New();
-    laWidget_SetPosition((laWidget*)HelpPanel, 0, 26);
-    laWidget_SetSize((laWidget*)HelpPanel, 320, 194);
-    laWidget_SetBackgroundType((laWidget*)HelpPanel, LA_WIDGET_BACKGROUND_NONE);
-    laWidget_SetBorderType((laWidget*)HelpPanel, LA_WIDGET_BORDER_NONE);
-    laWidget_AddChild((laWidget*)layer0, HelpPanel);
+    TerminalDrawSurface = laDrawSurfaceWidget_New();
+    laWidget_SetSize((laWidget*)TerminalDrawSurface, 320, 194);
+    laWidget_SetScheme((laWidget*)TerminalDrawSurface, &PanelScheme);
+    laWidget_SetBackgroundType((laWidget*)TerminalDrawSurface, LA_WIDGET_BACKGROUND_FILL);
+    laWidget_SetBorderType((laWidget*)TerminalDrawSurface, LA_WIDGET_BORDER_NONE);
+    laDrawSurfaceWidget_SetDrawCallback(TerminalDrawSurface, &TerminalDrawSurface_DrawNotificationEvent);
 
-    HelpTextWidget = laLabelWidget_New();
-    laWidget_SetSize((laWidget*)HelpTextWidget, 320, 194);
-    laWidget_SetScheme((laWidget*)HelpTextWidget, &NormalTextScheme);
-    laWidget_SetBackgroundType((laWidget*)HelpTextWidget, LA_WIDGET_BACKGROUND_FILL);
-    laWidget_SetBorderType((laWidget*)HelpTextWidget, LA_WIDGET_BORDER_NONE);
-    laLabelWidget_SetHAlignment(HelpTextWidget, LA_HALIGN_LEFT);
-    laLabelWidget_SetVAlignment(HelpTextWidget, LA_VALIGN_TOP);
-    laWidget_AddChild((laWidget*)HelpPanel, (laWidget*)HelpTextWidget);
+    laWidget_AddChild((laWidget*)TerminalPanel, (laWidget*)TerminalDrawSurface);
+
+    UtilityPanel = laWidget_New();
+    laWidget_SetPosition((laWidget*)UtilityPanel, 0, 26);
+    laWidget_SetSize((laWidget*)UtilityPanel, 320, 194);
+    laWidget_SetScheme((laWidget*)UtilityPanel, &PanelScheme);
+    laWidget_SetBackgroundType((laWidget*)UtilityPanel, LA_WIDGET_BACKGROUND_FILL);
+    laWidget_SetBorderType((laWidget*)UtilityPanel, LA_WIDGET_BORDER_NONE);
+    laWidget_AddChild((laWidget*)layer0, UtilityPanel);
+
+    DataOutPanel = laWidget_New();
+    laWidget_SetPosition((laWidget*)DataOutPanel, 0, 26);
+    laWidget_SetSize((laWidget*)DataOutPanel, 320, 194);
+    laWidget_SetScheme((laWidget*)DataOutPanel, &PanelScheme);
+    laWidget_SetBackgroundType((laWidget*)DataOutPanel, LA_WIDGET_BACKGROUND_FILL);
+    laWidget_SetBorderType((laWidget*)DataOutPanel, LA_WIDGET_BORDER_NONE);
+    laWidget_AddChild((laWidget*)layer0, DataOutPanel);
+
+    DataLabel = laLabelWidget_New();
+    laWidget_SetSize((laWidget*)DataLabel, 320, 25);
+    laWidget_SetScheme((laWidget*)DataLabel, &PanelScheme);
+    laWidget_SetBackgroundType((laWidget*)DataLabel, LA_WIDGET_BACKGROUND_FILL);
+    laWidget_SetBorderType((laWidget*)DataLabel, LA_WIDGET_BORDER_NONE);
+    laLabelWidget_SetHAlignment(DataLabel, LA_HALIGN_LEFT);
+    laWidget_AddChild((laWidget*)DataOutPanel, (laWidget*)DataLabel);
+
+    DataStatusLabel = laLabelWidget_New();
+    laWidget_SetPosition((laWidget*)DataStatusLabel, 0, 25);
+    laWidget_SetSize((laWidget*)DataStatusLabel, 320, 25);
+    laWidget_SetScheme((laWidget*)DataStatusLabel, &PanelScheme);
+    laWidget_SetBackgroundType((laWidget*)DataStatusLabel, LA_WIDGET_BACKGROUND_FILL);
+    laWidget_SetBorderType((laWidget*)DataStatusLabel, LA_WIDGET_BORDER_NONE);
+    laLabelWidget_SetHAlignment(DataStatusLabel, LA_HALIGN_LEFT);
+    laWidget_AddChild((laWidget*)DataOutPanel, (laWidget*)DataStatusLabel);
+
+    Divider = laLineWidget_New();
+    laWidget_SetPosition((laWidget*)Divider, 0, 50);
+    laWidget_SetSize((laWidget*)Divider, 320, 1);
+    laWidget_SetOptimizationFlags((laWidget*)Divider, LA_WIDGET_OPT_OPAQUE);
+    laWidget_SetScheme((laWidget*)Divider, &defaultScheme);
+    laWidget_SetBackgroundType((laWidget*)Divider, LA_WIDGET_BACKGROUND_NONE);
+    laWidget_SetBorderType((laWidget*)Divider, LA_WIDGET_BORDER_NONE);
+    laLineWidget_SetStartPoint(Divider, 0, 0);
+    laLineWidget_SetEndPoint(Divider, 320, 0);
+    laWidget_AddChild((laWidget*)DataOutPanel, (laWidget*)Divider);
+
+    DataOutDrawSurface = laDrawSurfaceWidget_New();
+    laWidget_SetPosition((laWidget*)DataOutDrawSurface, 0, 51);
+    laWidget_SetSize((laWidget*)DataOutDrawSurface, 320, 143);
+    laWidget_SetScheme((laWidget*)DataOutDrawSurface, &PanelScheme);
+    laWidget_SetBackgroundType((laWidget*)DataOutDrawSurface, LA_WIDGET_BACKGROUND_FILL);
+    laWidget_SetBorderType((laWidget*)DataOutDrawSurface, LA_WIDGET_BORDER_NONE);
+    laDrawSurfaceWidget_SetDrawCallback(DataOutDrawSurface, &DataOutDrawSurface_DrawNotificationEvent);
+
+    laWidget_AddChild((laWidget*)DataOutPanel, (laWidget*)DataOutDrawSurface);
+
+    LogicAnalyzerPanel = laWidget_New();
+    laWidget_SetPosition((laWidget*)LogicAnalyzerPanel, 0, 26);
+    laWidget_SetSize((laWidget*)LogicAnalyzerPanel, 320, 194);
+    laWidget_SetScheme((laWidget*)LogicAnalyzerPanel, &ScopeScheme);
+    laWidget_SetBackgroundType((laWidget*)LogicAnalyzerPanel, LA_WIDGET_BACKGROUND_FILL);
+    laWidget_SetBorderType((laWidget*)LogicAnalyzerPanel, LA_WIDGET_BORDER_NONE);
+    laWidget_AddChild((laWidget*)layer0, LogicAnalyzerPanel);
+
+    Ch1Trace = laDrawSurfaceWidget_New();
+    laWidget_SetPosition((laWidget*)Ch1Trace, 0, 20);
+    laWidget_SetSize((laWidget*)Ch1Trace, 320, 40);
+    laWidget_SetBackgroundType((laWidget*)Ch1Trace, LA_WIDGET_BACKGROUND_NONE);
+    laWidget_SetBorderType((laWidget*)Ch1Trace, LA_WIDGET_BORDER_NONE);
+    laDrawSurfaceWidget_SetDrawCallback(Ch1Trace, &Ch1Trace_DrawNotificationEvent);
+
+    laWidget_AddChild((laWidget*)LogicAnalyzerPanel, (laWidget*)Ch1Trace);
+
+    Ch2Trace = laDrawSurfaceWidget_New();
+    laWidget_SetPosition((laWidget*)Ch2Trace, 0, 80);
+    laWidget_SetSize((laWidget*)Ch2Trace, 320, 40);
+    laWidget_SetBackgroundType((laWidget*)Ch2Trace, LA_WIDGET_BACKGROUND_NONE);
+    laWidget_SetBorderType((laWidget*)Ch2Trace, LA_WIDGET_BORDER_NONE);
+    laDrawSurfaceWidget_SetDrawCallback(Ch2Trace, &Ch2Trace_DrawNotificationEvent);
+
+    laWidget_AddChild((laWidget*)LogicAnalyzerPanel, (laWidget*)Ch2Trace);
+
+    Ch3Trace = laDrawSurfaceWidget_New();
+    laWidget_SetPosition((laWidget*)Ch3Trace, 0, 140);
+    laWidget_SetSize((laWidget*)Ch3Trace, 320, 40);
+    laWidget_SetBackgroundType((laWidget*)Ch3Trace, LA_WIDGET_BACKGROUND_NONE);
+    laWidget_SetBorderType((laWidget*)Ch3Trace, LA_WIDGET_BORDER_NONE);
+    laDrawSurfaceWidget_SetDrawCallback(Ch3Trace, &Ch3Trace_DrawNotificationEvent);
+
+    laWidget_AddChild((laWidget*)LogicAnalyzerPanel, (laWidget*)Ch3Trace);
+
+    TriggerLabel = laLabelWidget_New();
+    laWidget_SetSize((laWidget*)TriggerLabel, 100, 20);
+    laWidget_SetScheme((laWidget*)TriggerLabel, &ScopeScheme);
+    laWidget_SetBackgroundType((laWidget*)TriggerLabel, LA_WIDGET_BACKGROUND_NONE);
+    laWidget_SetBorderType((laWidget*)TriggerLabel, LA_WIDGET_BORDER_NONE);
+    laLabelWidget_SetHAlignment(TriggerLabel, LA_HALIGN_LEFT);
+    laWidget_AddChild((laWidget*)LogicAnalyzerPanel, (laWidget*)TriggerLabel);
+
+    UnimplementedPanel = laWidget_New();
+    laWidget_SetPosition((laWidget*)UnimplementedPanel, 0, 26);
+    laWidget_SetSize((laWidget*)UnimplementedPanel, 320, 194);
+    laWidget_SetScheme((laWidget*)UnimplementedPanel, &PanelScheme);
+    laWidget_SetBackgroundType((laWidget*)UnimplementedPanel, LA_WIDGET_BACKGROUND_FILL);
+    laWidget_SetBorderType((laWidget*)UnimplementedPanel, LA_WIDGET_BORDER_NONE);
+    laWidget_AddChild((laWidget*)layer0, UnimplementedPanel);
+
+    UnimplementedLabel = laLabelWidget_New();
+    laWidget_SetPosition((laWidget*)UnimplementedLabel, 100, 85);
+    laWidget_SetSize((laWidget*)UnimplementedLabel, 120, 25);
+    laWidget_SetScheme((laWidget*)UnimplementedLabel, &NormalTextScheme);
+    laWidget_SetBackgroundType((laWidget*)UnimplementedLabel, LA_WIDGET_BACKGROUND_FILL);
+    laWidget_SetBorderType((laWidget*)UnimplementedLabel, LA_WIDGET_BORDER_NONE);
+    laLabelWidget_SetText(UnimplementedLabel, laString_CreateFromID(string_Unimplemented));
+    laLabelWidget_SetHAlignment(UnimplementedLabel, LA_HALIGN_LEFT);
+    laWidget_AddChild((laWidget*)UnimplementedPanel, (laWidget*)UnimplementedLabel);
+
+    ListBox = laListWidget_New();
+    laWidget_SetPosition((laWidget*)ListBox, 50, 30);
+    laWidget_SetSize((laWidget*)ListBox, 220, 180);
+    laWidget_SetVisible((laWidget*)ListBox, LA_FALSE);
+    laWidget_SetOptimizationFlags((laWidget*)ListBox, LA_WIDGET_OPT_OPAQUE);
+    laWidget_SetScheme((laWidget*)ListBox, &defaultScheme);
+    laWidget_SetBackgroundType((laWidget*)ListBox, LA_WIDGET_BACKGROUND_FILL);
+    laWidget_SetBorderType((laWidget*)ListBox, LA_WIDGET_BORDER_LINE);
+    laListWidget_SetSelectionMode(ListBox, LA_LIST_WIDGET_SELECTION_MODE_SINGLE);
+    laListWidget_SetAllowEmptySelection(ListBox, LA_TRUE);
+    laListWidget_AppendItem(ListBox);
+    laWidget_AddChild((laWidget*)layer0, (laWidget*)ListBox);
 
 }
 

@@ -15,20 +15,19 @@ extern "C"
 #include "Display.h"
 #include "Utility.h"
 #include "ToolUART.h"
-#include "UART.h"
 #include "Menu.h"
 
 static const Help help("UART In", NULL, NULL, 
         "Displays incoming UART data.");
 
-extern const Menu uartBaud1;
+extern const Menu uartInBaud1;
 
 static const MenuItem baud3Items[5] = {
     MenuItem("19200", MenuType::ParentMenu, nullptr, CB(&ToolUART::Baud19200Selected)), 
     MenuItem("38400", MenuType::ParentMenu, nullptr, CB(&ToolUART::Baud38400Selected)), 
     MenuItem("57600", MenuType::ParentMenu, nullptr, CB(&ToolUART::Baud57600Selected)), 
     MenuItem("115200", MenuType::ParentMenu, nullptr, CB(&ToolUART::Baud115200Selected)), 
-    MenuItem("More" UTF8_RIGHTARROW, MenuType::SiblingMenu, &uartBaud1)};
+    MenuItem("More" UTF8_RIGHTARROW, MenuType::SiblingMenu, &uartInBaud1)};
 
 static const Menu uartBaud3(baud3Items);
 
@@ -48,41 +47,29 @@ static const MenuItem baud1Items[5] = {
     MenuItem("1200", MenuType::ParentMenu, nullptr, CB(&ToolUART::Baud1200Selected)), 
     MenuItem("More" UTF8_RIGHTARROW, MenuType::SiblingMenu, &uartBaud2)};
 
-const Menu uartBaud1(baud1Items);
+const Menu uartInBaud1(baud1Items);
 
 static const MenuItem menuItems[5] = {
-    MenuItem("Baud", MenuType::ChildMenu, &uartBaud1),
+    MenuItem("Baud", MenuType::ChildMenu, &uartInBaud1),
+    MenuItem("Clear", MenuType::NoChange, nullptr, CB(&ToolUART::Clear)),
     MenuItem(),
-    MenuItem(),
-    MenuItem(),
-    MenuItem()};
+    MenuItem(UTF8_UPARROW, MenuType::NoChange, nullptr, CB(&ToolUART::ScrollUp)),
+    MenuItem(UTF8_DOWNARROW, MenuType::NoChange, nullptr, CB(&ToolUART::ScrollDown))};
 
 static const Menu menu(menuItems);
 
-// Create a single terminal pane for the UART. Having a persistent pane means the
-// user can switch to other tools, then back to the UART and not lose the data.
-// But we can't have a static TerminalPane object because C would initialize it
-// before Aria starts up, and the pane is dependent on Aria
-static TerminalPane *UARTTerminalPane()
-{
-    static TerminalPane *terminalPane;
-    if (terminalPane == NULL)
-        terminalPane = new TerminalPane;
-    return terminalPane;
-}
-
 ToolUART::ToolUART() :
-    Tool("UART", UARTTerminalPane(), menu, help), _lastInputCaptureValid(false)
+    Tool("UART In", new TerminalPane, menu, help), _lastInputCaptureValid(false)
 {
-    UART3.RegisterReadCallback(&ToolUART::ByteReceived, this);
+    _uart.RegisterReadCallback(&ToolUART::ByteReceived, this);
 
-    UART3.SetInterruptPriorities();
-    UART3.Initialize();
-    UART_SERIAL_SETUP uss = {settings.uartBaud, UART_PARITY_NONE, UART_DATA_8_BIT, UART_STOP_1_BIT};
-    UART3.SerialSetup(&uss, 0);
-    UART3.SetRXPPS(RPD11); // UART 3 gets input from RPD11
+    _uart.SetInterruptPriorities();
+    _uart.Initialize();
+    UARTSerialSetup uss = {settings.uartBaud, UARTSerialSetup::UART8BitParityNone, 1};
+    _uart.SerialSetup(&uss, 0);
+    U3RXR = RPD11; // UART 3 gets input from RPD11
     TRISDbits.TRISD11 = 1;
-    UART3.EnableRXInterrupt();
+    _uart.EnableRXInterrupt();
     
     if (settings.uartAutobaud)
     {
@@ -93,18 +80,16 @@ ToolUART::ToolUART() :
     }
     else
         SetBaudRate(settings.uartBaud);
-     
-    GetPane()->Invalidate();
 }
 
 ToolUART::~ToolUART() 
 {
     StopAutoBaudDetection();
     
-    UART3.DisableRXInterrupt();
-    /* Turn OFF UART3 */
-    UART3.Disable();
-    UART3.UnregisterReadCallback();
+    _uart.DisableRXInterrupt();
+    /* Turn OFF _uart */
+    _uart.Disable();
+    _uart.UnregisterReadCallback();
 }
 
 uint32_t ToolUART::TimerFrequency()
@@ -115,8 +100,6 @@ uint32_t ToolUART::TimerFrequency()
         freq >>= 1;
     return freq;
 }
-
-uint32_t ics[1000], iccount;
 
 void ToolUART::OnIdle()
 {
@@ -129,34 +112,33 @@ void ToolUART::OnIdle()
     
     if (settings.uartAutobaud)
     {
-        bool error = InputCapture4.Error();
-        while (InputCapture4.DataReady())
+        bool error = _ic.Error();
+        while (_ic.DataReady())
         {
-            uint32_t ic = InputCapture4.ReadData();
-            if (iccount < 1000)
-                ics[iccount++] = ic;
+            uint32_t newCapture = _ic.ReadData();
             
             if (_lastInputCaptureValid)
             {
                 // If the timer has rolled over, don't use any IC values, because they might be really old
+                // (We're using TMR3:TMR2 as a 32 bit pair, so we look at TMR3's interrupt flag)a
                 if (IFS0bits.T3IF)
                 {
                     IFS0bits.T3IF = 0;
-                    while (InputCapture4.DataReady())
-                        InputCapture4.ReadData();
+                    while (_ic.DataReady())
+                        _ic.ReadData();
                     _lastInputCaptureValid = false;
                 }
                 // Else (the timer has not rolled over since the last IC)
                 else
                 {
-                    uint32_t baud = TimerFrequency() / (ic - _lastInputCapture);
+                    uint32_t baud = TimerFrequency() / (newCapture - _lastInputCapture);
                     if (baud > settings.uartBaud)
                         SetBaudRate(baud);
                 }
             }
             else
                 _lastInputCaptureValid = true;
-            _lastInputCapture = ic;
+            _lastInputCapture = newCapture;
         }
         
         // if the input capture buffer overflowed, the last IC we read might not
@@ -169,24 +151,40 @@ void ToolUART::OnIdle()
     GetPane()->Update();
 }
 
+void ToolUART::Clear()
+{
+    GetPane()->Clear();
+}
+
 void ToolUART::ByteReceived(void *context) 
 {
-    while (UART3.RXReady())
-        ((ToolUART *) context)->_receiveQueue.write(UART3.RXData());
+    ToolUART *toolUART = (ToolUART *) context;
+    while (toolUART->_uart.RXReady())
+        toolUART->_receiveQueue.write(toolUART->_uart.RXData());
 }
 
 void ToolUART::SetBaudRate(int baud)
 {
     settings.uartBaud = baud;
     SettingsModified();
-    UART_SERIAL_SETUP setup = {settings.uartBaud, UART_PARITY_NONE, UART_DATA_8_BIT, UART_STOP_1_BIT};
-    UART3.SerialSetup(&setup, 0);
+    UARTSerialSetup setup = {settings.uartBaud, UARTSerialSetup::UART8BitParityNone, 1};
+    _uart.SerialSetup(&setup, 0);
     
     char buf[10];
     sprintf(buf, "%d", settings.uartBaud);
     if (settings.uartAutobaud)
         strcat(buf, "*");
     SetStatusText(buf);
+}
+
+void ToolUART::ScrollUp()
+{
+    GetPane()->ScrollUp();
+}
+
+void ToolUART::ScrollDown()
+{
+    GetPane()->ScrollDown();
 }
 
 void ToolUART::AutoBaudSelected()
@@ -207,12 +205,14 @@ void ToolUART::StartAutoBaudDetection()
     {
         settings.uartAutobaud = true;
         IFS0bits.T2IF = 0;
-        InputCapture4.SetPPS(RPD11); // UART 3 gets input from RPD11, and so does IC4
+        IC4R = RPD11; // UART 3 gets input from RPD11, and so does IC4
         TMR2_Initialize();
         TMR2_PeriodSet(0xffffffff);
         TMR2_Start();
-        InputCapture4.Initialize();
-        InputCapture4.Enable();
+        _ic.Initialize(_ic.EveryEdge, _ic.Timer32Bit);
+        _ic.Enable();
+        while (_ic.DataReady())
+            _ic.ReadData();
         _lastInputCaptureValid = false;
     }
     SetBaudRate(110);
@@ -223,7 +223,7 @@ void ToolUART::StopAutoBaudDetection()
 {
     if (settings.uartAutobaud)
     {
-        InputCapture4.Disable();
+        _ic.Disable();
         TMR2_Stop();
         settings.uartAutobaud = false;
         SettingsModified();

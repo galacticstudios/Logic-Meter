@@ -79,7 +79,7 @@ extern "C" {
 #define LA_LABEL_WIDGET_ENABLED            1
 #define LA_LINE_WIDGET_ENABLED             1
 #define LA_LINE_GRAPH_WIDGET_ENABLED       1
-#define LA_LIST_WIDGET_ENABLED             0
+#define LA_LIST_WIDGET_ENABLED             1
 #define LA_LISTWHEEL_WIDGET_ENABLED        0
 #define LA_PIE_CHART_WIDGET_ENABLED        0
 #define LA_PROGRESSBAR_WIDGET_ENABLED      0

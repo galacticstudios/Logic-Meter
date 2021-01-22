@@ -59,16 +59,16 @@
 // *****************************************************************************
 
 
-void TIMER_1_InterruptHandler( void );
+void TIMER_4_InterruptHandler( void );
 void DRV_USBHS_InterruptHandler( void );
 void DRV_USBHS_DMAInterruptHandler( void );
 
 
 
 /* All the handlers are defined here.  Each will call its PLIB-specific function. */
-void __ISR(_TIMER_1_VECTOR, ipl1AUTO) TIMER_1_Handler (void)
+void __ISR(_TIMER_4_VECTOR, ipl1AUTO) TIMER_4_Handler (void)
 {
-    TIMER_1_InterruptHandler();
+    TIMER_4_InterruptHandler();
 }
 
 void __ISR(_USB_VECTOR, ipl1AUTO) USB_Handler (void)

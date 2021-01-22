@@ -825,6 +825,31 @@ LIB_EXPORT laResult laListWidget_SetItemIcon(laListWidget* lst,
                                              uint32_t idx,
                                               GFXU_ImageAsset* img);
 
+// BA added function:
+// *****************************************************************************
+/* Function:
+    laBool laListWidget_IsItemVisible(laListWidget* lst,
+                                         uint32_t index)
+
+  Summary:
+
+
+  Description:
+
+
+  Parameters:
+    laListWidget* lst - the widget
+    uint32_t index - the index to modify
+
+  Returns:
+    laBool - true if the item is visible
+
+  Remarks:
+
+*/
+LIB_EXPORT laBool laListWidget_IstItemVisible(laListWidget* lst,
+                                                uint32_t idx);
+
 // *****************************************************************************
 /* Function:
     laResult laListWidget_SetItemVisible(laListWidget* lst,

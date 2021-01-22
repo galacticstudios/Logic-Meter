@@ -20,58 +20,72 @@ extern "C"
 static const Help help("SPI In", "SPI Clock", "SPI Select (optional)", 
         "Displays incoming SPI data.");
 
-extern const Menu spiMenu;
+static const MenuItem chipSelMenuItems[5] = {
+    MenuItem("Always", MenuType::ParentMenu, NULL, CB(&ToolSPI::ToolSPI::SS0)),
+    MenuItem("Pin B", MenuType::ParentMenu, NULL, CB(&ToolSPI::ToolSPI::SSB)),
+    MenuItem(),
+    MenuItem(),
+    MenuItem("Cancel", MenuType::ParentMenu)};
 
-static const MenuItem menu2Items[5] = {
+static const Menu chipSelMenu(chipSelMenuItems);
+
+static const MenuItem modeMenuItems[5] = {
     MenuItem("CPOL 0", MenuType::NoChange, NULL, CB(&ToolSPI::Polarity0)),
     MenuItem("CPOL 1", MenuType::NoChange, NULL, CB(&ToolSPI::Polarity1)),
     MenuItem("CPHA 0", MenuType::NoChange, NULL, CB(&ToolSPI::Phase0)),
     MenuItem("CPHA 1", MenuType::NoChange, NULL, CB(&ToolSPI::Phase1)),
-    MenuItem("~SS=0", MenuType::SiblingMenu, &spiMenu, CB(&ToolSPI::SS0))};
+    MenuItem("Done", MenuType::ParentMenu)};
 
-static const Menu menu2(menu2Items);
+static const Menu modeMenu(modeMenuItems);
+
+static const MenuItem widthMenuItems[5] = {
+    MenuItem("8 bits", MenuType::ParentMenu, NULL, CB(&ToolSPI::Width8)),
+    MenuItem("16 bits", MenuType::ParentMenu, NULL, CB(&ToolSPI::Width16)),
+    MenuItem("32 bits", MenuType::ParentMenu, NULL, CB(&ToolSPI::Width32)),
+    MenuItem(),
+    MenuItem("Cancel", MenuType::ParentMenu)};
+
+static const Menu widthMenu(widthMenuItems);
+
+static const MenuItem setupMenuItems[5] = {
+    //MenuItem("Width", MenuType::ChildMenu, &widthMenu),
+    MenuItem("Mode", MenuType::ChildMenu, &modeMenu),
+    MenuItem("~CS", MenuType::ChildMenu, &chipSelMenu),
+    MenuItem(),
+    MenuItem(),
+    MenuItem("Done", MenuType::ParentMenu)};
+
+static const Menu spiSetupMenu(setupMenuItems);
 
 static const MenuItem menuItems[5] = {
-    MenuItem("CPOL 0", MenuType::NoChange, NULL, CB(&ToolSPI::Polarity0)),
-    MenuItem("CPOL 1", MenuType::NoChange, NULL, CB(&ToolSPI::Polarity1)),
-    MenuItem("CPHA 0", MenuType::NoChange, NULL, CB(&ToolSPI::Phase0)),
-    MenuItem("CPHA 1", MenuType::NoChange, NULL, CB(&ToolSPI::Phase1)),
-    MenuItem("~SS=B", MenuType::SiblingMenu, &menu2, CB(&ToolSPI::SSB))};
+    MenuItem("Setup", MenuType::ChildMenu, &spiSetupMenu),
+    MenuItem("Clear", MenuType::NoChange, nullptr, CB(&ToolSPI::Clear)),
+    MenuItem(),
+    MenuItem(UTF8_UPARROW, MenuType::NoChange, nullptr, CB(&ToolSPI::ScrollUp)),
+    MenuItem(UTF8_DOWNARROW, MenuType::NoChange, nullptr, CB(&ToolSPI::ScrollDown))};
 
-const Menu spiMenu(menuItems);
-
-// Create a single terminal pane for the SPI. Having a persistent pane means the
-// user can switch to other tools, then back to the SPI and not lose the data.
-// But we can't have a static TerminalPane object because C would initialize it
-// before Aria starts up, and the pane is dependent on Aria
-static TerminalPane *SPITerminalPane()
-{
-    static TerminalPane *terminalPane;
-    if (terminalPane == NULL)
-        terminalPane = new TerminalPane(true);
-    return terminalPane;
-}
+static const Menu menu(menuItems);
 
 ToolSPI::ToolSPI() :
-    Tool("SPI", SPITerminalPane(), spiMenu, help)
+    Tool("SPI In", new TerminalPane(), menu, help)
 {
     _spi.RegisterReadCallback(&ToolSPI::DataReceived, this);
+    _spi.RegisterFaultCallback(&ToolSPI::SPIFault, this);
 
     _spi.Initialize(false, 0, true);
     _spi.SetInterruptPriorities();
     _spi.SetMode(settings.spiPolarity, settings.spiPhase);
-    _spi.SetDIPPS(RPD11);
-    _spi.SetSSPPS(RPD4);
+    SDI4R = RPD11;
+    SS4R = RPD4;
     _spi.UseSPISelect(settings.spiUseSelect);
     TRISDbits.TRISD11 = 1;
     TRISDbits.TRISD10 = 1;
     TRISDbits.TRISD4 = 1;
     _spi.EnableRXInterrupt();
+    _spi.EnableFaultInterrupt();
     _spi.Enable();
     
     DisplayStatus();
-     
-    GetPane()->Invalidate();
 }
 
 ToolSPI::~ToolSPI() 
@@ -97,7 +111,16 @@ void ToolSPI::DataReceived(void *context)
 {
     ToolSPI *spi = ((ToolSPI *) context);
     while (spi->_spi.RXReady())
-        spi->_receiveQueue.write(spi->_spi.RXData());
+    {
+        uint32_t data = spi->_spi.RXData();
+        spi->_receiveQueue.writeUnsafe(data);
+    }
+}
+
+void ToolSPI::SPIFault(void *context) 
+{
+    ToolSPI *spi = ((ToolSPI *) context);
+    spi->_spi.ClearReceiveOverrun();
 }
 
 void ToolSPI::Polarity0()
@@ -154,10 +177,9 @@ void ToolSPI::Phase1()
 
 void ToolSPI::DisplayStatus()
 {
-    static char buf[] = "CPOL x; CPHA y; ~SS=z";
-    buf[5] = settings.spiPolarity + '0';
-    buf[13] = settings.spiPhase + '0';
-    buf[20] = settings.spiUseSelect ? 'B' : '0';
+    char buf[20];
+    sprintf(buf, /*"%2db; "*/ "CPOL %d; CPHA %d; ~SS=%c",
+            /*settings.spiWidth,*/ settings.spiPolarity, settings.spiPhase, settings.spiUseSelect ? 'B' : '0');
     SetStatusText(buf);
 }
 
@@ -187,4 +209,32 @@ void ToolSPI::SS0()
         _spi.Enable();
         DisplayStatus();
     }
+}
+
+void ToolSPI::Width(int width)
+{
+    if (settings.spiWidth != width)
+    {
+        settings.spiWidth = uint8_t(width);
+        SettingsModified();
+        _spi.Disable();
+        _spi.SetWidth(width);
+        _spi.Enable();
+        DisplayStatus();
+    }
+}
+
+void ToolSPI::Clear()
+{
+    GetPane()->Clear();
+}
+
+void ToolSPI::ScrollUp()
+{
+    GetPane()->ScrollUp();
+}
+
+void ToolSPI::ScrollDown()
+{
+    GetPane()->ScrollDown();
 }

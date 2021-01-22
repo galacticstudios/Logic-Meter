@@ -122,7 +122,7 @@ extern GFXU_FontAsset Arial20;
  * Name:         stringTable
  * Encoding:     UTF8
  * Languages:    default
- * String Count: 17
+ * String Count: 18
  ***********************************/
 // language IDs
 #define language_default    0
@@ -134,17 +134,18 @@ extern GFXU_FontAsset Arial20;
 #define string_SampleTime    3
 #define string_SpecialCharsMono    4
 #define string_SpecialCharsRegular    5
-#define string_VfColonString    6
-#define string_VfString    7
-#define string_WorldMapCursorChar    8
-#define string_mAString    9
-#define string_n0String    10
-#define string_n10String    11
-#define string_n1_0String    12
-#define string_n20String    13
-#define string_n2_0String    14
-#define string_n30String    15
-#define string_n3_0String    16
+#define string_Unimplemented    6
+#define string_VfColonString    7
+#define string_VfString    8
+#define string_WorldMapCursorChar    9
+#define string_mAString    10
+#define string_n0String    11
+#define string_n10String    12
+#define string_n1_0String    13
+#define string_n20String    14
+#define string_n2_0String    15
+#define string_n30String    16
+#define string_n3_0String    17
  
 extern GFXU_StringTableAsset stringTable;
 

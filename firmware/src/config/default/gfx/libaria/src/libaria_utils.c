@@ -755,6 +755,8 @@ laBool laUtils_WidgetIsOccluded(laWidget* wgt, const GFX_Rect* rect)
     {
         targetRect = laUtils_WidgetLayerRect(target);
         
+// BA added this code because Aria wasn't checking whether a widget's parent(s)
+// are visible when determining if a widget is visible
         laBool  visible = target->visible;
         laWidget *targetParent = target->parent;
         while (targetParent && visible)

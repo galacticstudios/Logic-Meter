@@ -8,11 +8,11 @@
 #ifndef TOOLSERVO_H
 #define	TOOLSERVO_H
 
-#include "Tool.h"
+#include "ToolPWMBase.h"
 #include "fixed.h"
 #include "SquareWavePane.h"
 
-class ToolServo : public Tool 
+class ToolServo : public ToolPWMBase 
 {
 public:
     static Tool *Factory() {return new ToolServo;}
@@ -27,12 +27,14 @@ public:
     void Right();
     void Done();
     
+protected:
+  fixed GetPeriod()const;
+  fixed GetDuty() const {return _duty;}
+    
 private:
     ToolServo(const ToolServo& orig);
     
     SquareWavePane *GetPane() const {return (SquareWavePane *) Tool::GetPane();}
-  
-    void UpdateServo();
     
     fixed _duty;
 };

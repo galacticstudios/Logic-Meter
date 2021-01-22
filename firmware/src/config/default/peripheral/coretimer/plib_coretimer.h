@@ -47,11 +47,11 @@
 	extern "C" {
 #endif
 
-#define CORE_TIMER_FREQUENCY    49500000
+#define CORE_TIMER_FREQUENCY    100000000
 
 
 
-#define CORE_TIMER_COMPARE_VALUE    0xc15c
+#define CORE_TIMER_COMPARE_VALUE    0x186a0
 
 void CORETIMER_Initialize();
 void CORETIMER_DelayMs ( uint32_t delay_ms);

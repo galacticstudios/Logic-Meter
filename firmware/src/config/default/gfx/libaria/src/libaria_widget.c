@@ -709,6 +709,7 @@ laResult laWidget_SetOptimizationFlags(laWidget* wgt, uint32_t val)
     return LA_SUCCESS;
 }
 
+// BA fixed the function name to match the documentation
 laResult laWidget_GetMargin(laWidget* wgt, laMargin* mg)
 {
     if(wgt == NULL)

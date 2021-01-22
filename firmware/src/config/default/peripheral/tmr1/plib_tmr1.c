@@ -72,7 +72,7 @@ void TMR1_Initialize(void)
     TMR1 = 0x0;
 
     /*Set period */
-    PR1 = 12374;
+    PR1 = 12498;
 
     /* Setup TMR1 Interrupt */
     TMR1_InterruptEnable();  /* Enable interrupt on the way out */
@@ -110,7 +110,7 @@ uint16_t TMR1_CounterGet(void)
 
 uint32_t TMR1_FrequencyGet(void)
 {
-    return (12375000);
+    return (12500000);
 }
 
 void TIMER_1_InterruptHandler (void)

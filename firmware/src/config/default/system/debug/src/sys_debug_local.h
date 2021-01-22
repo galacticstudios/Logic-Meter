@@ -1,22 +1,22 @@
 /*******************************************************************************
-  UART3 PLIB
+  Debug System Service Local Data Structures
 
   Company:
     Microchip Technology Inc.
 
   File Name:
-    plib_uart3.h
+    sys_debug_local.h
 
   Summary:
-    UART3 PLIB Header File
+    Debug System Service local declarations and definitions.
 
   Description:
-    None
-
+    This file contains the Debug System Service local declarations and definitions.
 *******************************************************************************/
 
+//DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2019 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2018 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -37,15 +37,19 @@
 * ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *******************************************************************************/
+//DOM-IGNORE-END
 
-#ifndef PLIB_UART3_H
-#define PLIB_UART3_H
+#ifndef SYS_DEBUG_LOCAL_H
+#define SYS_DEBUG_LOCAL_H
 
-#include <stddef.h>
-#include <stdbool.h>
-#include <stdint.h>
-#include "device.h"
-#include "plib_uart_common.h"
+// *****************************************************************************
+// *****************************************************************************
+// Section: File includes
+// *****************************************************************************
+// *****************************************************************************
+
+#include "configuration.h"
+#include "driver/driver.h"
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
@@ -57,40 +61,35 @@
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: Interface
+// Section: Data Type Definitions
 // *****************************************************************************
 // *****************************************************************************
 
-#define UART3_FrequencyGet()    (uint32_t)(99000000UL)
+// *****************************************************************************
+/* SYS DEBUG OBJECT INSTANCE structure
 
-/****************************** UART3 API *********************************/
+  Summary:
+    System Debug object instance structure.
 
-void UART3_Initialize( void );
+  Description:
+    This data type defines the System Debug object instance.
 
-bool UART3_SerialSetup( UART_SERIAL_SETUP *setup, uint32_t srcClkFreq );
+  Remarks:
+    None.
+*/
 
-bool UART3_Write( void *buffer, const size_t size );
+typedef struct
+{
+    SYS_STATUS                        status;
+    SYS_MODULE_INDEX                  debugConsole;
+} SYS_DEBUG_INSTANCE;
 
-bool UART3_Read( void *buffer, const size_t size );
-
-UART_ERROR UART3_ErrorGet( void );
-
-int UART3_ReadByte( void );
-
-bool UART3_ReceiverIsReady( void );
-
-void UART3_WriteByte( int data );
-
-bool UART3_TransmitterIsReady( void );
-
-bool UART3_TransmitComplete( void );
-
-// DOM-IGNORE-BEGIN
-#ifdef __cplusplus  // Provide C++ Compatibility
+//DOM-IGNORE-BEGIN
+#ifdef __cplusplus
 
     }
 
 #endif
-// DOM-IGNORE-END
+//DOM-IGNORE-END
 
-#endif // PLIB_UART3_H
+#endif //#ifndef SYS_DEBUG_LOCAL_H

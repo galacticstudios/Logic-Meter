@@ -107,7 +107,7 @@ uint32_t TMR2_CounterGet(void)
 
 uint32_t TMR2_FrequencyGet(void)
 {
-    return (99000000);
+    return (100000000);
 }
 
 

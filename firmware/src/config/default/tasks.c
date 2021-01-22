@@ -53,6 +53,8 @@
 #include "configuration.h"
 #include "definitions.h"
 
+// BA added
+extern bool IsLCDUpdateBusy();
 
 
 
@@ -73,10 +75,15 @@ void SYS_Tasks ( void )
 {
     /* Maintain system services */
     
+SYS_FS_Tasks();
+
+
 
     /* Maintain Device Drivers */
     
     GFX_Update();
+
+DRV_MEMORY_Tasks(sysObj.drvMemory0);
 
 
 
@@ -87,8 +94,9 @@ void SYS_Tasks ( void )
     /* USBHS Driver Task Routine */ 
     DRV_USBHS_Tasks(sysObj.drvUSBHSObject);
 
-
-    LibAria_Tasks();
+    // BA don't start repainting the image buffer until it's been sent to the LCD
+    if (!IsLCDUpdateBusy())
+        LibAria_Tasks();
 
 
 
@@ -96,8 +104,8 @@ void SYS_Tasks ( void )
         /* Call Application task APP. */
     APP_Tasks();
 
-    /* Call Application task USBCDC. */
-    USBCDC_Tasks();
+    /* Call Application task CONSOLE. */
+    CONSOLE_Tasks();
 
 
 

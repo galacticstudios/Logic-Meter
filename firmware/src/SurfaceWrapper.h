@@ -9,6 +9,10 @@
 #define	SURFACEWRAPPER_H
 
 #include <vector>
+extern "C" 
+{
+#include "definitions.h"
+}
 
 struct laDrawSurfaceWidget_t;
 typedef laDrawSurfaceWidget_t laDrawSurfaceWidget;

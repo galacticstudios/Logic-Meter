@@ -61,22 +61,22 @@
 // *****************************************************************************
 // *****************************************************************************
 
-/*** Macros for Button2 pin ***/
-#define Button2_Set()               (LATESET = (1<<5))
-#define Button2_Clear()             (LATECLR = (1<<5))
-#define Button2_Toggle()            (LATEINV= (1<<5))
-#define Button2_Get()               ((PORTE >> 5) & 0x1)
-#define Button2_OutputEnable()      (TRISECLR = (1<<5))
-#define Button2_InputEnable()       (TRISESET = (1<<5))
-#define Button2_PIN                  GPIO_PIN_RE5
-/*** Macros for Button1 pin ***/
-#define Button1_Set()               (LATESET = (1<<6))
-#define Button1_Clear()             (LATECLR = (1<<6))
-#define Button1_Toggle()            (LATEINV= (1<<6))
-#define Button1_Get()               ((PORTE >> 6) & 0x1)
-#define Button1_OutputEnable()      (TRISECLR = (1<<6))
-#define Button1_InputEnable()       (TRISESET = (1<<6))
-#define Button1_PIN                  GPIO_PIN_RE6
+/*** Macros for GFX_DISP_INTF_PIN_RSDC pin ***/
+#define GFX_DISP_INTF_PIN_RSDC_Set()               (LATESET = (1<<6))
+#define GFX_DISP_INTF_PIN_RSDC_Clear()             (LATECLR = (1<<6))
+#define GFX_DISP_INTF_PIN_RSDC_Toggle()            (LATEINV= (1<<6))
+#define GFX_DISP_INTF_PIN_RSDC_Get()               ((PORTE >> 6) & 0x1)
+#define GFX_DISP_INTF_PIN_RSDC_OutputEnable()      (TRISECLR = (1<<6))
+#define GFX_DISP_INTF_PIN_RSDC_InputEnable()       (TRISESET = (1<<6))
+#define GFX_DISP_INTF_PIN_RSDC_PIN                  GPIO_PIN_RE6
+/*** Macros for GFX_DISP_INTF_PIN_RESET pin ***/
+#define GFX_DISP_INTF_PIN_RESET_Set()               (LATESET = (1<<7))
+#define GFX_DISP_INTF_PIN_RESET_Clear()             (LATECLR = (1<<7))
+#define GFX_DISP_INTF_PIN_RESET_Toggle()            (LATEINV= (1<<7))
+#define GFX_DISP_INTF_PIN_RESET_Get()               ((PORTE >> 7) & 0x1)
+#define GFX_DISP_INTF_PIN_RESET_OutputEnable()      (TRISECLR = (1<<7))
+#define GFX_DISP_INTF_PIN_RESET_InputEnable()       (TRISESET = (1<<7))
+#define GFX_DISP_INTF_PIN_RESET_PIN                  GPIO_PIN_RE7
 /*** Macros for GPIO_RB5 pin ***/
 #define GPIO_RB5_Set()               (LATBSET = (1<<5))
 #define GPIO_RB5_Clear()             (LATBCLR = (1<<5))
@@ -101,14 +101,14 @@
 #define GPIO_RB3_OutputEnable()      (TRISBCLR = (1<<3))
 #define GPIO_RB3_InputEnable()       (TRISBSET = (1<<3))
 #define GPIO_RB3_PIN                  GPIO_PIN_RB3
-/*** Macros for GFX_DISP_INTF_PIN_RSDC pin ***/
-#define GFX_DISP_INTF_PIN_RSDC_Set()               (LATBSET = (1<<2))
-#define GFX_DISP_INTF_PIN_RSDC_Clear()             (LATBCLR = (1<<2))
-#define GFX_DISP_INTF_PIN_RSDC_Toggle()            (LATBINV= (1<<2))
-#define GFX_DISP_INTF_PIN_RSDC_Get()               ((PORTB >> 2) & 0x1)
-#define GFX_DISP_INTF_PIN_RSDC_OutputEnable()      (TRISBCLR = (1<<2))
-#define GFX_DISP_INTF_PIN_RSDC_InputEnable()       (TRISBSET = (1<<2))
-#define GFX_DISP_INTF_PIN_RSDC_PIN                  GPIO_PIN_RB2
+/*** Macros for GPIO_RB2 pin ***/
+#define GPIO_RB2_Set()               (LATBSET = (1<<2))
+#define GPIO_RB2_Clear()             (LATBCLR = (1<<2))
+#define GPIO_RB2_Toggle()            (LATBINV= (1<<2))
+#define GPIO_RB2_Get()               ((PORTB >> 2) & 0x1)
+#define GPIO_RB2_OutputEnable()      (TRISBCLR = (1<<2))
+#define GPIO_RB2_InputEnable()       (TRISBSET = (1<<2))
+#define GPIO_RB2_PIN                  GPIO_PIN_RB2
 /*** Macros for GPIO_RB1 pin ***/
 #define GPIO_RB1_Set()               (LATBSET = (1<<1))
 #define GPIO_RB1_Clear()             (LATBCLR = (1<<1))
@@ -125,14 +125,46 @@
 #define GPIO_RB0_OutputEnable()      (TRISBCLR = (1<<0))
 #define GPIO_RB0_InputEnable()       (TRISBSET = (1<<0))
 #define GPIO_RB0_PIN                  GPIO_PIN_RB0
-/*** Macros for GFX_DISP_INTF_PIN_RESET pin ***/
-#define GFX_DISP_INTF_PIN_RESET_Set()               (LATBSET = (1<<7))
-#define GFX_DISP_INTF_PIN_RESET_Clear()             (LATBCLR = (1<<7))
-#define GFX_DISP_INTF_PIN_RESET_Toggle()            (LATBINV= (1<<7))
-#define GFX_DISP_INTF_PIN_RESET_Get()               ((PORTB >> 7) & 0x1)
-#define GFX_DISP_INTF_PIN_RESET_OutputEnable()      (TRISBCLR = (1<<7))
-#define GFX_DISP_INTF_PIN_RESET_InputEnable()       (TRISBSET = (1<<7))
-#define GFX_DISP_INTF_PIN_RESET_PIN                  GPIO_PIN_RB7
+/*** Macros for GPIO_RB6 pin ***/
+#define GPIO_RB6_Set()               (LATBSET = (1<<6))
+#define GPIO_RB6_Clear()             (LATBCLR = (1<<6))
+#define GPIO_RB6_Toggle()            (LATBINV= (1<<6))
+#define GPIO_RB6_Get()               ((PORTB >> 6) & 0x1)
+#define GPIO_RB6_OutputEnable()      (TRISBCLR = (1<<6))
+#define GPIO_RB6_InputEnable()       (TRISBSET = (1<<6))
+#define GPIO_RB6_PIN                  GPIO_PIN_RB6
+/*** Macros for GPIO_RB7 pin ***/
+#define GPIO_RB7_Set()               (LATBSET = (1<<7))
+#define GPIO_RB7_Clear()             (LATBCLR = (1<<7))
+#define GPIO_RB7_Toggle()            (LATBINV= (1<<7))
+#define GPIO_RB7_Get()               ((PORTB >> 7) & 0x1)
+#define GPIO_RB7_OutputEnable()      (TRISBCLR = (1<<7))
+#define GPIO_RB7_InputEnable()       (TRISBSET = (1<<7))
+#define GPIO_RB7_PIN                  GPIO_PIN_RB7
+/*** Macros for GPIO_RB8 pin ***/
+#define GPIO_RB8_Set()               (LATBSET = (1<<8))
+#define GPIO_RB8_Clear()             (LATBCLR = (1<<8))
+#define GPIO_RB8_Toggle()            (LATBINV= (1<<8))
+#define GPIO_RB8_Get()               ((PORTB >> 8) & 0x1)
+#define GPIO_RB8_OutputEnable()      (TRISBCLR = (1<<8))
+#define GPIO_RB8_InputEnable()       (TRISBSET = (1<<8))
+#define GPIO_RB8_PIN                  GPIO_PIN_RB8
+/*** Macros for GPIO_RB9 pin ***/
+#define GPIO_RB9_Set()               (LATBSET = (1<<9))
+#define GPIO_RB9_Clear()             (LATBCLR = (1<<9))
+#define GPIO_RB9_Toggle()            (LATBINV= (1<<9))
+#define GPIO_RB9_Get()               ((PORTB >> 9) & 0x1)
+#define GPIO_RB9_OutputEnable()      (TRISBCLR = (1<<9))
+#define GPIO_RB9_InputEnable()       (TRISBSET = (1<<9))
+#define GPIO_RB9_PIN                  GPIO_PIN_RB9
+/*** Macros for GPIO_RB10 pin ***/
+#define GPIO_RB10_Set()               (LATBSET = (1<<10))
+#define GPIO_RB10_Clear()             (LATBCLR = (1<<10))
+#define GPIO_RB10_Toggle()            (LATBINV= (1<<10))
+#define GPIO_RB10_Get()               ((PORTB >> 10) & 0x1)
+#define GPIO_RB10_OutputEnable()      (TRISBCLR = (1<<10))
+#define GPIO_RB10_InputEnable()       (TRISBSET = (1<<10))
+#define GPIO_RB10_PIN                  GPIO_PIN_RB10
 /*** Macros for Selector2 pin ***/
 #define Selector2_Set()               (LATBSET = (1<<11))
 #define Selector2_Clear()             (LATBCLR = (1<<11))
@@ -141,14 +173,14 @@
 #define Selector2_OutputEnable()      (TRISBCLR = (1<<11))
 #define Selector2_InputEnable()       (TRISBSET = (1<<11))
 #define Selector2_PIN                  GPIO_PIN_RB11
-/*** Macros for Selector3 pin ***/
-#define Selector3_Set()               (LATBSET = (1<<12))
-#define Selector3_Clear()             (LATBCLR = (1<<12))
-#define Selector3_Toggle()            (LATBINV= (1<<12))
-#define Selector3_Get()               ((PORTB >> 12) & 0x1)
-#define Selector3_OutputEnable()      (TRISBCLR = (1<<12))
-#define Selector3_InputEnable()       (TRISBSET = (1<<12))
-#define Selector3_PIN                  GPIO_PIN_RB12
+/*** Macros for GPIO_RB12 pin ***/
+#define GPIO_RB12_Set()               (LATBSET = (1<<12))
+#define GPIO_RB12_Clear()             (LATBCLR = (1<<12))
+#define GPIO_RB12_Toggle()            (LATBINV= (1<<12))
+#define GPIO_RB12_Get()               ((PORTB >> 12) & 0x1)
+#define GPIO_RB12_OutputEnable()      (TRISBCLR = (1<<12))
+#define GPIO_RB12_InputEnable()       (TRISBSET = (1<<12))
+#define GPIO_RB12_PIN                  GPIO_PIN_RB12
 /*** Macros for Selector4 pin ***/
 #define Selector4_Set()               (LATBSET = (1<<13))
 #define Selector4_Clear()             (LATBCLR = (1<<13))
@@ -157,6 +189,14 @@
 #define Selector4_OutputEnable()      (TRISBCLR = (1<<13))
 #define Selector4_InputEnable()       (TRISBSET = (1<<13))
 #define Selector4_PIN                  GPIO_PIN_RB13
+/*** Macros for GPIO_RB14 pin ***/
+#define GPIO_RB14_Set()               (LATBSET = (1<<14))
+#define GPIO_RB14_Clear()             (LATBCLR = (1<<14))
+#define GPIO_RB14_Toggle()            (LATBINV= (1<<14))
+#define GPIO_RB14_Get()               ((PORTB >> 14) & 0x1)
+#define GPIO_RB14_OutputEnable()      (TRISBCLR = (1<<14))
+#define GPIO_RB14_InputEnable()       (TRISBSET = (1<<14))
+#define GPIO_RB14_PIN                  GPIO_PIN_RB14
 /*** Macros for Selector6 pin ***/
 #define Selector6_Set()               (LATBSET = (1<<15))
 #define Selector6_Clear()             (LATBCLR = (1<<15))
@@ -173,22 +213,22 @@
 #define GPIO_RC12_OutputEnable()      (TRISCCLR = (1<<12))
 #define GPIO_RC12_InputEnable()       (TRISCSET = (1<<12))
 #define GPIO_RC12_PIN                  GPIO_PIN_RC12
-/*** Macros for GPIO_RC15 pin ***/
-#define GPIO_RC15_Set()               (LATCSET = (1<<15))
-#define GPIO_RC15_Clear()             (LATCCLR = (1<<15))
-#define GPIO_RC15_Toggle()            (LATCINV= (1<<15))
-#define GPIO_RC15_Get()               ((PORTC >> 15) & 0x1)
-#define GPIO_RC15_OutputEnable()      (TRISCCLR = (1<<15))
-#define GPIO_RC15_InputEnable()       (TRISCSET = (1<<15))
-#define GPIO_RC15_PIN                  GPIO_PIN_RC15
-/*** Macros for GPIO_RF3 pin ***/
-#define GPIO_RF3_Set()               (LATFSET = (1<<3))
-#define GPIO_RF3_Clear()             (LATFCLR = (1<<3))
-#define GPIO_RF3_Toggle()            (LATFINV= (1<<3))
-#define GPIO_RF3_Get()               ((PORTF >> 3) & 0x1)
-#define GPIO_RF3_OutputEnable()      (TRISFCLR = (1<<3))
-#define GPIO_RF3_InputEnable()       (TRISFSET = (1<<3))
-#define GPIO_RF3_PIN                  GPIO_PIN_RF3
+/*** Macros for Button4 pin ***/
+#define Button4_Set()               (LATCSET = (1<<15))
+#define Button4_Clear()             (LATCCLR = (1<<15))
+#define Button4_Toggle()            (LATCINV= (1<<15))
+#define Button4_Get()               ((PORTC >> 15) & 0x1)
+#define Button4_OutputEnable()      (TRISCCLR = (1<<15))
+#define Button4_InputEnable()       (TRISCSET = (1<<15))
+#define Button4_PIN                  GPIO_PIN_RC15
+/*** Macros for Button3 pin ***/
+#define Button3_Set()               (LATFSET = (1<<3))
+#define Button3_Clear()             (LATFCLR = (1<<3))
+#define Button3_Toggle()            (LATFINV= (1<<3))
+#define Button3_Get()               ((PORTF >> 3) & 0x1)
+#define Button3_OutputEnable()      (TRISFCLR = (1<<3))
+#define Button3_InputEnable()       (TRISFSET = (1<<3))
+#define Button3_PIN                  GPIO_PIN_RF3
 /*** Macros for PrimaryF4 pin ***/
 #define PrimaryF4_Set()               (LATFSET = (1<<4))
 #define PrimaryF4_Clear()             (LATFCLR = (1<<4))
@@ -237,22 +277,22 @@
 #define PrimaryD0_OutputEnable()      (TRISDCLR = (1<<0))
 #define PrimaryD0_InputEnable()       (TRISDSET = (1<<0))
 #define PrimaryD0_PIN                  GPIO_PIN_RD0
-/*** Macros for Selector5 pin ***/
-#define Selector5_Set()               (LATCSET = (1<<13))
-#define Selector5_Clear()             (LATCCLR = (1<<13))
-#define Selector5_Toggle()            (LATCINV= (1<<13))
-#define Selector5_Get()               ((PORTC >> 13) & 0x1)
-#define Selector5_OutputEnable()      (TRISCCLR = (1<<13))
-#define Selector5_InputEnable()       (TRISCSET = (1<<13))
-#define Selector5_PIN                  GPIO_PIN_RC13
-/*** Macros for Selector7 pin ***/
-#define Selector7_Set()               (LATCSET = (1<<14))
-#define Selector7_Clear()             (LATCCLR = (1<<14))
-#define Selector7_Toggle()            (LATCINV= (1<<14))
-#define Selector7_Get()               ((PORTC >> 14) & 0x1)
-#define Selector7_OutputEnable()      (TRISCCLR = (1<<14))
-#define Selector7_InputEnable()       (TRISCSET = (1<<14))
-#define Selector7_PIN                  GPIO_PIN_RC14
+/*** Macros for Button2 pin ***/
+#define Button2_Set()               (LATCSET = (1<<13))
+#define Button2_Clear()             (LATCCLR = (1<<13))
+#define Button2_Toggle()            (LATCINV= (1<<13))
+#define Button2_Get()               ((PORTC >> 13) & 0x1)
+#define Button2_OutputEnable()      (TRISCCLR = (1<<13))
+#define Button2_InputEnable()       (TRISCSET = (1<<13))
+#define Button2_PIN                  GPIO_PIN_RC13
+/*** Macros for Button1 pin ***/
+#define Button1_Set()               (LATCSET = (1<<14))
+#define Button1_Clear()             (LATCCLR = (1<<14))
+#define Button1_Toggle()            (LATCINV= (1<<14))
+#define Button1_Get()               ((PORTC >> 14) & 0x1)
+#define Button1_OutputEnable()      (TRISCCLR = (1<<14))
+#define Button1_InputEnable()       (TRISCSET = (1<<14))
+#define Button1_PIN                  GPIO_PIN_RC14
 /*** Macros for Aux1D1 pin ***/
 #define Aux1D1_Set()               (LATDSET = (1<<1))
 #define Aux1D1_Clear()             (LATDCLR = (1<<1))
@@ -309,46 +349,46 @@
 #define Aux2F1_OutputEnable()      (TRISFCLR = (1<<1))
 #define Aux2F1_InputEnable()       (TRISFSET = (1<<1))
 #define Aux2F1_PIN                  GPIO_PIN_RF1
-/*** Macros for GPIO_RE0 pin ***/
-#define GPIO_RE0_Set()               (LATESET = (1<<0))
-#define GPIO_RE0_Clear()             (LATECLR = (1<<0))
-#define GPIO_RE0_Toggle()            (LATEINV= (1<<0))
-#define GPIO_RE0_Get()               ((PORTE >> 0) & 0x1)
-#define GPIO_RE0_OutputEnable()      (TRISECLR = (1<<0))
-#define GPIO_RE0_InputEnable()       (TRISESET = (1<<0))
-#define GPIO_RE0_PIN                  GPIO_PIN_RE0
-/*** Macros for Button3 pin ***/
-#define Button3_Set()               (LATESET = (1<<1))
-#define Button3_Clear()             (LATECLR = (1<<1))
-#define Button3_Toggle()            (LATEINV= (1<<1))
-#define Button3_Get()               ((PORTE >> 1) & 0x1)
-#define Button3_OutputEnable()      (TRISECLR = (1<<1))
-#define Button3_InputEnable()       (TRISESET = (1<<1))
-#define Button3_PIN                  GPIO_PIN_RE1
-/*** Macros for Button4 pin ***/
-#define Button4_Set()               (LATESET = (1<<2))
-#define Button4_Clear()             (LATECLR = (1<<2))
-#define Button4_Toggle()            (LATEINV= (1<<2))
-#define Button4_Get()               ((PORTE >> 2) & 0x1)
-#define Button4_OutputEnable()      (TRISECLR = (1<<2))
-#define Button4_InputEnable()       (TRISESET = (1<<2))
-#define Button4_PIN                  GPIO_PIN_RE2
-/*** Macros for Button5 pin ***/
-#define Button5_Set()               (LATESET = (1<<3))
-#define Button5_Clear()             (LATECLR = (1<<3))
-#define Button5_Toggle()            (LATEINV= (1<<3))
-#define Button5_Get()               ((PORTE >> 3) & 0x1)
-#define Button5_OutputEnable()      (TRISECLR = (1<<3))
-#define Button5_InputEnable()       (TRISESET = (1<<3))
-#define Button5_PIN                  GPIO_PIN_RE3
 /*** Macros for Button6 pin ***/
-#define Button6_Set()               (LATESET = (1<<4))
-#define Button6_Clear()             (LATECLR = (1<<4))
-#define Button6_Toggle()            (LATEINV= (1<<4))
-#define Button6_Get()               ((PORTE >> 4) & 0x1)
-#define Button6_OutputEnable()      (TRISECLR = (1<<4))
-#define Button6_InputEnable()       (TRISESET = (1<<4))
-#define Button6_PIN                  GPIO_PIN_RE4
+#define Button6_Set()               (LATESET = (1<<0))
+#define Button6_Clear()             (LATECLR = (1<<0))
+#define Button6_Toggle()            (LATEINV= (1<<0))
+#define Button6_Get()               ((PORTE >> 0) & 0x1)
+#define Button6_OutputEnable()      (TRISECLR = (1<<0))
+#define Button6_InputEnable()       (TRISESET = (1<<0))
+#define Button6_PIN                  GPIO_PIN_RE0
+/*** Macros for TouchIRQ pin ***/
+#define TouchIRQ_Set()               (LATESET = (1<<1))
+#define TouchIRQ_Clear()             (LATECLR = (1<<1))
+#define TouchIRQ_Toggle()            (LATEINV= (1<<1))
+#define TouchIRQ_Get()               ((PORTE >> 1) & 0x1)
+#define TouchIRQ_OutputEnable()      (TRISECLR = (1<<1))
+#define TouchIRQ_InputEnable()       (TRISESET = (1<<1))
+#define TouchIRQ_PIN                  GPIO_PIN_RE1
+/*** Macros for GPIO_RE2 pin ***/
+#define GPIO_RE2_Set()               (LATESET = (1<<2))
+#define GPIO_RE2_Clear()             (LATECLR = (1<<2))
+#define GPIO_RE2_Toggle()            (LATEINV= (1<<2))
+#define GPIO_RE2_Get()               ((PORTE >> 2) & 0x1)
+#define GPIO_RE2_OutputEnable()      (TRISECLR = (1<<2))
+#define GPIO_RE2_InputEnable()       (TRISESET = (1<<2))
+#define GPIO_RE2_PIN                  GPIO_PIN_RE2
+/*** Macros for GPIO_RE3 pin ***/
+#define GPIO_RE3_Set()               (LATESET = (1<<3))
+#define GPIO_RE3_Clear()             (LATECLR = (1<<3))
+#define GPIO_RE3_Toggle()            (LATEINV= (1<<3))
+#define GPIO_RE3_Get()               ((PORTE >> 3) & 0x1)
+#define GPIO_RE3_OutputEnable()      (TRISECLR = (1<<3))
+#define GPIO_RE3_InputEnable()       (TRISESET = (1<<3))
+#define GPIO_RE3_PIN                  GPIO_PIN_RE3
+/*** Macros for Button5 pin ***/
+#define Button5_Set()               (LATESET = (1<<4))
+#define Button5_Clear()             (LATECLR = (1<<4))
+#define Button5_Toggle()            (LATEINV= (1<<4))
+#define Button5_Get()               ((PORTE >> 4) & 0x1)
+#define Button5_OutputEnable()      (TRISECLR = (1<<4))
+#define Button5_InputEnable()       (TRISESET = (1<<4))
+#define Button5_PIN                  GPIO_PIN_RE4
 
 
 // *****************************************************************************
@@ -483,41 +523,49 @@ void GPIO_PortOutputEnable(GPIO_PORT port, uint32_t mask);
 
 static inline void GPIO_PinWrite(GPIO_PIN pin, bool value)
 {
+    // BA added a cast to GPIO_PORT to fix errors in C++
     GPIO_PortWrite((GPIO_PORT) (pin>>4), (uint32_t)(0x1) << (pin & 0xF), (uint32_t)(value) << (pin & 0xF));
 }
 
 static inline bool GPIO_PinRead(GPIO_PIN pin)
 {
+    // BA added a cast to GPIO_PORT to fix errors in C++
     return (bool)(((GPIO_PortRead((GPIO_PORT) (pin>>4))) >> (pin & 0xF)) & 0x1);
 }
 
 static inline bool GPIO_PinLatchRead(GPIO_PIN pin)
 {
+    // BA added a cast to GPIO_PORT to fix errors in C++
     return (bool)((GPIO_PortLatchRead((GPIO_PORT) (pin>>4)) >> (pin & 0xF)) & 0x1);
 }
 
 static inline void GPIO_PinToggle(GPIO_PIN pin)
 {
+    // BA added a cast to GPIO_PORT to fix errors in C++
     GPIO_PortToggle((GPIO_PORT) (pin>>4), 0x1 << (pin & 0xF));
 }
 
 static inline void GPIO_PinSet(GPIO_PIN pin)
 {
+    // BA added a cast to GPIO_PORT to fix errors in C++
     GPIO_PortSet((GPIO_PORT) (pin>>4), 0x1 << (pin & 0xF));
 }
 
 static inline void GPIO_PinClear(GPIO_PIN pin)
 {
+    // BA added a cast to GPIO_PORT to fix errors in C++
     GPIO_PortClear((GPIO_PORT) (pin>>4), 0x1 << (pin & 0xF));
 }
 
 static inline void GPIO_PinInputEnable(GPIO_PIN pin)
 {
+    // BA added a cast to GPIO_PORT to fix errors in C++
     GPIO_PortInputEnable((GPIO_PORT) (pin>>4), 0x1 << (pin & 0xF));
 }
 
 static inline void GPIO_PinOutputEnable(GPIO_PIN pin)
 {
+    // BA added a cast to GPIO_PORT to fix errors in C++
     GPIO_PortOutputEnable((GPIO_PORT) (pin>>4), 0x1 << (pin & 0xF));
 }
 

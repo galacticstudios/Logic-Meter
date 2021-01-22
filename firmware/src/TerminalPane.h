@@ -9,16 +9,20 @@
 #define	TERMINALPANE_H
 
 #include <vector>
+#include <list>
 #include "Pane.h"
+#include "TerminalPainter.h"
 
 struct laScheme_t;
 typedef struct laScheme_t laScheme;
+
+#define BUFFER_LINES 30
 
 class TerminalPane : public Pane
 {
 public:
     // forceBinary causes all characters to be displayed as hex digits
-    TerminalPane(bool forceBinary = false);
+    TerminalPane(bool forceBinary = false, laDrawSurfaceWidget *terminalDrawSurface = TerminalDrawSurface);
     virtual ~TerminalPane();
     
     void Update();
@@ -31,32 +35,30 @@ public:
     // (which are shown as inverse hexadecimal). Also, this doesn't handle scrolling,
     // so don't give it more text than will fit.
     void SetText(const char *data, size_t size);
+    void Clear();
     
-    void Invalidate();
+    void ScrollUp();
+    void ScrollDown();
     
 protected:
     virtual laWidget *GetWidget() const;
     
 private:
     TerminalPane(const TerminalPane& orig);
-    void Draw(const char *text, int32_t x, int32_t y, bool inverse);
     
-    struct Char
-    {
-        Char() : ch(' '), dirty(false), inverse(false) {}
-        bool operator==(const Char &r) {return ch == r.ch && inverse == r.inverse;}
-        bool operator!=(const Char &r) {return !(*this == r);}
-        char ch;
-        bool dirty;
-        bool inverse;
-    };
-    std::vector<std::vector<Char> > _chars;
-    int _cursorLine, _cursorColumn;
+    bool ShowingLastLine() const;
+    
+    void NewLine();
+    
+    int _displayLines, _displayColumns;
+    std::list<std::vector<char> > _chars;
+    std::list<std::vector<char> >::iterator _firstDisplayLine;
+    uint16_t _cursorColumn;
     int32_t _topMargin, _leftMargin;
-    int32_t _rowHeight, _colWidth;
-    laScheme *_normalScheme, *_inverseScheme;
-    bool _dirtyAll;
     bool _forceBinary;
+
+    SurfaceWrapper _terminalWidget;    
+    TerminalPainter _terminalPainter;
 };
 
 #endif	/* TERMINALPANE_H */

@@ -49,13 +49,16 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include "gfx/hal/gfx.h"
-#include "peripheral/icap/plib_icap4.h"
+#include "usb/usb_device_msd.h"
+#include "usb/usb_msd.h"
 #include "peripheral/clk/plib_clk.h"
 #include "peripheral/gpio/plib_gpio.h"
+#include "peripheral/cache/plib_cache.h"
 #include "peripheral/evic/plib_evic.h"
+#include "driver/memory/drv_memory.h"
 #include "usb/usb_chapter_9.h"
 #include "usb/usb_device.h"
-#include "peripheral/ocmp/plib_ocmp2.h"
+#include "peripheral/ocmp/plib_ocmp4.h"
 #include "peripheral/nvm/plib_nvm.h"
 #include "peripheral/ocmp/plib_ocmp3.h"
 #include "system/time/sys_time.h"
@@ -63,17 +66,23 @@
 #include "usb/usb_cdc.h"
 #include "peripheral/coretimer/plib_coretimer.h"
 #include "driver/usb/usbhs/drv_usbhs.h"
-#include "peripheral/uart/plib_uart3.h"
+#include "driver/memory/drv_memory_nvm.h"
 #include "peripheral/adchs/plib_adchs.h"
 #include "peripheral/tmr/plib_tmr4.h"
+#include "system/fs/sys_fs.h"
+#include "system/fs/sys_fs_media_manager.h"
+#include "system/fs/sys_fs_fat_interface.h"
+#include "system/fs/fat_fs/file_system/ff.h"
+#include "system/fs/fat_fs/file_system/ffconf.h"
+#include "system/fs/fat_fs/hardware_access/diskio.h"
 #include "peripheral/tmr/plib_tmr2.h"
-#include "peripheral/tmr1/plib_tmr1.h"
 #include "gfx/libaria/libaria_harmony.h"
 #include "system/int/sys_int.h"
+#include "system/cache/sys_cache.h"
 #include "osal/osal.h"
 #include "system/debug/sys_debug.h"
 #include "app.h"
-#include "usbcdc.h"
+#include "console.h"
 
 
 
@@ -200,6 +209,7 @@ typedef struct
     SYS_MODULE_OBJ  sysTime;
 	SYS_MODULE_OBJ  drvUSBHSObject;
 
+    SYS_MODULE_OBJ  drvMemory0;
 
 } SYSTEM_OBJECTS;
 

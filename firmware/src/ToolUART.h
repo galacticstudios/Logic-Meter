@@ -10,6 +10,8 @@
 
 #include "Tool.h"
 #include "Utility.h"
+#include "InputCapture.h"
+#include "UART.h"
 
 class TerminalPane;
 
@@ -40,6 +42,11 @@ public:
     void Baud57600Selected() {BaudSelected(57600);}
     void Baud115200Selected() {BaudSelected(115200);}
     
+    void Clear();
+    
+    void ScrollUp();
+    void ScrollDown();
+    
 private:
     ToolUART(const ToolUART& orig);
 
@@ -59,7 +66,10 @@ private:
     uint32_t _lastInputCapture;
     bool _lastInputCaptureValid;
     
-    CQueue<uint8_t, 20000> _receiveQueue;
+    UART<3> _uart;
+    InputCapture<4> _ic;
+    
+    CQueue<uint8_t, 10000> _receiveQueue;
 };
 
 #endif	/* TOOLUART_H */
